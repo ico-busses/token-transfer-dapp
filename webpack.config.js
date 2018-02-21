@@ -22,6 +22,7 @@ const settings = {
       {
         test: /\.js?$/,
         loader: 'babel-loader',
+        exclude: path.resolve(__dirname, 'node_modules'),
         options: {
           presets: [
             ["es2015", { modules: false }],
