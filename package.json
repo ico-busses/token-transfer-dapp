@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/ico-busses/token-transfer-dapp#readme",
   "devDependencies": {
-    "babel-core": "^6.26.0",
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-node-env-inline": "^0.3.0",
@@ -48,6 +48,7 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "semantic-ui-react": "^0.78.2",
     "web3": "^1.0.0-beta.30"
   }
