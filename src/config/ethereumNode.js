@@ -1,0 +1,1 @@
+//export default 'http://127.0.0.1:8545';//Uncomment and edit this line, to use a local or remote node ** Node password has to be unlocked
