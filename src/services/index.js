@@ -1,0 +1,1 @@
+export { web3Service } from './web3Service';
