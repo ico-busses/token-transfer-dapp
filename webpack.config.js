@@ -1,13 +1,12 @@
+require("babel-polyfill");
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const settings = {
-  entry: {
-    bundle: [
-      "./src/main.js"
-    ]
-  },
+  entry: [
+    "babel-polyfill", "./src/main.js"
+  ],
   output: {
     filename: "js/[name].js",
     publicPath: "/",
@@ -22,21 +21,7 @@ const settings = {
       {
         test: /\.js?$/,
         loader: 'babel-loader',
-        exclude: path.resolve(__dirname, 'node_modules'),
-        options: {
-          presets: [
-            ["es2015", { modules: false }],
-            "stage-2"
-          ],
-          plugins: [
-            "transform-node-env-inline"
-          ],
-          env: {
-            development: {
-              plugins: []
-            }
-          }
-        }
+        exclude: path.resolve(__dirname, 'node_modules')
       },
     ]
   },
