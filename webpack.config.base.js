@@ -15,10 +15,18 @@ const settings = {
         path: path.resolve('dist')
     },
     resolve: {
-        extensions: ['.js', '.json']
+        extensions: ['.js', '.json'],
+        alias:{
+            '../../theme.config$': path.resolve(__dirname,'my-semantic-theme/theme.config')
+        }
     },
     module: {
         rules: [
+            {
+                test: /\.js?$/,
+                loader: 'babel-loader',
+                exclude: path.resolve(__dirname, 'node_modules')
+            },
             {
                 test: /\.css$/,
                 use: [
@@ -27,7 +35,7 @@ const settings = {
                         loader: 'css-loader',
                         options: {
                             modules: true,
-                            sourceMap: true,
+                            sourceMap: true
                         }
                     },
                     {
@@ -39,6 +47,29 @@ const settings = {
                             ]
                         }
                     }
+                ]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            importLoaders: 1,
+                            plugins: (loader) => [
+                                require('autoprefixer')({ browsers: ['last 3 versions'] }),
+                            ]
+                        }
+                    },
+                    'less-loader'
                 ]
             },
             {

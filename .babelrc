@@ -8,6 +8,16 @@
         "react-boilerplate"
     ],
     "plugins": [
-        "react-hot-loader/babel"
+        "react-hot-loader/babel",
+        [
+            "transform-semantic-ui-react-imports",
+            {
+                "convertMemberImports": true,
+                "addCssImports": false,
+                "importMinifiedCssFiles": false,
+                "addLessImports": true,
+                "addDuplicateStyleImports": false
+            }
+        ]
     ]
 }
