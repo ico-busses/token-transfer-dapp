@@ -33,10 +33,6 @@ const settings = {
                     'style-loader',
                     {
                         loader: 'css-loader',
-                        options: {
-                            modules: true,
-                            sourceMap: true
-                        }
                     },
                     {
                         loader: 'postcss-loader',
@@ -55,19 +51,6 @@ const settings = {
                     'style-loader',
                     {
                         loader: 'css-loader',
-                        options: {
-                            modules: true,
-                            sourceMap: true
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            importLoaders: 1,
-                            plugins: (loader) => [
-                                require('autoprefixer')({ browsers: ['last 3 versions'] }),
-                            ]
-                        }
                     },
                     'less-loader'
                 ]
