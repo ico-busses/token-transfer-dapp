@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const settings = {
     entry: [
@@ -48,13 +49,22 @@ const settings = {
                 ]
             },
             {
-                test: /\.(woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?|ttf|eot)$/,
-                loader: 'url-loader?limit=10000',
-                include: [/[\/\\]node_modules[\/\\]semantic-ui-css[\/\\]/]
+                test: /\.less$/,
+                use: ExtractTextPlugin.extract({
+                    use: [
+                        'css-loader',
+                        'less-loader',
+                    ]
+                })
             },
             {
-                test: /\.(png|jpg|jpeg|gif|svg)$/,
-                loader: 'url-loader?limit=10240&absolute&name=images/[path][name]-[hash:7].[ext]',
+                test: /\.(woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?)$/,
+                loader: 'url-loader?limit=10000',
+                include: [/[\/\\]node_modules[\/\\]semantic-ui-less[\/\\]/]
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg|ttf|eot)$/,
+                loader: 'file-loader?name=[name].[ext]?[hash]',
                 include: [/[\/\\]node_modules[\/\\]semantic-ui-css[\/\\]/]
             },
         ]
@@ -64,7 +74,11 @@ const settings = {
             title: 'Token Transfer Dapp',
             filename: 'index.html',
             template: 'src/www/main.html'
-        })
+        }),
+        // this handles .less translation
+        new ExtractTextPlugin({
+            filename: '[name].[contenthash].css',
+        }),
     ],
 };
 
