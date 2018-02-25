@@ -4,7 +4,6 @@ const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const settings = {
     entry: [
@@ -21,11 +20,6 @@ const settings = {
     module: {
         rules: [
             {
-                test: /\.js?$/,
-                loader: 'babel-loader',
-                exclude: path.resolve(__dirname, 'node_modules')
-            },
-            {
                 test: /\.css$/,
                 use: [
                     'style-loader',
@@ -34,7 +28,6 @@ const settings = {
                         options: {
                             modules: true,
                             sourceMap: true,
-                            localIdentName: '[name]--[local]--[hash:base64:8]'
                         }
                     },
                     {
@@ -47,15 +40,6 @@ const settings = {
                         }
                     }
                 ]
-            },
-            {
-                test: /\.less$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        'css-loader',
-                        'less-loader',
-                    ]
-                })
             },
             {
                 test: /\.(woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?)$/,
@@ -74,11 +58,7 @@ const settings = {
             title: 'Token Transfer Dapp',
             filename: 'index.html',
             template: 'src/www/main.html'
-        }),
-        // this handles .less translation
-        new ExtractTextPlugin({
-            filename: '[name].[contenthash].css',
-        }),
+        })
     ],
 };
 
