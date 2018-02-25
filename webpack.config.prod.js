@@ -1,4 +1,4 @@
-require("babel-polyfill");
+require('babel-polyfill');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -13,12 +13,15 @@ const settings = merge(baseConfig, {
     ]
   },
   plugins: [
-   new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
-   new UglifyJSPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
+    new UglifyJSPlugin(),
     new CopyWebpackPlugin([
       { from: 'src/lib', to: 'lib' },
       { from: 'src/assets', to: 'assets' }
-      ])
+      ]),
+    new webpack.DefinePlugin({
+      'process.env': 'production'
+    })
   ],
 });
 

@@ -1,25 +1,21 @@
-require("babel-polyfill");
+require('babel-polyfill');
 const path = require('path');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const settings = {
     entry: [
-        "babel-polyfill", "./src/main.js"
+        'babel-polyfill', './src/main.js'
     ],
     output: {
-        filename: "js/[name].js",
-        publicPath: "./",
-        path: path.resolve("dist")
+        filename: 'js/[name].js',
+        publicPath: './',
+        path: path.resolve('dist')
     },
     resolve: {
-        extensions: [".js", ".json"],
-        alias: {
-            '../../theme.config$': path.join(__dirname, '../src/assets/theme/theme.config')
-        }
+        extensions: ['.js', '.json']
     },
     module: {
         rules: [
@@ -31,34 +27,35 @@ const settings = {
             {
                 test: /\.css$/,
                 use: [
-                    "style-loader",
-
-
-            }, {
-                test: /\.css$/,
-                use: [
-                    "style-loader",
+                    'style-loader',
                     {
-                        loader: "css-loader",
+                        loader: 'css-loader',
                         options: {
                             modules: true,
                             sourceMap: true,
-                            importLoaders: 1,
-                            localIdentName: "[name]--[local]--[hash:base64:8]"
+                            localIdentName: '[name]--[local]--[hash:base64:8]'
                         }
                     },
-                    "postcss-loader" // has separate config, see postcss.config.js nearby
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            importLoaders: 1,
+                            plugins: (loader) => [
+                                require('autoprefixer')({ browsers: ['last 3 versions'] }),
+                            ]
+                        }
+                    }
                 ]
             },
             {
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: 'url-loader?limit=10000&mimetype=application/fontwoff',
-                include: [/[\/\\]node_modules[\/\\]semantic-ui-less[\/\\]/]
+                test: /\.(woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?|ttf|eot)$/,
+                loader: 'url-loader?limit=10000',
+                include: [/[\/\\]node_modules[\/\\]semantic-ui-css[\/\\]/]
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg)$/,
                 loader: 'url-loader?limit=10240&absolute&name=images/[path][name]-[hash:7].[ext]',
-                include: [/[\/\\]node_modules[\/\\]semantic-ui-less[\/\\]/]
+                include: [/[\/\\]node_modules[\/\\]semantic-ui-css[\/\\]/]
             },
         ]
     },
@@ -67,11 +64,7 @@ const settings = {
             title: 'Token Transfer Dapp',
             filename: 'index.html',
             template: 'src/www/main.html'
-        }),
-        // this handles the bundled .css output file
-        new ExtractTextPlugin({
-            filename: '[name].[contenthash].css',
-        }),
+        })
     ],
 };
 

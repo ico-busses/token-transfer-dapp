@@ -4,14 +4,14 @@ const merge = require('webpack-merge');
 const baseConfig = require('./webpack.config.base');
 
 const settings = merge(baseConfig, {
-  devtool: "eval-source-map",
+  devtool: 'eval-source-map',
   module: {
     rules: [
     ]
   },
   devServer: {
-    contentBase: path.resolve("src/"),
-    publicPath: "http://localhost:8080/", // full URL is necessary for Hot Module Replacement if additional path will be added.
+    contentBase: path.resolve('src/'),
+    publicPath: 'http://localhost:8080/', // full URL is necessary for Hot Module Replacement if additional path will be added.
     quiet: false,
     hot: true,
     historyApiFallback: true,
