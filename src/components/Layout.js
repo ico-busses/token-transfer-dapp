@@ -1,5 +1,7 @@
-import React, { Component } from 'react'
-import { Header, Container } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Header, Container, Card } from 'semantic-ui-react';
+import Footer from './Footer';
+import Content from './Content';
 
 export default class Layout extends Component {
     constructor (props) {
@@ -9,7 +11,11 @@ export default class Layout extends Component {
     render () {
         return(
             <Container style={{ marginTop: '3em' }}>
-                <Header as='h1'>Theming Examples</Header>
+                <Header as='h3' dividing >Token Transfer Dapp</Header>
+                <Card fluid header=''>
+                    <Content/>
+                </Card>
+                <Footer/>
             </Container>
         );
     }
