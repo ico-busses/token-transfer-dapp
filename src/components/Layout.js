@@ -11,10 +11,10 @@ export default class Layout extends Component {
     render () {
         return(
             <Container style={{ marginTop: '3em' }}>
-                <Header as='h3' dividing >Token Transfer Dapp</Header>
-                <Card fluid header=''>
-                    <Content/>
-                </Card>
+                <Header as='h3' dividing >
+                    Token Transfer Dapp
+                </Header>
+                <Content/>
                 <Footer/>
             </Container>
         );

@@ -1,6 +1,8 @@
 export const contentStyle = {
-    body: {
-        flex: 1
+    main: {
+        marginTop: '3em',
+         marginBottom: '3em'
     },
+
 
 }
