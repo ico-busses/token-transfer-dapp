@@ -43,8 +43,17 @@ export default class Content extends HasAlert {
 
     get printUserBalance() {
         let bal = this.state.userBalance || 0;
-        bal = bal ? bal/(10**Number(this.state.contractDetails.decimals)) : bal;
+        bal = bal ? this.parseTokenAmount(bal) : bal;
         return new RegExp('^\\d+\\.?\\d{8,}$').test(bal) ? bal.toFixed(8) : bal;
+    }
+
+    parseTokenAmount (amount, incoming=true) {
+        const factor = 10 ** Number(this.state.contractDetails.decimals);
+        if (incoming) {
+            return amount / factor;
+        } else {
+            return amount * factor;
+        }
     }
 
     async loadTokenInfo () {
