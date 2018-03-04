@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { web3Service } from '../services';
 import { Divider, Grid, Card, Form, Label, List } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 
-export default class Layout extends Component {
+export default class Content extends Component {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
@@ -100,3 +101,7 @@ export default class Layout extends Component {
         );
     }
 }
+
+Content.propTypes = {
+    displayAddress: PropTypes.any
+};
