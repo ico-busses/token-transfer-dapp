@@ -34,6 +34,19 @@ class web3Service {
         this.initialized = true;
     }
 
+    async awaitInitialized() {
+        const that = this;
+        if (!this.initialized) {
+            let Promises = new Promise((resolve) => {
+                setTimeout(async function () {
+                    resolve(await that.awaitInitialized());
+                }, 2000);
+            });
+            return Promises;
+        } else
+            return true;
+    }
+
     setdefaultAccount (address) {
         this.defaultAccount = address;
     }
@@ -46,24 +59,39 @@ class web3Service {
         return networks[this.netId || 0];
     }
 
+    get isWeb3Viewable() {
+        return this._web3.isConnected();
+    }
+
+    get isWeb3Usable() {
+        return (this._web3.isConnected() && typeof this.accounts !== 'undefined' && this.accounts !== null && this.accounts.length > 0);
+    }
+
     async getTokenName(tokenAddress) {
         const { _web3 } = this;
-        const contract = _web3(ERC20).at(tokenAddress);
-        const name = (await Bb.fromCallback(callback => contract.name(callback)));
+        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaaultAccount });
+        const name = (await Bb.fromCallback(callback => contract.methods.name().call(callback)));
         return name.valueOf();
     }
 
     async getTokenSymbol(tokenAddress) {
         const { _web3 } = this;
-        const contract = _web3(ERC20).at(tokenAddress);
-        const symbol = (await Bb.fromCallback(callback => contract.name(callback)));
+        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaaultAccount });
+        const symbol = (await Bb.fromCallback(callback => contract.methods.symbol().call(callback)));
         return symbol.valueOf();
     }
 
     async getTokenBalance(tokenAddress ) {
         const { _web3, defaultAccount } = this;
-        const contract = _web3(ERC20).at(tokenAddress);
-        const balance = await Bb.fromCallback(callback => contract.balanceOf(defaultAccount,callback));
+        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaaultAccount });
+        const balance = await Bb.fromCallback(callback => contract.methods.balanceOf(defaultAccount).call(callback));
+        return balance.valueOf();
+    }
+
+    async getTokenDecimals(tokenAddress) {
+        const { _web3 } = this;
+        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaaultAccount });
+        const balance = await Bb.fromCallback(callback => contract.methods.decimals().call(callback));
         return balance.valueOf();
     }
 
