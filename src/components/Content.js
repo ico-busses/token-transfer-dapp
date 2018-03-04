@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { web3Service } from '../services';
-import { Divider, Grid, Card, Form, Label, List } from 'semantic-ui-react';
+import { Header, Divider, Grid, Card, Form, Label, List } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 
 export default class Content extends Component {
     constructor(props) {
         super(props);
+
         this.onChange = this.onChange.bind(this);
         this.next = this.next.bind(this);
     }
@@ -15,11 +16,18 @@ export default class Content extends Component {
         fetchingContract: false,
         tokenLoaded: false,
         tokenAddress: '',
+        userBalance: 0,
         contractDetails: {}
     }
 
     get isValidTokenAddressSet (){
         return web3Service._web3.utils.isAddress(this.state.tokenAddress);
+    }
+
+    get printUserBalance() {
+        let bal = this.state.userBalance || 0;
+        bal = bal ? bal/(10**Number(this.state.contractDetails.decimals)) : bal;
+        return new RegExp('^\\d+\\.?\\d{8,}$').test(bal) ? bal.toFixed(8) : bal;
     }
 
     async loadTokenInfo () {
@@ -30,10 +38,11 @@ export default class Content extends Component {
                 address: tokenAddress,
                 name: await web3Service.getTokenName(tokenAddress),
                 symbol: await web3Service.getTokenSymbol(tokenAddress),
-                balance: await web3Service.getTokenBalance(tokenAddress),
                 decimals: await web3Service.getTokenDecimals(tokenAddress),
             };
-            this.setState({ contractDetails: details, fetchingContract: false, tokenLoaded: true });
+            const balance = await web3Service.getTokenBalance(tokenAddress);
+             
+            this.setState({ contractDetails: details, userBalance: balance, fetchingContract: false, tokenLoaded: true });
             this.next();
         } catch (e) {
         }
@@ -44,7 +53,7 @@ export default class Content extends Component {
         if ( this.isValidTokenAddressSet ) {
             if (tokenLoaded) {
                 if (tokenAddress !== contractDetails.address) {
-                    this.setState({ tokenLoaded: false });
+                    this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 });
                 }
             } else if (!fetchingContract || tokenAddress !== contractDetails.address) {
                 this.loadTokenInfo();
@@ -104,13 +113,28 @@ export default class Content extends Component {
                             }
                         </Grid.Column>
                     </Grid>
-                    {
-                        this.state.tokenLoaded &&
-                        <div>
-                            <Divider />
-                        </div>
-                    }
                 </Card.Header>
+
+                {
+                    this.state.tokenLoaded &&
+                    <div>
+                        <Card.Meta padded='horizontally'>
+                            <Grid rows={1} stackable divided padded='horizontally'>
+                                <Grid.Column width={16}>
+                                    <Divider />
+                                    <Header as='h3' padded='horizontally' >
+                                        Balance:
+                                        {`${this.printUserBalance} ${this.state.contractDetails.symbol}` }
+                                    </Header>
+                                </Grid.Column>
+                            </Grid>
+                        </Card.Meta>
+                        <Card.Content style={contentStyle.main}>
+
+                        </Card.Content>
+                        
+                    </div>
+                }
             </Card>
         );
     }
