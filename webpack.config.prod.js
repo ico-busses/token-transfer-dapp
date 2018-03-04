@@ -11,15 +11,17 @@ const settings = merge(baseConfig, {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
     new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
     new UglifyJSPlugin(),
     new CopyWebpackPlugin([
       // { from: 'src/lib', to: 'lib' },
       // { from: 'src/assets', to: 'assets' }
-      ]),
-    new webpack.DefinePlugin({
-      'process.env': 'production'
-    })
+      ])
   ],
 });
 
