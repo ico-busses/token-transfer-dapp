@@ -14,8 +14,8 @@ const settings = merge(baseConfig, {
     new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
     new UglifyJSPlugin(),
     new CopyWebpackPlugin([
-      { from: 'src/lib', to: 'lib' },
-      { from: 'src/assets', to: 'assets' }
+      // { from: 'src/lib', to: 'lib' },
+      // { from: 'src/assets', to: 'assets' }
       ]),
     new webpack.DefinePlugin({
       'process.env': 'production'
