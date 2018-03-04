@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { web3Service } from '../services';
-import { Header, Divider, Grid, Card, Form, Button, Icon, Label, List, Dimmer, Loader } from 'semantic-ui-react';
+import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 
@@ -65,7 +65,7 @@ export default class Content extends HasAlert {
         const SCOUT_TIMEOUT = 1000;
         const accountsChanged = await web3Service.getAccountUpdates();
         if (accountsChanged) {
-            this.props.displayAddress(web3Service.defaultAccount);            
+            this.props.displayAddress(web3Service.defaultAccount);
             this.notify({ msg: `Accounts changed`, type: 'info' });
         }
         await this.getTokenBalance();
@@ -107,13 +107,12 @@ export default class Content extends HasAlert {
             return;
         }
         this.setState({ sendingTokens: true });
-        const { tokenAddress, recipientAddress, recipientAmount} = this.state;
+        const { tokenAddress, recipientAddress, recipientAmount } = this.state;
         try {
             const hash = await web3Service.transferTokens(tokenAddress,recipientAddress, this.parseTokenAmount(recipientAmount, false));
             this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
             this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
         } catch (e) {
-            console.error(e)
             this.notify({ msg: 'Transfer failed !!!' });
         }
         this.setState({ sendingTokens: false, recipientAddress: '', recipientAmount: 0 });
@@ -240,7 +239,7 @@ export default class Content extends HasAlert {
                                                 onBlur={this.onChange('recipientAmount')}
                                             />
                                             <a onClick={this.setMaxValue} style={contentStyle.entire} >
-                                                Send entire Balance 
+                                                Send entire Balance
                                             </a>
                                         </Form.Field>
                                         <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >

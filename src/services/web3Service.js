@@ -107,7 +107,6 @@ class web3Service {
 
     async transferTokens(tokenAddress, recipient, amount) {
         const { _web3 } = this;
-        console.log(recipient, amount)
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
         const transaction = await Bb.fromCallback(callback => contract.methods.transfer(recipient,amount).send(callback));
         return transaction;
