@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Container, Card } from 'semantic-ui-react';
+import { Header, Container } from 'semantic-ui-react';
 import Footer from './Footer';
 import Content from './Content';
 
@@ -9,7 +9,7 @@ export default class Layout extends Component {
     }
 
     render () {
-        return(
+        return (
             <Container style={{ marginTop: '3em' }}>
                 <Header as='h3' dividing >
                     Token Transfer Dapp

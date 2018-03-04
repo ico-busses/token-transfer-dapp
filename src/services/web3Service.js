@@ -5,9 +5,6 @@ import explorers from '../config/explorers';
 import networks from '../config/networks';
 import ERC20 from '../abi/ForeignToken';
 
-let _instance;
-
-
 class web3Service {
 
     constructor() {
@@ -35,7 +32,6 @@ class web3Service {
         this.accounts = await Bb.fromCallback(callback => this._web3.eth.getAccounts(callback));
         this.defaultAccount = this.accounts[0];
         this.initialized = true;
-        console.log(this)
     }
 
     setdefaultAccount (address) {

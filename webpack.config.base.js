@@ -1,6 +1,5 @@
 require('babel-polyfill');
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const settings = {
@@ -36,7 +35,7 @@ const settings = {
                         loader: 'postcss-loader',
                         options: {
                             importLoaders: 1,
-                            plugins: (loader) => [
+                            plugins: () => [
                                 require('autoprefixer')({ browsers: ['last 3 versions'] }),
                             ]
                         }
@@ -56,12 +55,10 @@ const settings = {
             {
                 test: /\.(woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?)$/,
                 loader: 'url-loader?limit=10000',
-                include: [/[\/\\]node_modules[\/\\]semantic-ui-less[\/\\]/]
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg|ttf|eot)$/,
                 loader: 'file-loader?name=[name].[ext]?[hash]',
-                include: [/[\/\\]node_modules[\/\\]semantic-ui-css[\/\\]/]
             },
         ]
     },

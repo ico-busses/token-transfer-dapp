@@ -17,16 +17,36 @@ export default class Layout extends Component {
     }
 
     isValidTokenAddressSet (){
-        return web3Service._web3.isAddress(this.state.tokenAddress);
+        return web3Service._web3.utils.isAddress(this.state.tokenAddress);
+    }
+
+    async loadTokenInfo () {
+        const { tokenAddress } = this.state;
+        this.setState({ fetchingContract: true });
+        const details = {
+            address: tokenAddress,
+            name: await web3Service.getTokenName(tokenAddress),
+            symbol: await web3Service.getTokenSymbol(tokenAddress),
+            balance: await web3Service.getTokenBalance(tokenAddress),
+        };
+        this.setState({ contractDetails: details, fetchingContract: false, tokenLoaded: true });
+        this.next();
     }
 
     next () {
-
-
+        const { fetchingContract, tokenLoaded, tokenAddress, contractDetails } = this.state;
+        if ( this.isValidTokenAddressSet() ) {
+            if (tokenLoaded) {
+                if (tokenAddress !== contractDetails.address) {
+                    this.setState({ tokenLoaded: false });
+                }
+            } else if (!fetchingContract || tokenAddress !== contractDetails.address) {
+                this.loadTokenInfo();
+            }
+        }
     }
 
-    onChange = (property) => (event) => {
-        console.log(property,event)
+    onChange = () => (event) => {
         const { target } = event;
         this.setState({ tokenAddress: target.value });
         this.next();
@@ -42,7 +62,7 @@ export default class Layout extends Component {
                                     loading={this.state.fetchingContract}
                                     value={this.state.tokenAddress}
                                     onChange={this.onChange('tokenAddress')}
-                                    error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet()}
+                                    error={true}
                                     placeholder='Contract Address' />
                         </Grid.Column>
                         <Grid.Column width={8}>
@@ -70,16 +90,13 @@ export default class Layout extends Component {
                         </Grid.Column>
                     </Grid>
                     {
-                        this.state.tokenLoaded && 
+                        this.state.tokenLoaded &&
                         <div>
                             <Divider />
-                            
                         </div>
                     }
                 </Card.Header>
-                
             </Card>
         );
     }
-
 }

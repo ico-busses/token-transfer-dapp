@@ -3,4 +3,4 @@ export const footerStyle = {
        fontSize: '0.8em'
     },
 
-}
+};
