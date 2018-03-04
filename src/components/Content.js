@@ -131,11 +131,11 @@ export default class Content extends HasAlert {
                 {
                     this.state.tokenLoaded &&
                     <div>
-                        <Card.Meta padded='horizontally'>
+                        <Card.Meta >
                             <Grid rows={1} stackable divided padded='horizontally'>
                                 <Grid.Column width={16}>
                                     <Divider />
-                                    <Header as='h3' padded='horizontally' >
+                                    <Header as='h3' >
                                         Balance ≅
                                         {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
                                     </Header>
