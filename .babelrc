@@ -15,7 +15,7 @@
                 "convertMemberImports": true,
                 "addCssImports": false,
                 "importMinifiedCssFiles": false,
-                "addLessImports": true,
+                "addLessImports": false,
                 "addDuplicateStyleImports": false
             }
         ]
