@@ -33,6 +33,10 @@ export default class Content extends HasAlert {
 
     async loadTokenInfo () {
         const { tokenAddress } = this.state;
+        if ( this.state.fetchingContract ) {
+            return;
+        }
+
         this.setState({ fetchingContract: true });
         try {
             const details = {
