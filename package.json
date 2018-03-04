@@ -7,11 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --colors --config webpack.config",
+    "deploy": "git subtree push --prefix dist origin gh-pages",
     "build": "cross-env  NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config webpack.config.prod",
     "lint": "eslint .",
-    "lint-fix": "eslint --fix ."
+    "lint-fix": "eslint --fix .",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --colors --config webpack.config",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
