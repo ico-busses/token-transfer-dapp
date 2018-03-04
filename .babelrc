@@ -1,0 +1,23 @@
+{
+    "presets": [
+        [
+            "es2015"
+        ],
+        "stage-2",
+        "react",
+        "react-boilerplate"
+    ],
+    "plugins": [
+        "react-hot-loader/babel",
+        [
+            "transform-semantic-ui-react-imports",
+            {
+                "convertMemberImports": true,
+                "addCssImports": false,
+                "importMinifiedCssFiles": false,
+                "addLessImports": false,
+                "addDuplicateStyleImports": false
+            }
+        ]
+    ]
+}

@@ -7,9 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "git subtree push --prefix dist origin gh-pages",
+    "build": "cross-env  NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config webpack.config.prod",
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix .",
     "start": "cross-env NODE_ENV=development webpack-dev-server --colors --config webpack.config",
-    "build": "cross-env  NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config webpack.config.prod"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -31,19 +34,42 @@
   },
   "homepage": "https://github.com/ico-busses/token-transfer-dapp#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.3",
+    "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.2",
-    "babel-plugin-transform-node-env-inline": "^0.2.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "copy-webpack-plugin": "^4.2.3",
-    "cross-env": "^5.1.1",
+    "babel-plugin-transform-semantic-ui-react-imports": "^1.3.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-react-boilerplate": "1.1.1",
+    "babel-preset-react-hmre": "1.1.1",
+    "babel-preset-stage-2": "6.24.1",
+    "copy-webpack-plugin": "^4.4.1",
+    "cross-env": "^5.1.3",
+    "css-loader": "^0.28.10",
+    "eslint": "^4.18.2",
+    "eslint-plugin-react": "^7.7.0",
+    "file-loader": "^1.1.9",
     "html-webpack-plugin": "^2.30.1",
-    "webpack": "^3.9.1",
-    "webpack-dev-server": "^2.9.5"
+    "postcss-loader": "^2.1.0",
+    "style-loader": "^0.20.2",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.11.0",
+    "webpack-dev-server": "^2.11.1",
+    "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "web3": "^0.20.2"
-  }
+    "bluebird": "^3.5.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-hot-loader": "4.0.0-beta.1",
+    "react-router-dom": "4.2.2",
+    "react-toastify": "^3.3.4",
+    "semantic-ui-react": "^0.78.2",
+    "web3": "^1.0.0-beta.30"
+  },
+  "pre-commit": [
+    "lint"
+  ]
 }
