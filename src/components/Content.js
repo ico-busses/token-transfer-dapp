@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { web3Service } from '../services';
-import { Header, Divider, Grid, Card, Form, Label, List } from 'semantic-ui-react';
+import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 
@@ -98,8 +98,13 @@ export default class Content extends HasAlert {
                                 />
                         </Grid.Column>
                         <Grid.Column width={8}>
+                            { this.state.fetchingContract &&
+                                <Dimmer active={this.state.fetchingContract} inverted >
+                                    <Loader>Loading</Loader>
+                                </Dimmer>
+                            }
                             {
-                                (this.state.fetchingContract || this.state.tokenLoaded ) &&
+                                this.state.tokenLoaded &&
                             <List>
                                 <List.Item>
                                     <Label pointing='right'>Token Address</Label>
