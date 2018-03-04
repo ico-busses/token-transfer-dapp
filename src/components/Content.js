@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { web3Service } from '../services';
 import { Header, Divider, Grid, Card, Form, Label, List } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
+import HasAlert from './HasAlert';
 
-export default class Content extends Component {
+export default class Content extends HasAlert {
     constructor(props) {
         super(props);
 
@@ -41,11 +42,14 @@ export default class Content extends Component {
                 decimals: await web3Service.getTokenDecimals(tokenAddress),
             };
             const balance = await web3Service.getTokenBalance(tokenAddress);
-             
-            this.setState({ contractDetails: details, userBalance: balance, fetchingContract: false, tokenLoaded: true });
+            this.notify({ msg: 'Token contract details loaded' });
+
+            this.setState({ contractDetails: details, userBalance: balance, tokenLoaded: true });
             this.next();
         } catch (e) {
+            this.notify({ msg: 'Error fetching token contract details' });
         }
+        this.setState({ fetchingContract: false });
     }
 
     next () {
@@ -63,7 +67,7 @@ export default class Content extends Component {
 
     onChange = (property) => (event) => {
         const { target } = event;
-        this.setState({ [property]: target.value});
+        this.setState({ [property]: target.value });
     }
 
     async componentDidMount () {
@@ -78,7 +82,7 @@ export default class Content extends Component {
                 <Card.Header style={contentStyle.main}>
                     <Grid rows={2} stackable divided padded='horizontally'>
                         <Grid.Column width={8} verticalAlign='middle'>
-                            <Form.Input 
+                            <Form.Input
                                 fluid
                                 error={true}
                                 loading={this.state.fetchingContract}
@@ -123,18 +127,17 @@ export default class Content extends Component {
                                 <Grid.Column width={16}>
                                     <Divider />
                                     <Header as='h3' padded='horizontally' >
-                                        Balance:
-                                        {`${this.printUserBalance} ${this.state.contractDetails.symbol}` }
+                                        Balance ≅
+                                        {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
                                     </Header>
                                 </Grid.Column>
                             </Grid>
                         </Card.Meta>
                         <Card.Content style={contentStyle.main}>
-
                         </Card.Content>
-                        
                     </div>
                 }
+                {super.render()}
             </Card>
         );
     }
