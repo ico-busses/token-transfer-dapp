@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { web3Service } from '../services';
-import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader } from 'semantic-ui-react';
+import { Header, Divider, Grid, Card, Form, Button, Icon, Label, List, Dimmer, Loader } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 
@@ -11,12 +11,13 @@ export default class Content extends HasAlert {
 
         this.onChange = this.onChange.bind(this);
         this.next = this.next.bind(this);
+        this.setMaxValue = this.setMaxValue.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
     }
 
     state = {
         fetchingContract: false,
-        tokenLoaded: true,
+        tokenLoaded: false,
         sendingTokens: false,
         tokenAddress: '',
         userBalance: 0,
@@ -34,7 +35,7 @@ export default class Content extends HasAlert {
     }
 
     get isValidRecipientAmountSet() {
-        return new RegExp('^\\d+\\.?\\d*$').test(this.state.recipientAmount) && Number(this.state.recipientAmount) > 0 && Number(this.state.userBalance) > Number(this.state.recipientAmount);
+        return new RegExp('^\\d+\\.?\\d*$').test(this.state.recipientAmount) && Number(this.state.recipientAmount) > 0 && Number(this.state.userBalance) >= Number(this.parseTokenAmount(this.state.recipientAmount,false));
     }
 
     get canSend() {
@@ -56,6 +57,26 @@ export default class Content extends HasAlert {
         }
     }
 
+    setMaxValue() {
+        this.setState({ recipientAmount: this.parseTokenAmount(this.state.userBalance) });
+    }
+
+    async scoutUpdates() {
+        const SCOUT_TIMEOUT = 1000;
+        const accountsChanged = await web3Service.getAccountUpdates();
+        if (accountsChanged) {
+            this.props.displayAddress(web3Service.defaultAccount);            
+            this.notify({ msg: `Accounts changed`, type: 'info' });
+        }
+        await this.getTokenBalance();
+        this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
+    }
+
+    async getTokenBalance () {
+        const balance = this.state.tokenAddress && this.isValidTokenAddressSet ? await web3Service.getTokenBalance(this.state.tokenAddress) : 0;
+        this.setState({ userBalance: balance, });
+    }
+
     async loadTokenInfo () {
         const { tokenAddress } = this.state;
         if ( this.state.fetchingContract ) {
@@ -70,10 +91,10 @@ export default class Content extends HasAlert {
                 symbol: await web3Service.getTokenSymbol(tokenAddress),
                 decimals: await web3Service.getTokenDecimals(tokenAddress),
             };
-            const balance = await web3Service.getTokenBalance(tokenAddress);
+            await this.getTokenBalance();
             this.notify({ msg: 'Token contract details loaded', type: 'success' });
 
-            this.setState({ contractDetails: details, userBalance: balance, tokenLoaded: true });
+            this.setState({ contractDetails: details, tokenLoaded: true });
             this.next();
         } catch (e) {
             this.notify({ msg: 'Error fetching token contract details' });
@@ -86,7 +107,16 @@ export default class Content extends HasAlert {
             return;
         }
         this.setState({ sendingTokens: true });
-
+        const { tokenAddress, recipientAddress, recipientAmount} = this.state;
+        try {
+            const hash = await web3Service.transferTokens(tokenAddress,recipientAddress, this.parseTokenAmount(recipientAmount, false));
+            this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
+            this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
+        } catch (e) {
+            console.error(e)
+            this.notify({ msg: 'Transfer failed !!!' });
+        }
+        this.setState({ sendingTokens: false, recipientAddress: '', recipientAmount: 0 });
     }
 
     next () {
@@ -111,6 +141,11 @@ export default class Content extends HasAlert {
         this.props.displayAddress('...');
         await web3Service.awaitInitialized();
         this.props.displayAddress(web3Service.defaultAccount);
+        this.scoutUpdates();
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
     }
 
     render() {
@@ -204,7 +239,9 @@ export default class Content extends HasAlert {
                                                 onKeyUp={this.onChange('recipientAmount')}
                                                 onBlur={this.onChange('recipientAmount')}
                                             />
-                                            <span className='ui tiny'> Entire Balance </span>
+                                            <a onClick={this.setMaxValue} style={contentStyle.entire} >
+                                                Send entire Balance 
+                                            </a>
                                         </Form.Field>
                                         <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
                                             Transfer {Boolean(Number(this.state.recipientAmount)) && `${this.state.recipientAmount} ${this.state.contractDetails.symbol}(s)`}
