@@ -9,4 +9,4 @@ const render = (Component) => {
     );
 };
 
-render(Home);
+export default render(Home);

@@ -74,14 +74,4 @@ class web3Service {
 
 }
 
-const instantiate = ()=>{
-    if (_instance) {
-        _instance;
-    } else {
-        _instance = new web3Service ();
-        return _instance;
-    }
-}
-
-
-export default instantiate();
+export default new web3Service();

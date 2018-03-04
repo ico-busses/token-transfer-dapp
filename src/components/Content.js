@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { web3Service } from '../services';
-import { Divider, Grid, Card, Form, Input, Label } from 'semantic-ui-react';
+import { Divider, Grid, Card, Form, Label, List } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 
 export default class Layout extends Component {
@@ -10,49 +10,63 @@ export default class Layout extends Component {
     }
 
     state = {
-        fetchingContract: true,
-        tokenLoaded: true,
+        fetchingContract: false,
+        tokenLoaded: false,
         tokenAddress: '',
         contractDetails: {}
     }
 
-    isValidAddress (){
-        web3Service._web3
-        return web3.isValidAddress(this.state.tokenAddress);
+    isValidTokenAddressSet (){
+        return web3Service._web3.isAddress(this.state.tokenAddress);
+    }
+
+    next () {
+
+
     }
 
     onChange = (property) => (event) => {
         console.log(property,event)
         const { target } = event;
         this.setState({ tokenAddress: target.value });
+        this.next();
     }
 
     render() {
         return (
             <Card fluid >
                 <Card.Header style={contentStyle.main}>
-                    <Grid rows={2} stackable divided>
-                        <Grid.Column stretched width={6} >
-                            <Form.Field >
-                                <Input 
-                                    label = 'Address'
-                                    loading = { this.state.fetchingContract }
-                                    value = { this.state.tokenAddress }
-                                    onChange = { this.onChange('tokenAddress') }
-                                    color = { this.state.tokenAddress && !this.isValidAddress?'red':'' }
-                                    placeholder = 'Contract Address' />
-                            </Form.Field>
-                        </Grid.Column>
-                        <Grid.Column stretched >
-                            <Form.Field>
-                                <Input
-                                    label='Address'
+                    <Grid rows={2} stackable divided padded='horizontally'>
+                        <Grid.Column width={8} verticalAlign='middle'>
+                            <Form.Input fluid
                                     loading={this.state.fetchingContract}
                                     value={this.state.tokenAddress}
                                     onChange={this.onChange('tokenAddress')}
-                                    color={this.state.tokenAddress && !this.isValidAddress ? 'red' : ''}
+                                    error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet()}
                                     placeholder='Contract Address' />
-                            </Form.Field>
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                            {
+                                (this.state.fetchingContract || this.state.tokenLoaded ) &&
+                            <List>
+                                <List.Item>
+                                    <Label pointing='right'>Token Address</Label>
+                                        {this.state.tokenAddress}
+                                </List.Item>
+                                <List.Item>
+                                    <Label pointing='right'>Name</Label>
+                                        {this.state.contractDetails.name}
+                                </List.Item>
+                                <List.Item>
+                                    <Label pointing='right'>Symbol</Label>
+                                        {this.state.contractDetails.symbol}
+                                </List.Item>
+                                <List.Item>
+                                    <Label pointing='right'>Decimals</Label>
+                                        {this.state.contractDetails.decimals}
+                                </List.Item>
+                            </List>
+                            }
                         </Grid.Column>
                     </Grid>
                     {

@@ -1,1 +1,1 @@
-export { web3Service } from './web3Service';
+export { default as web3Service } from './web3Service';
