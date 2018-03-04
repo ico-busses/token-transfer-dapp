@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 class HasAlert extends Component {
     notify = ({ msg, type='error'  }) => {
         const options = {
+            type,
             autoClose: false
         };
         type === 'success' ? options.autoClose = 5000 : null;

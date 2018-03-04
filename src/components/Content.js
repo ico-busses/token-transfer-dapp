@@ -46,7 +46,7 @@ export default class Content extends HasAlert {
                 decimals: await web3Service.getTokenDecimals(tokenAddress),
             };
             const balance = await web3Service.getTokenBalance(tokenAddress);
-            this.notify({ msg: 'Token contract details loaded' });
+            this.notify({ msg: 'Token contract details loaded', type: 'success' });
 
             this.setState({ contractDetails: details, userBalance: balance, tokenLoaded: true });
             this.next();
