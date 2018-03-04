@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Header, Container } from 'semantic-ui-react';
+import { Icon, Header, Container } from 'semantic-ui-react';
 import Footer from './Footer';
 import Content from './Content';
+import { contentStyle } from '../styles';
 
 export default class Layout extends Component {
     constructor (props) {
@@ -23,6 +24,10 @@ export default class Layout extends Component {
                 <Header as='h3' dividing >
                     Token Transfer Dapp
                     <small > ( {this.state.address} ) </small>
+                    <a href='https://github.com/ico-busses/token-transfer-dapp' style={contentStyle.source} >
+                        Source code
+                    <Icon color='black' size='large' name="github" style={contentStyle.sorceIcon} />
+                    </a>
                 </Header>
                 <Content {...{ displayAddress: this.showUserAddress }}/>
                 <Footer/>
