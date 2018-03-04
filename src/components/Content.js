@@ -51,6 +51,10 @@ export default class Content extends Component {
         const { target } = event;
         this.setState({ tokenAddress: target.value });
         this.next();
+    async componentDidMount () {
+        this.props.displayAddress('...');
+        await web3Service.awaitInitialized();
+        this.props.displayAddress(web3Service.defaultAccount);
     }
 
     render() {

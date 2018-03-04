@@ -6,6 +6,15 @@ import Content from './Content';
 export default class Layout extends Component {
     constructor (props) {
         super(props);
+        this.showUserAddress = this.showUserAddress.bind(this);
+    }
+
+    state = {
+        address: ''
+    }
+
+    showUserAddress (address) {
+        this.setState({ address:address });
     }
 
     render () {
@@ -13,11 +22,11 @@ export default class Layout extends Component {
             <Container style={{ marginTop: '3em' }}>
                 <Header as='h3' dividing >
                     Token Transfer Dapp
+                    <small > ( {this.state.address} ) </small>
                 </Header>
-                <Content/>
+                <Content {...{ displayAddress: this.showUserAddress }}/>
                 <Footer/>
             </Container>
         );
     }
-
 }
