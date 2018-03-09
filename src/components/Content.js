@@ -179,7 +179,9 @@ export default class Content extends HasAlert {
                             <List>
                                 <List.Item>
                                     <Label pointing='right'>Token Address</Label>
-                                        {this.state.tokenAddress}
+                                        <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel="noopener noreferrer">
+                                            {this.state.tokenAddress}
+                                        </a>
                                 </List.Item>
                                 <List.Item>
                                     <Label pointing='right'>Name</Label>

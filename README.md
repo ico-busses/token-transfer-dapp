@@ -6,7 +6,9 @@ A decentralized dapp, to make quick ERC20, enabled tokens transfer
   
 
 The Dapp loads up the Token details from the token Address you provide. It handles Decimal calulations in the background.
-All you need is the Token address.
+All you need is the Token address.  
+ 
+    * Presently, it only works with Metamask. If we receive enough requests, we would add support for other wallet types
 
 #### Usage  
 - Get the address of the token you wish to interact with
@@ -17,6 +19,7 @@ All you need is the Token address.
 
 #### Setup  
 - Clone the repo
+- run `npm install`
 - run `npm start`
 
 ##### Demo
