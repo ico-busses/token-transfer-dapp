@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
@@ -44,21 +45,21 @@ export default class Content extends HasAlert {
 
     get printUserBalance() {
         let bal = this.state.userBalance || 0;
-        bal = bal ? this.parseTokenAmount(bal) : bal;
+        bal = bal ? this.parseTokenAmount(bal).toNumber() : bal;
         return new RegExp('^\\d+\\.?\\d{8,}$').test(bal) ? bal.toFixed(8) : bal;
     }
 
     parseTokenAmount (amount, incoming=true) {
-        const factor = 10 ** Number(this.state.contractDetails.decimals);
-        if (incoming) {
-            return amount / factor;
+        const factor = new BigNumber(10 ** Number(this.state.contractDetails.decimals));
+        if (incoming ) {
+            return new BigNumber(amount).div(factor);
         } else {
-            return amount * factor;
+            return new BigNumber(amount).times(factor);
         }
     }
 
     setMaxValue() {
-        this.setState({ recipientAmount: this.parseTokenAmount(this.state.userBalance) });
+        this.setState({ recipientAmount: this.parseTokenAmount(this.state.userBalance).toNumber() });
     }
 
     async scoutUpdates() {
@@ -112,10 +113,11 @@ export default class Content extends HasAlert {
             const hash = await web3Service.transferTokens(tokenAddress,recipientAddress, this.parseTokenAmount(recipientAmount, false));
             this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
             this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
+            this.setState({ recipientAddress: '', recipientAmount: 0 });
         } catch (e) {
             this.notify({ msg: 'Transfer failed !!!' });
         }
-        this.setState({ sendingTokens: false, recipientAddress: '', recipientAmount: 0 });
+        this.setState({ sendingTokens: false });
     }
 
     next () {

@@ -91,7 +91,7 @@ class web3Service {
         return symbol.valueOf();
     }
 
-    async getTokenBalance(tokenAddress ) {
+    async getTokenBalance(tokenAddress) {
         const { _web3, defaultAccount } = this;
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
         const balance = await Bb.fromCallback(callback => contract.methods.balanceOf(defaultAccount).call(callback));
