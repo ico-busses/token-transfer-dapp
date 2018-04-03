@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
