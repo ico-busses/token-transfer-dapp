@@ -17,8 +17,8 @@ export default class Footer extends Component {
                         </b>
                     </Grid.Column>
                     <Grid.Row >
-                        Powered by
-                        <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer">ICO BUSSES</a> .
+                        Powered by :
+                        <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer">: ICO BUSSES</a> .
                     </Grid.Row>
                 </Grid>
             </div>
