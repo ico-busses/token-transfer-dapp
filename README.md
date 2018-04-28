@@ -22,5 +22,10 @@ All you need is the Token address.
 - run `npm install`
 - run `npm start`
 
-##### Demo
+#### Issues/Feature request
+https://github.com/ico-busses/token-transfer-dapp/issues
+  
+
+
+#### Demo
 http://ttd.icobusses.io/
