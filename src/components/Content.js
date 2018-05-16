@@ -52,9 +52,9 @@ export default class Content extends HasAlert {
     parseTokenAmount (amount, incoming=true) {
         const factor = new BigNumber(10 ** Number(this.state.contractDetails.decimals));
         if (incoming ) {
-            return new BigNumber(amount).div(factor);
+            return new BigNumber(amount.toString()).div(factor);
         } else {
-            return new BigNumber(amount).times(factor);
+            return new BigNumber(amount.toString()).times(factor);
         }
     }
 
