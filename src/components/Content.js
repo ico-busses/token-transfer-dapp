@@ -14,6 +14,10 @@ export default class Content extends HasAlert {
         this.next = this.next.bind(this);
         this.setMaxValue = this.setMaxValue.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
+
+        web3Service.emitter.on('error', (e) =>
+            this.notify({ msg: e.message|| e, type: 'error' })
+        );
     }
 
     state = {
@@ -98,7 +102,7 @@ export default class Content extends HasAlert {
             this.setState({ contractDetails: details, tokenLoaded: true });
             this.next();
         } catch (e) {
-            this.notify({ msg: 'Error fetching token contract details' });
+            this.notify({ msg: `Error fetching token contract details: ${e.message || e}` });
         }
         this.setState({ fetchingContract: false });
     }
@@ -115,7 +119,7 @@ export default class Content extends HasAlert {
             this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
             this.setState({ recipientAddress: '', recipientAmount: 0 });
         } catch (e) {
-            this.notify({ msg: 'Transfer failed !!!' });
+            this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
         }
         this.setState({ sendingTokens: false });
     }
