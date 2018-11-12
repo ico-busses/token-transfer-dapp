@@ -114,14 +114,20 @@ export default class Content extends HasAlert {
         this.setState({ sendingTokens: true });
         const { tokenAddress, recipientAddress, recipientAmount } = this.state;
         try {
-            const hash = await web3Service.transferTokens(tokenAddress,recipientAddress, this.parseTokenAmount(recipientAmount, false));
-            this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
-            this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
-            this.setState({ recipientAddress: '', recipientAmount: 0 });
+            const hash = await web3Service.transferTokens(tokenAddress,recipientAddress, this.parseTokenAmount(recipientAmount, false).valueOf(), {
+                onTransactionHash: (hash) => {
+                    this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
+                    this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
+                    this.setState({ recipientAddress: '', recipientAmount: 0 });
+                    this.setState({ sendingTokens: false });
+                },
+                onReceipt: (receipt) => {
+                    this.notify({ msg: `Transaction confirmed: Hash - ${receipt.transactionHash}, Block - ${receipt.blockNumber}`, type: 'info' });
+                }
+            });
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
         }
-        this.setState({ sendingTokens: false });
     }
 
     next () {

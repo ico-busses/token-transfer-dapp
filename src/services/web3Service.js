@@ -34,7 +34,7 @@ class web3Service {
                 );
             }
             this.isMetamask = this._web3.currentProvider.isMetaMask;
-            this.netId = (await Bb.fromCallback(callback => this._web3.eth.net.getId(callback))).valueOf();
+            this.netId = await this._web3.eth.net.getId().valueOf();
             this.initialized = true;
         } catch (e) {
             this.emitter.emit('error', e);
@@ -52,7 +52,7 @@ class web3Service {
                     // Request account access if needed
                     await ethereum.enable();
                 }
-                this.accounts = await Bb.fromCallback(callback => this._web3.eth.getAccounts(callback));
+                this.accounts = await this._web3.eth.getAccounts();
                 this.defaultAccount = this.accounts[0];
                 this.accountsRejected = false;
             } catch (e) {
@@ -110,7 +110,7 @@ class web3Service {
             return null !== this.accounts;
         } else {
             try {
-                const accounts = await Bb.fromCallback(callback => this._web3.eth.getAccounts(callback));
+                const accounts = await this._web3.eth.getAccounts();
                 accountChanged = (!!this.accounts && this.accounts.length) !== (!!accounts && accounts.length) || !!this.accounts && typeof this.accounts.length === 'undefined' && this.accounts.some((account,id) => account !== accounts[id]);
                 this.accounts = accounts;
                 this.defaultAccount = this.accounts[0] || '';
@@ -125,7 +125,7 @@ class web3Service {
         await this.awaitInitialized();
         const { _web3 } = this;
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const name = (await Bb.fromCallback(callback => contract.methods.name().call(callback)));
+        const name = await contract.methods.name().call();
         return name.valueOf();
     }
 
@@ -133,7 +133,7 @@ class web3Service {
         await this.awaitInitialized();
         const { _web3 } = this;
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const symbol = (await Bb.fromCallback(callback => contract.methods.symbol().call(callback)));
+        const symbol = await contract.methods.symbol().call();
         return symbol.valueOf();
     }
 
@@ -141,7 +141,7 @@ class web3Service {
         await this.awaitInitialized();
         const { _web3, defaultAccount } = this;
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const balance = await Bb.fromCallback(callback => contract.methods.balanceOf(defaultAccount).call(callback));
+        const balance = await contract.methods.balanceOf(defaultAccount).call();
         return balance.valueOf();
     }
 
@@ -149,17 +149,18 @@ class web3Service {
         await this.awaitInitialized();
         const { _web3 } = this;
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const balance = await Bb.fromCallback(callback => contract.methods.decimals().call(callback));
+        const balance = await contract.methods.decimals().call();
         return balance.valueOf();
     }
 
-    async transferTokens(tokenAddress, recipient, amount) {
+    async transferTokens(tokenAddress, recipient, amount, { onTransactionHash, onReceipt }) {
         await this.awaitInitialized();
         await this.initAccounts();
         const { _web3 } = this;
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const transaction = await Bb.fromCallback(callback => contract.methods.transfer(recipient,amount).send(callback));
-        return transaction;
+        await contract.methods.transfer(recipient,amount).send()
+            .on('transactionHash', onTransactionHash)
+            .on('receipt', onReceipt);
     }
 }
 
