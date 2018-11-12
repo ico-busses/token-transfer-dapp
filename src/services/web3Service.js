@@ -1,5 +1,4 @@
 import Web3 from 'web3';
-import Bb from 'bluebird';
 import EventEmitter from 'events';
 import ethereumNode from '../config/ethereumNode';
 import explorers from '../config/explorers';
@@ -20,13 +19,13 @@ class web3Service {
     accountsRejected = false;
 
     async init () {
-        try{
+        try {
             if (ethereumNode && typeof ethereumNode == 'string') {
                 this._web3 = new Web3(
                     new Web3.providers.HttpProvider(ethereumNode)
                 );
             } else if (window.ethereum) {
-                this._web3 = new Web3(ethereum);
+                this._web3 = new Web3(window.ethereum);
             } else if (window.web3) {
                 // Default to metamask/injected web3
                 this._web3 = new Web3(
@@ -47,10 +46,10 @@ class web3Service {
         }
         this.checkingAccounts = true;
         if (!this.accounts) {
-            try{
+            try {
                 if (window.ethereum) {
                     // Request account access if needed
-                    await ethereum.enable();
+                    await window.ethereum.enable();
                 }
                 this.accounts = await this._web3.eth.getAccounts();
                 this.defaultAccount = this.accounts[0];
