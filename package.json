@@ -61,7 +61,6 @@
   },
   "dependencies": {
     "bignumber.js": "^6.0.0",
-    "bluebird": "^3.5.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-hot-loader": "^4.3.11",
