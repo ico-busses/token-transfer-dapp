@@ -131,7 +131,6 @@ export default class Content extends HasAlert {
                     this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
                     this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
                     this.setState({ recipientAddress: '', recipientAmount: 0 });
-                    this.setState({ sendingTokens: false });
                 },
                 onReceipt: (receipt) => {
                     this.notify({ msg: `Transaction confirmed: Hash - ${receipt.transactionHash}, Block - ${receipt.blockNumber}`, type: 'info' });
@@ -140,6 +139,7 @@ export default class Content extends HasAlert {
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
         }
+        this.setState({ sendingTokens: false });
     }
 
     next () {

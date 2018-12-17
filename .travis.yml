@@ -19,4 +19,4 @@ deploy:
   keep-history: true
   local-dir: "dist"
   on:
-    branch: fix/fetch-details
+    branch: master
