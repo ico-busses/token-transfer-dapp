@@ -119,7 +119,7 @@ class web3Service {
     }
 
     get isWeb3Usable() {
-        return (this.initialized && this.isWeb3Viewable && typeof this.accounts !== 'undefined' && this.accounts !== null && this.accounts.length > 0);
+        return (this.isWeb3Viewable && typeof this.accounts !== 'undefined' && this.accounts !== null && this.accounts.length > 0);
     }
 
     async fetchRpcCall (fn, { to, from, data, value, gas, gasPrice }, args=[]) {
@@ -165,7 +165,9 @@ class web3Service {
     }
 
     async getAccountUpdates() {
-        await this.awaitInitialized();
+        if (!this.initialized) {
+            return false;
+        }
         let accountChanged;
         if (!this.accounts) {
             if (this.accountsRejected || this.checkingAccounts) {
@@ -250,6 +252,9 @@ class web3Service {
     async getTokenBalance(tokenAddress) {
         await this.awaitInitialized();
         const { _web3, defaultAccount } = this;
+        if (!this.isWeb3Usable) {
+            return;
+        }
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
         const balance = await contract.methods.balanceOf(defaultAccount).call();
         return balance.valueOf();

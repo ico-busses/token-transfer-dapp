@@ -25,6 +25,7 @@ export default class Content extends HasAlert {
         tokenLoaded: false,
         sendingTokens: false,
         runningNext: false,
+        scouting: false,
         tokenAddress: '',
         userBalance: 0,
         contractDetails: {},
@@ -45,7 +46,7 @@ export default class Content extends HasAlert {
     }
 
     get canSend() {
-        return this.isValidTokenAddressSet && this.isValidRecipientAddressSet && this.isValidRecipientAmountSet;
+        return web3Service.isWeb3Usable && this.isValidTokenAddressSet && this.isValidRecipientAddressSet && this.isValidRecipientAmountSet;
     }
 
     get printUserBalance() {
@@ -54,7 +55,7 @@ export default class Content extends HasAlert {
         return new RegExp('^\\d+\\.?\\d{8,}$').test(bal) ? bal.toFixed(8) : bal;
     }
 
-    parseTokenAmount (amount, incoming=true) {
+    parseTokenAmount (amount=0, incoming=true) {
         const factor = new BigNumber(10 ** Number(this.state.contractDetails.decimals));
         if (incoming ) {
             return new BigNumber(amount.toString()).div(factor);
@@ -69,13 +70,23 @@ export default class Content extends HasAlert {
 
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
+        this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
+        if (this.state.scouting) {
+            return;
+        }
+        this.setState({ scouting: true });
+        try {
         const accountsChanged = await web3Service.getAccountUpdates();
         if (accountsChanged) {
             this.props.displayAddress(web3Service.defaultAccount);
-            this.notify({ msg: `Accounts changed`, type: 'info' });
+                this.notify({ msg: `Accounts changed`, type: 'info' });
+            }
+            await this.getTokenBalance();
+            this.setState({ scouting: false });
+        } catch (e) {
+            this.setState({ scouting: false });
+            throw e;
         }
-        await this.getTokenBalance();
-        this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
     }
 
     async getTokenBalance () {
