@@ -115,11 +115,11 @@ class web3Service {
     }
 
     get isWeb3Viewable() {
-        return this._web3.isConnected();
+        return this.initialized && this._web3 && !!(this._web3.givenProvider || this._web3.currentProvider);
     }
 
     get isWeb3Usable() {
-        return (this._web3.isConnected() && typeof this.accounts !== 'undefined' && this.accounts !== null && this.accounts.length > 0);
+        return (this.initialized && this.isWeb3Viewable && typeof this.accounts !== 'undefined' && this.accounts !== null && this.accounts.length > 0);
     }
 
     async fetchRpcCall (fn, { to, from, data, value, gas, gasPrice }, args=[]) {
