@@ -85,16 +85,17 @@ class web3Service {
     }
 
     cleanConvertedHex(val) {
-        const regPtrn = new RegExp(/\u0000/g, '');
-        return val.replace('','');
+        /*eslint no-control-regex: "off"*/
+        const regPtrn = new RegExp(/\u0000/g);
+        return val.replace(regPtrn,'');
     }
 
     craftRpcCall (method, args=[]) {
         const rpcObject = {
-            jsonrpc: "2.0",
+            jsonrpc: '2.0',
             method: method,
             id: new Date().getTime()
-        }
+        };
         if (args.length > 0) {
             rpcObject.params = args;
         }
@@ -126,7 +127,7 @@ class web3Service {
         const rpcRequest = {
             to,
             data: data || '0x'
-        }
+        };
 
         if (from) {
             rpcRequest.from = from;
@@ -144,20 +145,19 @@ class web3Service {
             rpcRequest.gasPrice = gasPrice;
         }
 
-        if(!args || typeof args !== 'object') {
+        if (!args || typeof args !== 'object') {
             args = [];
         }
         args.unshift(rpcRequest);
 
         const rpcCall = await new Promise ((resolve, reject) => {
             send(this.craftRpcCall('eth_call', args), function (err, res) {
-                if(err) {
+                if (err) {
                     reject(err);
                 }
                 resolve(res);
             });
         });
-        debugger;
         if (rpcCall.error) {
             throw rpcCall.error;
         }
@@ -243,7 +243,6 @@ class web3Service {
                     data: signature
                 }
             );
-            console.log(_web3.utils.toDecimal(rpcCall))
             return Number(_web3.utils.toDecimal(rpcCall));
         }
     }
