@@ -1,8 +1,6 @@
 import Web3 from 'web3';
 import EventEmitter from 'events';
-import ethereumNode from '../config/ethereumNode';
-import explorers from '../config/explorers';
-import networks from '../config/networks';
+import { ethereumNode, explorers, fnSignatures, networks } from '../config';
 import ERC20 from '../abi/ForeignToken';
 
 class web3Service {
@@ -77,6 +75,32 @@ class web3Service {
             return true;
     }
 
+    getProviderSend () {
+        const provider =this._web3.givenProvider || this._web3.currentProvider;
+        return provider.sendAsync || provider.send;
+    }
+
+    getFunctionSignature (fn) {
+        return this._web3.utils.sha3(fn).substring(0,10);
+    }
+
+    cleanConvertedHex(val) {
+        const regPtrn = new RegExp(/\u0000/g, '');
+        return val.replace('','');
+    }
+
+    craftRpcCall (method, args=[]) {
+        const rpcObject = {
+            jsonrpc: "2.0",
+            method: method,
+            id: new Date().getTime()
+        }
+        if (args.length > 0) {
+            rpcObject.params = args;
+        }
+        return rpcObject;
+    }
+
     setdefaultAccount (address) {
         this.defaultAccount = address;
     }
@@ -95,6 +119,49 @@ class web3Service {
 
     get isWeb3Usable() {
         return (this._web3.isConnected() && typeof this.accounts !== 'undefined' && this.accounts !== null && this.accounts.length > 0);
+    }
+
+    async fetchRpcCall (fn, { to, from, data, value, gas, gasPrice }, args=[]) {
+        const send = this.getProviderSend();
+        const rpcRequest = {
+            to,
+            data: data || '0x'
+        }
+
+        if (from) {
+            rpcRequest.from = from;
+        }
+
+        if (value) {
+            rpcRequest.value = value;
+        }
+
+        if (gas) {
+            rpcRequest.gas = gas;
+        }
+
+        if (gasPrice) {
+            rpcRequest.gasPrice = gasPrice;
+        }
+
+        if(!args || typeof args !== 'object') {
+            args = [];
+        }
+        args.unshift(rpcRequest);
+
+        const rpcCall = await new Promise ((resolve, reject) => {
+            send(this.craftRpcCall('eth_call', args), function (err, res) {
+                if(err) {
+                    reject(err);
+                }
+                resolve(res);
+            });
+        });
+        debugger;
+        if (rpcCall.error) {
+            throw rpcCall.error;
+        }
+        return rpcCall.result;
     }
 
     async getAccountUpdates() {
@@ -123,17 +190,62 @@ class web3Service {
     async getTokenName(tokenAddress) {
         await this.awaitInitialized();
         const { _web3 } = this;
-        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const name = await contract.methods.name().call();
-        return name.valueOf();
+        try {
+            const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
+            const name = await contract.methods.name().call();
+            return name.valueOf();
+        } catch (e) {
+            const signature = this.getFunctionSignature(fnSignatures.tokenName);
+            const rpcCall = await this.fetchRpcCall(
+                'eth_call',
+                {
+                    to: tokenAddress,
+                    data: signature
+                }
+            );
+            return this.cleanConvertedHex(_web3.utils.toAscii(rpcCall)).toString();
+        }
     }
 
     async getTokenSymbol(tokenAddress) {
         await this.awaitInitialized();
         const { _web3 } = this;
-        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const symbol = await contract.methods.symbol().call();
-        return symbol.valueOf();
+        try {
+            const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
+            const symbol = await contract.methods.symbol().call();
+            return symbol.valueOf();
+        } catch (e) {
+            const signature = this.getFunctionSignature(fnSignatures.tokenSymbol);
+            const rpcCall = await this.fetchRpcCall(
+                'eth_call',
+                {
+                    to: tokenAddress,
+                    data: signature
+                }
+            );
+            return this.cleanConvertedHex(_web3.utils.toAscii(rpcCall)).toString();
+        }
+    }
+
+    async getTokenDecimals(tokenAddress) {
+        await this.awaitInitialized();
+        const { _web3 } = this;
+        try {
+            const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
+            const decimals = await contract.methods.decimals().call();
+            return decimals.valueOf();
+        } catch (e) {
+            const signature = this.getFunctionSignature(fnSignatures.tokenDecimals);
+            const rpcCall = await this.fetchRpcCall(
+                'eth_call',
+                {
+                    to: tokenAddress,
+                    data: signature
+                }
+            );
+            console.log(_web3.utils.toDecimal(rpcCall))
+            return Number(_web3.utils.toDecimal(rpcCall));
+        }
     }
 
     async getTokenBalance(tokenAddress) {
@@ -141,14 +253,6 @@ class web3Service {
         const { _web3, defaultAccount } = this;
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
         const balance = await contract.methods.balanceOf(defaultAccount).call();
-        return balance.valueOf();
-    }
-
-    async getTokenDecimals(tokenAddress) {
-        await this.awaitInitialized();
-        const { _web3 } = this;
-        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const balance = await contract.methods.decimals().call();
         return balance.valueOf();
     }
 

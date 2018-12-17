@@ -24,6 +24,7 @@ export default class Content extends HasAlert {
         fetchingContract: false,
         tokenLoaded: false,
         sendingTokens: false,
+        runningNext: false,
         tokenAddress: '',
         userBalance: 0,
         contractDetails: {},
@@ -131,6 +132,10 @@ export default class Content extends HasAlert {
     }
 
     next () {
+        if (this.state.runningNext) {
+            return;
+        }
+        this.setState({ runningNext: true });
         const { fetchingContract, tokenLoaded, tokenAddress, contractDetails } = this.state;
         if ( this.isValidTokenAddressSet ) {
             if (tokenLoaded) {
@@ -140,7 +145,10 @@ export default class Content extends HasAlert {
             } else if (!fetchingContract || tokenAddress !== contractDetails.address) {
                 this.loadTokenInfo();
             }
+        } else {
+            this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 });
         }
+        this.setState({ runningNext: false });
     }
 
     onChange = (property) => (event) => {
