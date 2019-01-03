@@ -29,6 +29,8 @@ export default class Content extends HasAlert {
         fetchingContract: false,
         tokenLoaded: false,
         sendingTokens: false,
+        runningNext: false,
+        scouting: false,
         tokenAddress: '',
         userBalance: 0,
         contractDetails: {},
@@ -50,7 +52,7 @@ export default class Content extends HasAlert {
     }
 
     get canSend() {
-        return this.isValidTokenAddressSet && this.isValidRecipientAddressSet && this.isValidRecipientAmountSet;
+        return web3Service.isWeb3Usable && this.isValidTokenAddressSet && this.isValidRecipientAddressSet && this.isValidRecipientAmountSet;
     }
 
     get printUserBalance() {
@@ -84,13 +86,23 @@ export default class Content extends HasAlert {
 
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
+        this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
+        if (this.state.scouting) {
+            return;
+        }
+        this.setState({ scouting: true });
+        try {
         const accountsChanged = await web3Service.getAccountUpdates();
         if (accountsChanged) {
             this.props.displayAddress(web3Service.defaultAccount);
-            this.notify({ msg: `Accounts changed`, type: 'info' });
+                this.notify({ msg: `Accounts changed`, type: 'info' });
+            }
+            await this.getTokenBalance();
+            this.setState({ scouting: false });
+        } catch (e) {
+            this.setState({ scouting: false });
+            throw e;
         }
-        await this.getTokenBalance();
-        this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
     }
 
     async getTokenBalance () {
@@ -135,7 +147,6 @@ export default class Content extends HasAlert {
                     this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
                     this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
                     this.setState({ recipientAddress: '', recipientAmount: 0 });
-                    this.setState({ sendingTokens: false });
                 },
                 onReceipt: (receipt) => {
                     this.notify({ msg: `Transaction confirmed: Hash - ${receipt.transactionHash}, Block - ${receipt.blockNumber}`, type: 'info' });
@@ -144,6 +155,7 @@ export default class Content extends HasAlert {
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
         }
+        this.setState({ sendingTokens: false });
     }
 
     search () {
@@ -178,6 +190,10 @@ export default class Content extends HasAlert {
     }
 
     next () {
+        if (this.state.runningNext) {
+            return;
+        }
+        this.setState({ runningNext: true });
         const { fetchingContract, tokenLoaded, tokenAddress, contractDetails } = this.state;
         if ( this.isValidTokenAddressSet ) {
             if (tokenLoaded) {
@@ -189,7 +205,10 @@ export default class Content extends HasAlert {
             } else if (!fetchingContract || tokenAddress !== contractDetails.address) {
                 this.loadTokenInfo();
             }
+        } else {
+            this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 });
         }
+        this.setState({ runningNext: false });
     }
 
     onChange = (property) => (event) => {
