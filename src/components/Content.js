@@ -65,7 +65,7 @@ export default class Content extends HasAlert {
                 title: `${ContractMap[token].name} (${ContractMap[token].symbol})`,
                 description: token,
                 image: `images/contractLogos/${ContractMap[token].logo}`
-            }
+            };
         });
     }
 
@@ -151,7 +151,7 @@ export default class Content extends HasAlert {
             return false;
         }
         this.setState({
-            searchingPreloaded: true, 
+            searchingPreloaded: true,
             activeSearch: this.state.searchToken,
             tokenFilterList: []
         });
@@ -159,7 +159,7 @@ export default class Content extends HasAlert {
 
         const tokenFilterList = ContractMapAddresses.filter( address => (activeSearch.includes('0x') && address.includes(activeSearch)) || (ContractMap[address].erc20 && new RegExp(activeSearch,'i').test(ContractMap[address].name)) || (ContractMap[address].erc20 && new RegExp(activeSearch,'i').test(ContractMap[address].symbol)));
         this.setState({
-            searchingPreloaded: false, 
+            searchingPreloaded: false,
             tokenFilterList
         });
     }
@@ -183,7 +183,7 @@ export default class Content extends HasAlert {
             if (tokenLoaded) {
                 if (tokenAddress !== contractDetails.address && !fetchingContract) {
                     this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 }, () => {
-                        this.loadTokenInfo()
+                        this.loadTokenInfo();
                     });
                 }
             } else if (!fetchingContract || tokenAddress !== contractDetails.address) {
