@@ -22,9 +22,9 @@ export default class Layout extends Component {
     render () {
         return (
             <Container style={{ marginTop: '3em' }}>
-                <Header as='h3' dividing >
+                <Header as='h1' dividing >
                     Token Transfer Dapp
-                    <small > (
+                    <small style={{ fontSize: '55%'}} > (
                         <a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
                             {this.state.address}
                         </a>)

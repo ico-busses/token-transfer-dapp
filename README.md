@@ -1,4 +1,5 @@
 # token transfer dapp
+Easy and optimized erc20 token transfer dapp  
 A decentralized dapp, to make quick ERC20, enabled tokens transfer  
 http://ttd.icobusses.io/
   

@@ -1,7 +1,7 @@
 export const contentStyle = {
     source: {
         float: 'right',
-        fontSize: '0.75em',
+        fontSize: '70%',
         color: 'black'
     },
     sorceIcon: {
