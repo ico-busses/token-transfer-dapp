@@ -31,7 +31,7 @@ export default class Footer extends Component {
                 <Divider />
                 <Grid centered columns={2} style={footerStyle.base} >
                     <Grid.Column floated='left' >
-                        Contribute ::
+                        Contributions ::
                         <b>
                             ETH - 0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
                         </b>
