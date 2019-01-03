@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Icon, Header, Container } from 'semantic-ui-react';
 import { web3Service } from '../services';
-import Footer from './Footer';
 import Content from './Content';
+import Information from './Information';
+import Footer from './Footer';
 import { contentStyle } from '../styles';
 
 export default class Layout extends Component {
@@ -35,6 +36,7 @@ export default class Layout extends Component {
                     </a>
                 </Header>
                 <Content {...{ displayAddress: this.showUserAddress }}/>
+                <Information/>
                 <Footer/>
             </Container>
         );
