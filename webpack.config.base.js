@@ -1,5 +1,6 @@
 require('babel-polyfill');
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const settings = {
@@ -13,9 +14,6 @@ const settings = {
     },
     resolve: {
         extensions: ['.js', '.json'],
-        alias:{
-            '../../theme.config$': path.resolve(__dirname,'my-semantic-theme/theme.config')
-        }
     },
     module: {
         rules: [
@@ -67,7 +65,14 @@ const settings = {
             title: 'Token Transfer Dapp',
             filename: 'index.html',
             template: 'src/www/main.html'
-        })
+        }),
+        new CopyWebpackPlugin([
+            {
+                from: 'node_modules/eth-contract-metadata/images',
+                to: 'images/contractLogos',
+                test: /([^/]+)\/(.+)\.(png|jpg|jpeg|gif|svg|ttf|eot)$/
+            }
+        ])
     ],
 };
 

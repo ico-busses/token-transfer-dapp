@@ -6,9 +6,9 @@ http://ttd.icobusses.io/
   
 [![Build Status](https://travis-ci.org/ico-busses/token-transfer-dapp.svg?branch=master)](https://travis-ci.org/ico-busses/token-transfer-dapp) 
   
-
 The Dapp loads up the Token details from the token Address you provide. It handles Decimal calulations in the background.
 All you need is the Token contract address.  
+Preloads token list from [Metamask Tokens Database](https://github.com/MetaMask/eth-contract-metadata)
  
     * Presently, it only works with Metamask. If we receive enough requests, we would add support for other wallet types
 
