@@ -10,7 +10,13 @@ export const footerStyle = {
         margin: '6px'
     },
     features_column: {
-        height: '84px'
+        marginLeft: '12px',
+        marginRight: '12px',
+        maxWidth: '200px',
+        display:'inline-block'
+    },
+    features_row: {
+        maxHeight: '72px',
     },
     features_img: {
         maxWidth: '140px',

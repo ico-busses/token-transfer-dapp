@@ -16,9 +16,9 @@ export default class Footer extends Component {
                         </Header>
                     </Grid.Column>
                     <Grid.Column width={14} >
-                        <Grid.Row stretched verticalAlign='middle'>
+                        <Grid.Row verticalAlign='middle' style={footerStyle.features_row}>
                             { features.map( featured =>
-                                <Grid.Column key={featured.text}>
+                                <Grid.Column key={featured.text} style={footerStyle.features_column}>
                                     <a target='_blank' title={featured.text} href={`${featured.link}?utm_source=token-transfer-dapp`} rel="noopener noreferrer" style={footerStyle.features}>
                                         <Image style={footerStyle.features_img} src={featured.image} />
                                     </a>
