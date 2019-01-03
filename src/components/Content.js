@@ -2,9 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
-import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader } from 'semantic-ui-react';
+import ContractMap from 'eth-contract-metadata';
+import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader, Search } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
+
+const ContractMapAddresses = Object.keys(ContractMap);
 
 export default class Content extends HasAlert {
     constructor(props) {
@@ -12,6 +15,8 @@ export default class Content extends HasAlert {
 
         this.onChange = this.onChange.bind(this);
         this.next = this.next.bind(this);
+        this.search = this.search.bind(this);
+        this.searchSelected = this.searchSelected.bind(this);
         this.setMaxValue = this.setMaxValue.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
 
@@ -30,7 +35,8 @@ export default class Content extends HasAlert {
         userBalance: 0,
         contractDetails: {},
         recipientAddress:'',
-        recipientAmount: 0
+        recipientAmount: 0,
+        tokenFilterList: []
     }
 
     get isValidTokenAddressSet (){
@@ -55,7 +61,17 @@ export default class Content extends HasAlert {
         return new RegExp('^\\d+\\.?\\d{8,}$').test(bal) ? bal.toFixed(8) : bal;
     }
 
-    parseTokenAmount (amount=0, incoming=true) {
+    get tokenFilterList () {
+        return this.state.tokenFilterList.map( token => {
+            return {
+                title: `${ContractMap[token].name} (${ContractMap[token].symbol})`,
+                description: token,
+                image: `images/contractLogos/${ContractMap[token].logo}`
+            };
+        });
+    }
+
+    parseTokenAmount (amount, incoming=true) {
         const factor = new BigNumber(10 ** Number(this.state.contractDetails.decimals));
         if (incoming ) {
             return new BigNumber(amount.toString()).div(factor);
@@ -142,6 +158,37 @@ export default class Content extends HasAlert {
         this.setState({ sendingTokens: false });
     }
 
+    search () {
+        if (this.state.searchToken === this.state.activeSearch) {
+            return false;
+        }
+        this.setState({
+            searchingPreloaded: true,
+            activeSearch: this.state.searchToken,
+            tokenFilterList: []
+        });
+        const activeSearch = this.state.searchToken;
+
+        const tokenFilterList = ContractMapAddresses.filter( address => (activeSearch.includes('0x') && address.includes(activeSearch)) || (ContractMap[address].erc20 && new RegExp(activeSearch,'i').test(ContractMap[address].name)) || (ContractMap[address].erc20 && new RegExp(activeSearch,'i').test(ContractMap[address].symbol)));
+        this.setState({
+            searchingPreloaded: false,
+            tokenFilterList
+        });
+    }
+
+    searchSelected (event, { result }) {
+        this.setState({
+            activeSearch: result.title,
+            searchToken: result.title,
+            tokenAddress: result.description,
+            tokenFilterList: [
+                result.description
+            ]
+        }, () => {
+            this.next();
+        });
+    }
+
     next () {
         if (this.state.runningNext) {
             return;
@@ -150,8 +197,10 @@ export default class Content extends HasAlert {
         const { fetchingContract, tokenLoaded, tokenAddress, contractDetails } = this.state;
         if ( this.isValidTokenAddressSet ) {
             if (tokenLoaded) {
-                if (tokenAddress !== contractDetails.address) {
-                    this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 });
+                if (tokenAddress !== contractDetails.address && !fetchingContract) {
+                    this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 }, () => {
+                        this.loadTokenInfo();
+                    });
                 }
             } else if (!fetchingContract || tokenAddress !== contractDetails.address) {
                 this.loadTokenInfo();
@@ -195,6 +244,17 @@ export default class Content extends HasAlert {
                                         onChange={this.onChange('tokenAddress')}
                                         onKeyUp={this.next}
                                         onBlur={this.next}
+                                    />
+                                    <Search
+                                        loading={this.state.searchingPreloaded}
+                                        value={this.state.searchToken}
+                                        placeholder='Search by Contract Name, Symbol or Address snippet'
+                                        onResultSelect={this.searchSelected}
+                                        onSearchChange={this.onChange('searchToken')}
+                                        results={this.tokenFilterList}
+                                        onKeyUp={this.search}
+                                        onBlur={this.search}
+                                        fluid
                                     />
                                 </Form.Field>
                             </Form>
