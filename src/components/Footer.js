@@ -1,12 +1,33 @@
 import React, { Component } from 'react';
-import { Divider, Grid } from 'semantic-ui-react';
+import { Divider, Grid, Header, Image } from 'semantic-ui-react';
 import { footerStyle } from '../styles';
+import { features } from '../config';
 
 export default class Footer extends Component {
 
     render() {
         return (
             <div>
+                <Divider />
+                <Grid columns={2} divided>
+                    <Grid.Column width={2} floated='left' verticalAlign='middle'>
+                        <Header as='h3' >
+                            Featured:
+                        </Header>
+                    </Grid.Column>
+                    <Grid.Column width={14} >
+                        <Grid.Row verticalAlign='middle' style={footerStyle.features_row}>
+                            { features.map( featured =>
+                                <Grid.Column key={featured.text} style={footerStyle.features_column}>
+                                    <a target='_blank' title={featured.text} href={`${featured.link}?utm_source=token-transfer-dapp`} rel="noopener noreferrer" style={footerStyle.features}>
+                                        <Image style={footerStyle.features_img} src={featured.image} />
+                                    </a>
+                                </Grid.Column>
+                                )
+                            }
+                        </Grid.Row>
+                    </Grid.Column>
+                </Grid>
                 <Divider />
                 <Grid centered columns={2} style={footerStyle.base} >
                     <Grid.Column floated='left' >

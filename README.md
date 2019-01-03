@@ -1,5 +1,7 @@
 # token transfer dapp
-A decentralized dapp, to make quick ERC20, enabled tokens transfer
+Easy and optimized erc20 token transfer dapp  
+A decentralized dapp, to make quick ERC20, enabled tokens transfer  
+http://ttd.icobusses.io/
   
   
 [![Build Status](https://travis-ci.org/ico-busses/token-transfer-dapp.svg?branch=master)](https://travis-ci.org/ico-busses/token-transfer-dapp) 
@@ -22,10 +24,10 @@ All you need is the Token address.
 - run `npm install`
 - run `npm start`
 
-#### Issues/Feature request
+#### Issues/Contribute/Feature request
 https://github.com/ico-busses/token-transfer-dapp/issues
   
 
 
-#### Demo
+#### Live Url
 http://ttd.icobusses.io/
