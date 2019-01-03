@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Divider, Grid, Header } from 'semantic-ui-react';
-import { footerStyle } from '../styles';
 
 export default class Information extends Component {
 
@@ -8,20 +7,19 @@ export default class Information extends Component {
         return (
             <div>
                 <Divider />
-                <Header as='h6' dividing >
+                <Header as='h5' dividing >
                     About the Dapp:
                 </Header>
                 <Grid>
                     <Grid.Row>
-                        <Header as='p'>
+                        <Grid.Column>
                             Easy and optimized erc20 token transfer dapp<br/>
-                            A decentralized dapp, to make quick ERC20, enabled tokens transfer <br/>
                             <br/>
                             The Dapp loads up the Token details from the token Address you provide. It handles Decimal calulations in the background.<br/>
-                            All you need is the Token address.<br/>
+                            All you need is to provide the Token contract address above.<br/>
                             <br/>
                             * Presently, it only works with Metamask. If we receive enough requests, we would add support for other wallet types
-                        </Header>
+                        </Grid.Column>
                     </Grid.Row>
                 </Grid>
             </div>
