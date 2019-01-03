@@ -13,7 +13,8 @@ export default class Information extends Component {
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
-                            Easy and optimized erc20 token transfer dapp<br/>
+                            Easy and optimized erc20 token transfer dapp,<br/>
+                            A decentralized dapp, to make quick ERC20, enabled tokens transfer<br/>.
                             <br/>
                             The Dapp loads up the Token details from the token Address you provide. It handles Decimal calulations in the background.<br/>
                             All you need is to provide the Token contract address above.<br/>
