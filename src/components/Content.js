@@ -6,6 +6,7 @@ import ContractMap from 'eth-contract-metadata';
 import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader, Search } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
+import Transactions from './Transactions';
 
 const ContractMapAddresses = Object.keys(ContractMap);
 
@@ -17,7 +18,6 @@ export default class Content extends HasAlert {
         this.next = this.next.bind(this);
         this.search = this.search.bind(this);
         this.searchSelected = this.searchSelected.bind(this);
-        this.setMaxValue = this.setMaxValue.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
 
         web3Service.emitter.on('error', (e) =>
@@ -71,6 +71,14 @@ export default class Content extends HasAlert {
         });
     }
 
+    isValidRecipientAddressesSet() {
+
+    }
+
+    isValidRecipientAmountsSet() {
+
+    }
+
     parseTokenAmount (amount, incoming=true) {
         const factor = new BigNumber(10 ** Number(this.state.contractDetails.decimals));
         if (incoming ) {
@@ -80,12 +88,15 @@ export default class Content extends HasAlert {
         }
     }
 
-    setMaxValue() {
-        this.setState({ recipientAmount: this.parseTokenAmount(this.state.userBalance).toNumber() });
+    isValidAddress (address) {
+        return web3Service._web3.utils.isAddress(address);
     }
 
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
+        if(!this._mounted) {
+            return false;
+        }
         this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
         if (this.state.scouting) {
             return;
@@ -221,10 +232,12 @@ export default class Content extends HasAlert {
         await web3Service.awaitInitialized();
         this.props.displayAddress(web3Service.defaultAccount);
         this.scoutUpdates();
+        this._mounted=true;
     }
 
     componentWillUnmount() {
         clearTimeout(this.timeout);
+        this._mounted=false;
     }
 
     render() {
@@ -312,31 +325,9 @@ export default class Content extends HasAlert {
                             <Grid padded centered >
                                 <Grid.Column width={12}>
                                     <Form >
-                                        <Form.Field error={Boolean(this.state.recipientAddress) && !this.isValidRecipientAddressSet} >
-                                            <label>To Address: </label>
-                                            <Form.Input
-                                                placeholder='Address'
-                                                value={this.state.recipientAddress}
-                                                onChange={this.onChange('recipientAddress')}
-                                                onKeyUp={this.onChange('recipientAddress')}
-                                                onBlur={this.onChange('recipientAddress')}
-                                            />
-                                        </Form.Field>
-                                        <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet} >
-                                            <label>Amount to send</label>
-                                            <Form.Input
-                                                placeholder={`${this.state.contractDetails.symbol}s to send`}
-                                                value={this.state.recipientAmount}
-                                                onChange={this.onChange('recipientAmount')}
-                                                onKeyUp={this.onChange('recipientAmount')}
-                                                onBlur={this.onChange('recipientAmount')}
-                                            />
-                                            <a onClick={this.setMaxValue} style={contentStyle.entire} >
-                                                Send entire Balance
-                                            </a>
-                                        </Form.Field>
+                                        <Transactions symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} />
                                         <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
-                                            Transfer {Boolean(Number(this.state.recipientAmount)) && `${this.state.recipientAmount} ${this.state.contractDetails.symbol}(s)`}
+                                            Transfer {Boolean(Number(this.state.totalAmount)) && `${this.state.totalAmount} ${this.state.contractDetails.symbol}(s)`}
                                         </Button>
                                     </Form>
                                 </Grid.Column>
