@@ -10,7 +10,7 @@ The Dapp loads up the Token details from the token Address you provide. It handl
 All you need is the Token contract address.  
 Preloads token list from [Metamask Tokens Database](https://github.com/MetaMask/eth-contract-metadata)
  
-* Presently, it only works with [Metamask](htps://metamask.io). If we receive enough requests, we would add support for other wallet types
+* Presently, it only works with [Metamask](htps://metamask.io) and similar Web3 enabled browsers. If we receive enough requests, we would add support for other wallet types
 
 #### Usage  
 - Get the address of the token you wish to interact with

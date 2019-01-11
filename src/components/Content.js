@@ -66,7 +66,7 @@ export default class Content extends HasAlert {
             return {
                 title: `${ContractMap[token].name} (${ContractMap[token].symbol})`,
                 description: token,
-                image: `images/contractLogos/${ContractMap[token].logo}`
+                image:  this.state.tokenFilterList.length < 6 ? `images/contractLogos/${ContractMap[token].logo}` : ''
             };
         });
     }
