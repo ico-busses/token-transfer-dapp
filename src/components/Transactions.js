@@ -32,30 +32,37 @@ export default class Transactions extends HasAlert {
     }
 
     get totalAmount () {
-        return this.state.recipientAddresses.length > 0 ? new BigNumber(this.state.recipientAmounts.reduce((a,b) => a+b)).plus(this.state.recipientAmount || 0).toNumber() : new BigNumber(this.state.recipientAmount || 0).toNumber();
+        let total = new BigNumber(0);
+        if (this.state.recipientAddresses.length > 0) {
+            this.state.recipientAmounts.map((a) => {
+                total = total.plus(this.props.parseTokenAmount(a || 0, false));
+            });
+        }
+        total = total.plus(this.props.parseTokenAmount(this.state.recipientAmount || 0, false));
+        return  total.valueOf();
     }
 
     isValidRecipientAmountSet(index) {
         let isValid = true;
         const value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
+
         if (new RegExp('^\\d+\\.?\\d*$').test(value) && Number(value) > 0) {
-        let total = new BigNumber(0);
+            let total = new BigNumber(0);
             if (typeof index === 'undefined') {
                 index = this.state.recipientAmounts.length;
-    }
-            this.state.recipientAmounts.map((amount, ind) =>console.log(ind, index) || ind < index ? total = total.plus(amount) : null );
-            total.plus(value);
+            }
+            this.state.recipientAmounts.map((amount, ind) => ind < index ? total = total.plus(this.props.parseTokenAmount(amount ||0, false)) : null );
+            total = total.plus(this.props.parseTokenAmount(value || 0, false));
             isValid = total.lte(new BigNumber(this.props.balance));
         } else {
             isValid = false;
         }
         return isValid;
-
+        
     }
 
     remainingBalance () {
-        const total = this.state.recipientAddresses.length > 0 ? new BigNumber(this.state.recipientAmounts.reduce((a,b) => a+b)).plus(this.state.recipientAmount || 0).toNumber() : new BigNumber(this.state.recipientAmount || 0).toNumber();
-        return new BigNumber(this.props.balance).minus(total);
+        return new BigNumber(this.totalAmount).lte(this.props.balance) ? new BigNumber(this.props.balance).minus(this.totalAmount) : new BigNumber(0);
     }
 
     updateArray(array, index, value) {
@@ -63,7 +70,19 @@ export default class Transactions extends HasAlert {
     }
 
     toggleBatch () {
-        this.setState({ isBatch: !this.state.isBatch });
+        if (this.state.isBatch) {
+            const address = this.state.recipientAddresses[0] || this.state.recipientAddress;
+            const amount = this.state.recipientAmounts[0] || this.state.recipientAmount;
+            this.setState({
+                isBatch: !this.state.isBatch,
+                recipientAddress: address,
+                recipientAmount: amount,
+                recipientAddresses: [],
+                recipientAmounts: []
+            });
+        } else {
+            this.setState({ isBatch: !this.state.isBatch });
+        }
     }
 
     addToArray () {
@@ -97,13 +116,29 @@ export default class Transactions extends HasAlert {
     }
 
     setMaxValue = (index) => () => {
+        let value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
+        value = this.props.parseTokenAmount(this.state.recipientAmount || 0, false);
+        if (new BigNumber(this.totalAmount).lte(this.props.balance)) {
+            value = this.remainingBalance().plus(value);
+        } else {
+            const others = new BigNumber(this.totalAmount).minus(value);
+            if (others.lte(this.props.balance)) {
+                value = new BigNumber(this.props.balance).minus(others);
+            } else {
+                value = new BigNumber(0);
+            }
+        }
         if (typeof index === 'undefined') {
-            this.setState({ recipientAmount: this.props.parseTokenAmount(this.remainingBalance().plus(this.state.recipientAmount || 0)).toNumber() }, () => {
-                this.props.updateTotalAmount(this.totalAmount);
+            this.setState({
+                recipientAmount: this.props.parseTokenAmount(value).toNumber()
+            }, () => {
+                this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount));
         });
         } else {
-            this.setState({ recipientAmounts: this.updateArray(this.state.recipientAmounts, index, this.props.parseTokenAmount(this.remainingBalance().plus(this.recipientAmounts[index] || 0)).toNumber()) }, () => {
-                this.props.updateTotalAmount(this.totalAmount);
+            this.setState({
+                recipientAmounts: this.updateArray(this.state.recipientAmounts, index, this.props.parseTokenAmount(value).toNumber())
+            }, () => {
+                this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount));
             });
         }
     }
@@ -117,7 +152,7 @@ export default class Transactions extends HasAlert {
         }
         const amountFields = ['recipientAmount', 'recipientAmounts'];
         if (amountFields.includes(property)) {
-            this.props.updateTotalAmount(this.totalAmount);
+            this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount));
         }
     }
 
@@ -152,8 +187,8 @@ export default class Transactions extends HasAlert {
                                         <Form.Input
                                             placeholder='Address'
                                             value={this.state.recipientAddresses[index]}
-                                    onChange={this.onChange('recipientAddresses', index)}
-                                    onKeyUp={this.onChange('recipientAddresses', index)}
+                                            onChange={this.onChange('recipientAddresses', index)}
+                                            onKeyUp={this.onChange('recipientAddresses', index)}
                                             onBlur={this.onChange('recipientAddresses', index)}
                                         />
                                     </Form.Field>
@@ -172,7 +207,7 @@ export default class Transactions extends HasAlert {
                                         />
                                     </Form.Field>
                                 </Grid.Column>
-                                <Grid.Column width={1} style={{paddingLeft: '0'}}>
+                                <Grid.Column width={1} style={{ paddingLeft: '0' }}>
                                     <Button icon basic color='red' onClick={this.removeFromArray(index)} title='Remove address'>
                                         <Icon name='delete' style={contentStyle.iconButton}  />
                                     </Button>
@@ -219,9 +254,9 @@ export default class Transactions extends HasAlert {
                             <label>To Address: </label>
                             <Form.Input
                                 placeholder='Address'
-                        value={this.state.recipientAddress}
-                        onChange={this.onChange('recipientAddress')}
-                        onKeyUp={this.onChange('recipientAddress')}
+                                value={this.state.recipientAddress}
+                                onChange={this.onChange('recipientAddress')}
+                                onKeyUp={this.onChange('recipientAddress')}
                                 onBlur={this.onChange('recipientAddress')}
                             />
                         </Form.Field>
@@ -229,8 +264,8 @@ export default class Transactions extends HasAlert {
                             <label>Amount to send</label>
                             <Form.Input
                                 placeholder={`${this.props.symbol}s to send`}
-                        value={this.state.recipientAmount}
-                        onChange={this.onChange('recipientAmount')}
+                                value={this.state.recipientAmount}
+                                onChange={this.onChange('recipientAmount')}
                                 onKeyUp={this.onChange('recipientAmount')}
                                 onBlur={this.onChange('recipientAmount')}
                             />

@@ -38,8 +38,6 @@ export default class Content extends HasAlert {
         tokenAddress: '',
         userBalance: 0,
         contractDetails: {},
-        recipientAddress:'',
-        recipientAmount: 0,
         tokenFilterList: [],
         totalRecipientsAmounts: 0,
         isValidRecipientAmountsSet: false,
@@ -97,7 +95,7 @@ export default class Content extends HasAlert {
 
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
-        if(!this._mounted) {
+        if (!this._mounted) {
             return false;
         }
         this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
@@ -106,9 +104,9 @@ export default class Content extends HasAlert {
         }
         this.setState({ scouting: true });
         try {
-        const accountsChanged = await web3Service.getAccountUpdates();
-        if (accountsChanged) {
-            this.props.displayAddress(web3Service.defaultAccount);
+            const accountsChanged = await web3Service.getAccountUpdates();
+            if (accountsChanged) {
+                this.props.displayAddress(web3Service.defaultAccount);
                 this.notify({ msg: `Accounts changed`, type: 'info' });
             }
             await this.getTokenBalance();
@@ -121,7 +119,7 @@ export default class Content extends HasAlert {
 
     async getTokenBalance () {
         const balance = this.state.tokenAddress && this.isValidTokenAddressSet ? await web3Service.getTokenBalance(this.state.tokenAddress) : 0;
-        this.setState({ userBalance: balance, });
+        this.setState({ userBalance: balance });
     }
 
     async loadTokenInfo () {
@@ -247,7 +245,7 @@ export default class Content extends HasAlert {
         return (
             <Card fluid >
                 <Card.Header style={contentStyle.main}>
-                    <Grid rows={2} stackable divided padded='horizontally'>
+                    <Grid stackable divided padded='horizontally'>
                         <Grid.Column width={8} verticalAlign='middle'>
                             <Form>
                                 <Form.Field error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}>
@@ -328,9 +326,9 @@ export default class Content extends HasAlert {
                             <Grid padded centered >
                                 <Grid.Column width={12}>
                                     <Form >
-                                        <Transactions symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} />
+                                        <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
                                         <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
-                                            Transfer {Boolean(Number(this.state.totalAmount)) && `${this.state.totalAmount} ${this.state.contractDetails.symbol}(s)`}
+                                            Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
                                         </Button>
                                     </Form>
                                 </Grid.Column>
