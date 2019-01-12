@@ -19,6 +19,10 @@ export default class Content extends HasAlert {
         this.search = this.search.bind(this);
         this.searchSelected = this.searchSelected.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
+        this.parseTokenAmount = this.parseTokenAmount.bind(this);
+        this.updateTotalAmount = this.updateTotalAmount.bind(this);
+        this.setValidRecipientAddressesSet = this.setValidRecipientAddressesSet.bind(this);
+        this.setValidRecipientAmountsSet = this.setValidRecipientAmountsSet.bind(this);
 
         web3Service.emitter.on('error', (e) =>
             this.notify({ msg: e.message|| e, type: 'error' })
@@ -36,23 +40,18 @@ export default class Content extends HasAlert {
         contractDetails: {},
         recipientAddress:'',
         recipientAmount: 0,
-        tokenFilterList: []
+        tokenFilterList: [],
+        totalRecipientsAmounts: 0,
+        isValidRecipientAmountsSet: false,
+        isValidRecipientAddressesSet: false,
     }
 
     get isValidTokenAddressSet (){
         return web3Service._web3.utils.isAddress(this.state.tokenAddress);
     }
 
-    get isValidRecipientAddressSet() {
-        return web3Service._web3.utils.isAddress(this.state.recipientAddress);
-    }
-
-    get isValidRecipientAmountSet() {
-        return new RegExp('^\\d+\\.?\\d*$').test(this.state.recipientAmount) && Number(this.state.recipientAmount) > 0 && Number(this.state.userBalance) >= Number(this.parseTokenAmount(this.state.recipientAmount,false));
-    }
-
     get canSend() {
-        return web3Service.isWeb3Usable && this.isValidTokenAddressSet && this.isValidRecipientAddressSet && this.isValidRecipientAmountSet;
+        return web3Service.isWeb3Usable && this.isValidTokenAddressSet && this.state.isValidRecipientAddressesSet && this.state.isValidRecipientAmountsSet;
     }
 
     get printUserBalance() {
@@ -71,12 +70,16 @@ export default class Content extends HasAlert {
         });
     }
 
-    isValidRecipientAddressesSet() {
-
+    setValidRecipientAddressesSet(value) {
+        this.setState({ isValidRecipientAddressesSet: !!value });
     }
 
-    isValidRecipientAmountsSet() {
+    setValidRecipientAmountsSet(value) {
+        this.setState({ isValidRecipientAmountsSet: !!value });
+    }
 
+    updateTotalAmount(value) {
+        this.setState({ totalRecipientsAmounts: value });
     }
 
     parseTokenAmount (amount, incoming=true) {
@@ -217,7 +220,7 @@ export default class Content extends HasAlert {
                 this.loadTokenInfo();
             }
         } else {
-            this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 });
+            this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0, runningNext: false });
         }
         this.setState({ runningNext: false });
     }
@@ -228,11 +231,11 @@ export default class Content extends HasAlert {
     }
 
     async componentDidMount () {
+        this._mounted=true;
         this.props.displayAddress('...');
         await web3Service.awaitInitialized();
         this.props.displayAddress(web3Service.defaultAccount);
         this.scoutUpdates();
-        this._mounted=true;
     }
 
     componentWillUnmount() {

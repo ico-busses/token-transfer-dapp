@@ -18,9 +18,9 @@ export default class Information extends Component {
                             <br/>
                             The Dapp loads up the Token details from the token Address you provide. It handles Decimal calulations in the background.<br/>
                             All you need is to provide the Token contract address above.<br/>
-                            Preloads token list from [Metamask Tokens Database](https://github.com/MetaMask/eth-contract-metadata)
+                            Preloads token list from <a href='https://github.com/MetaMask/eth-contract-metadata' target='_blank' rel="noopener noreferrer"> Metamask Tokens Database </a>
                             <br/>
-                            * Presently, it only works with Metamask. If we receive enough requests, we would add support for other wallet types
+                            * Presently, only works with <a href='https://metamask.io' target='_blank' rel="noopener noreferrer"> Metamask </a> and similar Web3 enabled browsers. If we receive enough requests, we would add support for other wallet types
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
