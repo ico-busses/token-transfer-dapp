@@ -21,6 +21,7 @@ export default class Content extends HasAlert {
         this.transferTokens = this.transferTokens.bind(this);
         this.parseTokenAmount = this.parseTokenAmount.bind(this);
         this.updateTotalAmount = this.updateTotalAmount.bind(this);
+        this.setResetDetails = this.setResetDetails.bind(this);
         this.setTransferDetailsFetcher= this.setTransferDetailsFetcher.bind(this);
         this.setValidRecipientAddressesSet = this.setValidRecipientAddressesSet.bind(this);
         this.setValidRecipientAmountsSet = this.setValidRecipientAmountsSet.bind(this);
@@ -40,6 +41,7 @@ export default class Content extends HasAlert {
         userBalance: 0,
         contractDetails: {},
         tokenFilterList: [],
+        resetDetails: null,
         fetchTransferDetails: null,
         totalRecipientsAmounts: 0,
         isValidRecipientAmountsSet: false,
@@ -68,6 +70,10 @@ export default class Content extends HasAlert {
                 image:  this.state.tokenFilterList.length < 6 ? `images/contractLogos/${ContractMap[token].logo}` : ''
             };
         });
+    }
+
+    setResetDetails (value) {
+        this.setState({ resetDetails: value });
     }
 
     setTransferDetailsFetcher (value) {
@@ -158,22 +164,37 @@ export default class Content extends HasAlert {
             return;
         }
         this.setState({ sendingTokens: true });
-        const { tokenAddress, recipientAddress, recipientAmount } = this.state;
+        const { tokenAddress } = this.state;
+        const txDetails = this.state.fetchTransferDetails();
+
+        if (txDetails.addresses.length > 1 && txDetails.amounts.length > 1) {
+            this.notify({ msg: 'Making multiple transfers. You need to approve metamask for each transaction', type: 'info', autoClose: true });
+        }
+
         try {
-            await web3Service.transferTokens(tokenAddress,recipientAddress, this.parseTokenAmount(recipientAmount, false).valueOf(), {
-                onTransactionHash: (hash) => {
-                    this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
-                    this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
-                    this.setState({ recipientAddress: '', recipientAmount: 0 });
-                },
-                onReceipt: (receipt) => {
-                    this.notify({ msg: `Transaction confirmed: Hash - ${receipt.transactionHash}, Block - ${receipt.blockNumber}`, type: 'info' });
-                }
-            });
+            await Promise.all(
+                txDetails.addresses.map( (address, index) => {
+                    return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).valueOf(), {
+                        onTransactionHash: (hash) => {
+                            this.notify({ msg: 'Transfer successful, track transaction.', type: 'success', autoClose: 1000 });
+                            this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
+                        },
+                        onReceipt: (receipt) => {
+                            this.notify({ msg: `Transaction confirmed: Hash - ${receipt.transactionHash}, Block - ${receipt.blockNumber}`, type: 'info' });
+                        }
+                    });
+                })
+            );
+            this.state.resetDetails();
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
         }
-        this.setState({ sendingTokens: false });
+        this.setState({
+            sendingTokens: false,
+            totalRecipientsAmounts: 0,
+            isValidRecipientAmountsSet: false,
+            isValidRecipientAddressesSet: false
+        });
     }
 
     search () {
@@ -332,7 +353,7 @@ export default class Content extends HasAlert {
                             <Grid padded centered >
                                 <Grid.Column width={12}>
                                     <Form >
-                                        <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
+                                        <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setResetDetails={this.setResetDetails} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
                                         <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
                                             Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
                                         </Button>

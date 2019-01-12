@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 class HasAlert extends Component {
-    notify = ({ msg, type='error'  }) => {
+    notify = ({ msg, type='error', autoClose= false  }) => {
         const options = {
             type,
-            autoClose: false
+            autoClose
         };
         type === 'success' ? options.autoClose = 5000 : null;
         toast( msg, options );

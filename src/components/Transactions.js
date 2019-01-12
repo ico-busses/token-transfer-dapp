@@ -9,6 +9,7 @@ export default class Transactions extends Component {
     constructor (props) {
         super(props);
         this.props.setTransferDetailsFetcher(this.fetchTransferDetails.bind(this));
+        this.props.setResetDetails(this.resetDetails.bind(this));
 
         this.onChange = this.onChange.bind(this);
         this.setMaxValue = this.setMaxValue.bind(this);
@@ -17,7 +18,6 @@ export default class Transactions extends Component {
         this.validateForm = this.validateForm.bind(this);
         this.removeFromArray = this.removeFromArray.bind(this);
         this.remainingBalance = this.remainingBalance.bind(this);
-        this.fetchTransferDetails = this.fetchTransferDetails.bind(this);
         this.isValidRecipientAmountSet = this.isValidRecipientAmountSet.bind(this);
     }
 
@@ -138,12 +138,22 @@ export default class Transactions extends Component {
         this.validateAmounts();
     }
 
+    resetDetails () {
+        console.log(this)
+        this.setState ({
+            recipientAddress: '',
+            recipientAmount: '',
+            recipientAddresses: [],
+            recipientAmounts: []
+        });
+    }
+
     fetchTransferDetails () {
         if (this.state.recipientAddresses.length !== this.state.recipientAmounts.length) {
             return false;
         }
-        const addresses = this.state.recipientAddresses;
-        const amounts = this.state.recipientAmounts;
+        const addresses = [].concat(this.state.recipientAddresses);
+        const amounts = [].concat(this.state.recipientAmounts);
         if (this.props.isValidAddress(this.state.recipientAddress)) {
             addresses.push(this.state.recipientAddress);
             amounts.push(this.state.recipientAmount);
@@ -342,6 +352,7 @@ Transactions.propTypes = {
     isValidAddress: PropTypes.func.isRequired,
     parseTokenAmount: PropTypes.func.isRequired,
     updateTotalAmount: PropTypes.func.isRequired,
+    setResetDetails: PropTypes.func.isRequired,
     setTransferDetailsFetcher: PropTypes.func.isRequired,
     setValidRecipientAddressesSet: PropTypes.func.isRequired,
     setValidRecipientAmountsSet: PropTypes.func.isRequired,
