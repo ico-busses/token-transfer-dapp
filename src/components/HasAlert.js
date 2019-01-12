@@ -8,7 +8,7 @@ class HasAlert extends Component {
             autoClose
         };
         type === 'success' ? options.autoClose = 5000 : null;
-        toast( msg, options );
+        toast( <div style={{ wordBreak: 'break-all' }}>{ msg }</div>, options );
     }
 
     render() {

@@ -119,7 +119,7 @@ export default class Content extends HasAlert {
             const accountsChanged = await web3Service.getAccountUpdates();
             if (accountsChanged) {
                 this.props.displayAddress(web3Service.defaultAccount);
-                this.notify({ msg: `Accounts changed`, type: 'info' });
+                this.notify({ msg: `Accounts changed`, type: 'info', autoClose: true });
             }
             await this.getTokenBalance();
             this.setState({ scouting: false });
@@ -177,10 +177,10 @@ export default class Content extends HasAlert {
                     return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).valueOf(), {
                         onTransactionHash: (hash) => {
                             this.notify({ msg: 'Transfer successful, track transaction.', type: 'success', autoClose: 1000 });
-                            this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
+                            this.notify({ msg: <div><b>Transaction hash:</b> {hash}</div>, type: 'info' });
                         },
                         onReceipt: (receipt) => {
-                            this.notify({ msg: `Transaction confirmed: Hash - ${receipt.transactionHash}, Block - ${receipt.blockNumber}`, type: 'info' });
+                            this.notify({ msg: <div><b>Transaction confirmed:</b><br/> Hash - {receipt.transactionHash},<br/> Block - {receipt.blockNumber}</div>, type: 'info' });
                         }
                     });
                 })

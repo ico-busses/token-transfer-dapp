@@ -139,7 +139,6 @@ export default class Transactions extends Component {
     }
 
     resetDetails () {
-        console.log(this)
         this.setState ({
             recipientAddress: '',
             recipientAmount: '',
