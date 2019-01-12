@@ -8,7 +8,8 @@ https://ttd.icobusses.io/
   
 The Dapp loads up the Token details from the token Address you provide. It handles Decimal calulations in the background.
 All you need is the Token contract address.  
-Preloads token list from [Metamask Tokens Database](https://github.com/MetaMask/eth-contract-metadata)
+Preloads token list from [Metamask Tokens Database](https://github.com/MetaMask/eth-contract-metadata)  
+Muliple transfers is done throgh Javascript only, and as such, you have to confirm Metamask for each transfer.
  
 * Presently, it only works with [Metamask](htps://metamask.io) and similar Web3 enabled browsers. If we receive enough requests, we would add support for other wallet types
 
