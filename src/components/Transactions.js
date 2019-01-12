@@ -1,25 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
-import { web3Service } from '../services';
-import ContractMap from 'eth-contract-metadata';
-import { Checkbox, Header, Divider, Grid, Card, Form, Icon, Button, Label, List, Dimmer, Loader, Search } from 'semantic-ui-react';
+import { Checkbox, Header, Grid, Form, Icon, Button } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
-import HasAlert from './HasAlert';
 
-const ContractMapAddresses = Object.keys(ContractMap);
-
-export default class Transactions extends HasAlert {
+export default class Transactions extends Component {
 
     constructor (props) {
         super(props);
+        this.props.setTransferDetailsFetcher(this.fetchTransferDetails.bind(this));
 
         this.onChange = this.onChange.bind(this);
         this.setMaxValue = this.setMaxValue.bind(this);
         this.toggleBatch = this.toggleBatch.bind(this);
         this.addToArray = this.addToArray.bind(this);
+        this.validateForm = this.validateForm.bind(this);
         this.removeFromArray = this.removeFromArray.bind(this);
         this.remainingBalance = this.remainingBalance.bind(this);
+        this.fetchTransferDetails = this.fetchTransferDetails.bind(this);
         this.isValidRecipientAmountSet = this.isValidRecipientAmountSet.bind(this);
     }
 
@@ -58,7 +56,6 @@ export default class Transactions extends HasAlert {
             isValid = false;
         }
         return isValid;
-        
     }
 
     remainingBalance () {
@@ -103,6 +100,60 @@ export default class Transactions extends HasAlert {
         });
     }
 
+    validateAddresses () {
+        let isValid = true;
+        if (this.state.recipientAddresses.length > 0) {
+            this.state.recipientAddresses.map( address => {
+                if (!this.props.isValidAddress (address)) {
+                    isValid = false;
+                }
+            });
+        }
+        if (
+            (this.state.recipientAddress || this.state.recipientAmount || (this.state.recipientAddresses.length === 0 && !this.state.recipientAddress)) &&
+            (!this.props.isValidAddress(this.state.recipientAddress) || this.state.recipientAddresses.includes(this.state.recipientAddress))
+        ) {
+            isValid = false;
+        }
+        this.props.setValidRecipientAddressesSet(isValid);
+    }
+
+    validateAmounts () {
+        let isValid = true;
+        if (this.state.recipientAmounts.length > 0) {
+            this.state.recipientAmounts.map( value => {
+                if (!new RegExp('^\\d+\\.?\\d*$').test(value) || Number(value) <= 0) {
+                    isValid = false;
+                }
+            });
+        }
+        if ((this.state.recipientAmount || this.state.recipientAddress) && (!new RegExp('^\\d+\\.?\\d*$').test(this.state.recipientAmount) || Number(this.state.recipientAmount) <= 0)) {
+            isValid = false;
+        }
+        this.props.setValidRecipientAmountsSet(isValid);
+    }
+
+    validateForm () {
+        this.validateAddresses();
+        this.validateAmounts();
+    }
+
+    fetchTransferDetails () {
+        if (this.state.recipientAddresses.length !== this.state.recipientAmounts.length) {
+            return false;
+        }
+        const addresses = this.state.recipientAddresses;
+        const amounts = this.state.recipientAmounts;
+        if (this.props.isValidAddress(this.state.recipientAddress)) {
+            addresses.push(this.state.recipientAddress);
+            amounts.push(this.state.recipientAmount);
+        }
+        return {
+            addresses,
+            amounts
+        };
+    }
+
     removeFromArray = (index) => () => {
         const addresses = this.state.recipientAddresses;
         const amounts = this.state.recipientAmounts;
@@ -117,7 +168,7 @@ export default class Transactions extends HasAlert {
 
     setMaxValue = (index) => () => {
         let value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
-        value = this.props.parseTokenAmount(this.state.recipientAmount || 0, false);
+        value = this.props.parseTokenAmount(value || 0, false);
         if (new BigNumber(this.totalAmount).lte(this.props.balance)) {
             value = this.remainingBalance().plus(value);
         } else {
@@ -133,12 +184,14 @@ export default class Transactions extends HasAlert {
                 recipientAmount: this.props.parseTokenAmount(value).toNumber()
             }, () => {
                 this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount));
+                this.validateForm();
         });
         } else {
             this.setState({
                 recipientAmounts: this.updateArray(this.state.recipientAmounts, index, this.props.parseTokenAmount(value).toNumber())
             }, () => {
                 this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount));
+                this.validateForm();
             });
         }
     }
@@ -146,9 +199,13 @@ export default class Transactions extends HasAlert {
     onChange = (property, index) => (event) => {
         const { target } = event;
         if (typeof index === 'undefined') {
-            this.setState({ [property]: target.value });
+            this.setState({ [property]: target.value }, () => {
+                this.validateForm();
+            });
         } else {
-            this.setState({ [property]: this.updateArray(this.state[property], index, target.value) });
+            this.setState({ [property]: this.updateArray(this.state[property], index, target.value) }, () => {
+                this.validateForm();
+            });
         }
         const amountFields = ['recipientAmount', 'recipientAmounts'];
         if (amountFields.includes(property)) {
@@ -216,7 +273,7 @@ export default class Transactions extends HasAlert {
                         )}
                         <Grid columns={3} style={contentStyle.contentRow}>
                             <Grid.Column width={9}>
-                                <Form.Field error={Boolean(this.state.recipientAddress && this.state.recipientAddress) && !this.props.isValidAddress(this.state.recipientAddress)} >
+                                <Form.Field error={Boolean(this.state.recipientAddress) && (!this.props.isValidAddress(this.state.recipientAddress) || this.state.recipientAddresses.includes(this.state.recipientAddress))} >
                                     <Form.Input
                                         placeholder='Address'
                                         value={this.state.recipientAddress}
@@ -240,7 +297,7 @@ export default class Transactions extends HasAlert {
                                     />
                                 </Form.Field>
                             </Grid.Column>
-                            <Grid.Column width={1} style={{paddingLeft: '0'}}>
+                            <Grid.Column width={1} style={{ paddingLeft: '0' }}>
                                 <Button icon basic color='teal' onClick={this.addToArray} title='Add new address'>
                                     <Icon name='plus' style={contentStyle.iconButton}  />
                                 </Button>
@@ -275,18 +332,18 @@ export default class Transactions extends HasAlert {
                         </Form.Field>
                     </div>
                 }
-                {super.render()}
             </div>
         );
     }
-};
+}
 
 Transactions.propTypes = {
     balance: PropTypes.string.isRequired,
     isValidAddress: PropTypes.func.isRequired,
     parseTokenAmount: PropTypes.func.isRequired,
     updateTotalAmount: PropTypes.func.isRequired,
+    setTransferDetailsFetcher: PropTypes.func.isRequired,
     setValidRecipientAddressesSet: PropTypes.func.isRequired,
     setValidRecipientAmountsSet: PropTypes.func.isRequired,
     symbol: PropTypes.string.isRequired
-}
+};

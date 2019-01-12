@@ -21,6 +21,7 @@ export default class Content extends HasAlert {
         this.transferTokens = this.transferTokens.bind(this);
         this.parseTokenAmount = this.parseTokenAmount.bind(this);
         this.updateTotalAmount = this.updateTotalAmount.bind(this);
+        this.setTransferDetailsFetcher= this.setTransferDetailsFetcher.bind(this);
         this.setValidRecipientAddressesSet = this.setValidRecipientAddressesSet.bind(this);
         this.setValidRecipientAmountsSet = this.setValidRecipientAmountsSet.bind(this);
 
@@ -39,6 +40,7 @@ export default class Content extends HasAlert {
         userBalance: 0,
         contractDetails: {},
         tokenFilterList: [],
+        fetchTransferDetails: null,
         totalRecipientsAmounts: 0,
         isValidRecipientAmountsSet: false,
         isValidRecipientAddressesSet: false,
@@ -66,6 +68,10 @@ export default class Content extends HasAlert {
                 image:  this.state.tokenFilterList.length < 6 ? `images/contractLogos/${ContractMap[token].logo}` : ''
             };
         });
+    }
+
+    setTransferDetailsFetcher (value) {
+        this.setState({ fetchTransferDetails: value });
     }
 
     setValidRecipientAddressesSet(value) {
@@ -326,7 +332,7 @@ export default class Content extends HasAlert {
                             <Grid padded centered >
                                 <Grid.Column width={12}>
                                     <Form >
-                                        <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
+                                        <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
                                         <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
                                             Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
                                         </Button>
