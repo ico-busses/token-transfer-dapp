@@ -1,19 +1,15 @@
-require('babel-polyfill');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const settings = {
     entry: [
-        'babel-polyfill', './src/main.js'
+        '@babel/polyfill', './src/main.js'
     ],
     output: {
         filename: 'js/[name].js',
         publicPath: './',
         path: path.resolve('dist')
-    },
-    resolve: {
-        extensions: ['.js', '.json'],
     },
     module: {
         rules: [

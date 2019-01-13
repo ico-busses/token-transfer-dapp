@@ -6,6 +6,7 @@ import ContractMap from 'eth-contract-metadata';
 import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader, Search } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
+import Transactions from './Transactions';
 
 const ContractMapAddresses = Object.keys(ContractMap);
 
@@ -17,8 +18,13 @@ export default class Content extends HasAlert {
         this.next = this.next.bind(this);
         this.search = this.search.bind(this);
         this.searchSelected = this.searchSelected.bind(this);
-        this.setMaxValue = this.setMaxValue.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
+        this.parseTokenAmount = this.parseTokenAmount.bind(this);
+        this.updateTotalAmount = this.updateTotalAmount.bind(this);
+        this.setResetDetails = this.setResetDetails.bind(this);
+        this.setTransferDetailsFetcher= this.setTransferDetailsFetcher.bind(this);
+        this.setValidRecipientAddressesSet = this.setValidRecipientAddressesSet.bind(this);
+        this.setValidRecipientAmountsSet = this.setValidRecipientAmountsSet.bind(this);
 
         web3Service.emitter.on('error', (e) =>
             this.notify({ msg: e.message|| e, type: 'error' })
@@ -34,25 +40,20 @@ export default class Content extends HasAlert {
         tokenAddress: '',
         userBalance: 0,
         contractDetails: {},
-        recipientAddress:'',
-        recipientAmount: 0,
-        tokenFilterList: []
+        tokenFilterList: [],
+        resetDetails: null,
+        fetchTransferDetails: null,
+        totalRecipientsAmounts: 0,
+        isValidRecipientAmountsSet: false,
+        isValidRecipientAddressesSet: false,
     }
 
     get isValidTokenAddressSet (){
         return web3Service._web3.utils.isAddress(this.state.tokenAddress);
     }
 
-    get isValidRecipientAddressSet() {
-        return web3Service._web3.utils.isAddress(this.state.recipientAddress);
-    }
-
-    get isValidRecipientAmountSet() {
-        return new RegExp('^\\d+\\.?\\d*$').test(this.state.recipientAmount) && Number(this.state.recipientAmount) > 0 && Number(this.state.userBalance) >= Number(this.parseTokenAmount(this.state.recipientAmount,false));
-    }
-
     get canSend() {
-        return web3Service.isWeb3Usable && this.isValidTokenAddressSet && this.isValidRecipientAddressSet && this.isValidRecipientAmountSet;
+        return web3Service.isWeb3Usable && this.isValidTokenAddressSet && this.state.isValidRecipientAddressesSet && this.state.isValidRecipientAmountsSet;
     }
 
     get printUserBalance() {
@@ -66,9 +67,29 @@ export default class Content extends HasAlert {
             return {
                 title: `${ContractMap[token].name} (${ContractMap[token].symbol})`,
                 description: token,
-                image: `images/contractLogos/${ContractMap[token].logo}`
+                image:  this.state.tokenFilterList.length < 6 ? `images/contractLogos/${ContractMap[token].logo}` : ''
             };
         });
+    }
+
+    setResetDetails (value) {
+        this.setState({ resetDetails: value });
+    }
+
+    setTransferDetailsFetcher (value) {
+        this.setState({ fetchTransferDetails: value });
+    }
+
+    setValidRecipientAddressesSet(value) {
+        this.setState({ isValidRecipientAddressesSet: !!value });
+    }
+
+    setValidRecipientAmountsSet(value) {
+        this.setState({ isValidRecipientAmountsSet: !!value });
+    }
+
+    updateTotalAmount(value) {
+        this.setState({ totalRecipientsAmounts: value });
     }
 
     parseTokenAmount (amount, incoming=true) {
@@ -80,22 +101,25 @@ export default class Content extends HasAlert {
         }
     }
 
-    setMaxValue() {
-        this.setState({ recipientAmount: this.parseTokenAmount(this.state.userBalance).toNumber() });
+    isValidAddress (address) {
+        return web3Service._web3.utils.isAddress(address);
     }
 
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
+        if (!this._mounted) {
+            return false;
+        }
         this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
         if (this.state.scouting) {
             return;
         }
         this.setState({ scouting: true });
         try {
-        const accountsChanged = await web3Service.getAccountUpdates();
-        if (accountsChanged) {
-            this.props.displayAddress(web3Service.defaultAccount);
-                this.notify({ msg: `Accounts changed`, type: 'info' });
+            const accountsChanged = await web3Service.getAccountUpdates();
+            if (accountsChanged) {
+                this.props.displayAddress(web3Service.defaultAccount);
+                this.notify({ msg: `Accounts changed`, type: 'info', autoClose: true });
             }
             await this.getTokenBalance();
             this.setState({ scouting: false });
@@ -107,7 +131,7 @@ export default class Content extends HasAlert {
 
     async getTokenBalance () {
         const balance = this.state.tokenAddress && this.isValidTokenAddressSet ? await web3Service.getTokenBalance(this.state.tokenAddress) : 0;
-        this.setState({ userBalance: balance, });
+        this.setState({ userBalance: balance });
     }
 
     async loadTokenInfo () {
@@ -140,22 +164,37 @@ export default class Content extends HasAlert {
             return;
         }
         this.setState({ sendingTokens: true });
-        const { tokenAddress, recipientAddress, recipientAmount } = this.state;
+        const { tokenAddress } = this.state;
+        const txDetails = this.state.fetchTransferDetails();
+
+        if (txDetails.addresses.length > 1 && txDetails.amounts.length > 1) {
+            this.notify({ msg: 'Making multiple transfers. You need to approve metamask for each transaction', type: 'info', autoClose: true });
+        }
+
         try {
-            await web3Service.transferTokens(tokenAddress,recipientAddress, this.parseTokenAmount(recipientAmount, false).valueOf(), {
-                onTransactionHash: (hash) => {
-                    this.notify({ msg: 'Transfer successful, track transaction.', type: 'success' });
-                    this.notify({ msg: `Transaction hash: ${hash}`, type: 'info' });
-                    this.setState({ recipientAddress: '', recipientAmount: 0 });
-                },
-                onReceipt: (receipt) => {
-                    this.notify({ msg: `Transaction confirmed: Hash - ${receipt.transactionHash}, Block - ${receipt.blockNumber}`, type: 'info' });
-                }
-            });
+            await Promise.all(
+                txDetails.addresses.map( (address, index) => {
+                    return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).valueOf(), {
+                        onTransactionHash: (hash) => {
+                            this.notify({ msg: 'Transfer successful, track transaction.', type: 'success', autoClose: 1000 });
+                            this.notify({ msg: <div><b>Transaction hash:</b> {hash}</div>, type: 'info' });
+                        },
+                        onReceipt: (receipt) => {
+                            this.notify({ msg: <div><b>Transaction confirmed:</b><br/> Hash - {receipt.transactionHash},<br/> Block - {receipt.blockNumber}</div>, type: 'info' });
+                        }
+                    });
+                })
+            );
+            this.state.resetDetails();
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
         }
-        this.setState({ sendingTokens: false });
+        this.setState({
+            sendingTokens: false,
+            totalRecipientsAmounts: 0,
+            isValidRecipientAmountsSet: false,
+            isValidRecipientAddressesSet: false
+        });
     }
 
     search () {
@@ -206,7 +245,7 @@ export default class Content extends HasAlert {
                 this.loadTokenInfo();
             }
         } else {
-            this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 });
+            this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0, runningNext: false });
         }
         this.setState({ runningNext: false });
     }
@@ -217,6 +256,7 @@ export default class Content extends HasAlert {
     }
 
     async componentDidMount () {
+        this._mounted=true;
         this.props.displayAddress('...');
         await web3Service.awaitInitialized();
         this.props.displayAddress(web3Service.defaultAccount);
@@ -225,13 +265,14 @@ export default class Content extends HasAlert {
 
     componentWillUnmount() {
         clearTimeout(this.timeout);
+        this._mounted=false;
     }
 
     render() {
         return (
             <Card fluid >
                 <Card.Header style={contentStyle.main}>
-                    <Grid rows={2} stackable divided padded='horizontally'>
+                    <Grid stackable divided padded='horizontally'>
                         <Grid.Column width={8} verticalAlign='middle'>
                             <Form>
                                 <Form.Field error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}>
@@ -312,31 +353,9 @@ export default class Content extends HasAlert {
                             <Grid padded centered >
                                 <Grid.Column width={12}>
                                     <Form >
-                                        <Form.Field error={Boolean(this.state.recipientAddress) && !this.isValidRecipientAddressSet} >
-                                            <label>To Address: </label>
-                                            <Form.Input
-                                                placeholder='Address'
-                                                value={this.state.recipientAddress}
-                                                onChange={this.onChange('recipientAddress')}
-                                                onKeyUp={this.onChange('recipientAddress')}
-                                                onBlur={this.onChange('recipientAddress')}
-                                            />
-                                        </Form.Field>
-                                        <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet} >
-                                            <label>Amount to send</label>
-                                            <Form.Input
-                                                placeholder={`${this.state.contractDetails.symbol}s to send`}
-                                                value={this.state.recipientAmount}
-                                                onChange={this.onChange('recipientAmount')}
-                                                onKeyUp={this.onChange('recipientAmount')}
-                                                onBlur={this.onChange('recipientAmount')}
-                                            />
-                                            <a onClick={this.setMaxValue} style={contentStyle.entire} >
-                                                Send entire Balance
-                                            </a>
-                                        </Form.Field>
+                                        <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setResetDetails={this.setResetDetails} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
                                         <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
-                                            Transfer {Boolean(Number(this.state.recipientAmount)) && `${this.state.recipientAmount} ${this.state.contractDetails.symbol}(s)`}
+                                            Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
                                         </Button>
                                     </Form>
                                 </Grid.Column>

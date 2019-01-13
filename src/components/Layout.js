@@ -17,7 +17,7 @@ export default class Layout extends Component {
     }
 
     showUserAddress (address) {
-        this.setState({ address:address });
+        this.setState({ address });
     }
 
     render () {

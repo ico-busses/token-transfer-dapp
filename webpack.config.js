@@ -4,9 +4,16 @@ const merge = require('webpack-merge');
 const baseConfig = require('./webpack.config.base');
 
 const settings = merge(baseConfig, {
+  mode: 'development',
   devtool: 'eval-source-map',
   module: {
     rules: [
+      {
+          test: /\.js?$/,
+          use: [
+            'react-hot-loader/webpack'
+          ]
+      }
     ]
   },
   devServer: {
