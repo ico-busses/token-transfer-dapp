@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const baseConfig = require('./webpack.config.base');
 
 const settings = merge(baseConfig, {
@@ -9,6 +8,32 @@ const settings = merge(baseConfig, {
     rules: [
     ]
   },
+  optimization: {
+    mergeDuplicateChunks: true,
+    minimize: true,
+    splitChunks: {
+      chunks: 'async',
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      name: true,
+      cacheGroups: {
+        "vendors~a-g": {
+          test: /[\\/]node_modules[\\/]/i,
+          priority: -10,
+          chunks: 'all',
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -16,7 +41,6 @@ const settings = merge(baseConfig, {
       }
     }),
     new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
-    new UglifyJSPlugin()
   ],
 });
 
