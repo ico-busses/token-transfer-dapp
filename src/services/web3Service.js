@@ -263,11 +263,21 @@ class web3Service {
     async transferTokens(tokenAddress, recipient, amount, { onTransactionHash, onReceipt }) {
         await this.awaitInitialized();
         await this.initAccounts();
+        if (!this.isWeb3Usable) {
+            return;
+        }
         const { _web3 } = this;
-        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        await contract.methods.transfer(recipient,amount).send()
-            .on('transactionHash', onTransactionHash)
-            .on('receipt', onReceipt);
+        const contract = new _web3.eth.Contract(ERC20, tokenAddress);
+        await new Promise((resolve, reject) => {
+            const tx = contract.methods.transfer(recipient,amount).send({ from: this.defaultAccount });
+
+            tx.once('transactionHash', (hash)=> {
+                resolve(hash);
+                onTransactionHash(hash);
+            });
+            tx.on('error', e => reject(e.message || e));
+            tx.then('receipt', (r) => {console.log(r);debugger; onReceipt(r)});
+        });
     }
 }
 
