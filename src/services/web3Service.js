@@ -271,12 +271,13 @@ class web3Service {
         await new Promise((resolve, reject) => {
             const tx = contract.methods.transfer(recipient,amount).send({ from: this.defaultAccount });
 
-            tx.once('transactionHash', (hash)=> {
-                resolve(hash);
-                onTransactionHash(hash);
-            });
+
             tx.on('error', e => reject(e.message || e));
-            tx.then('receipt', (r) => {console.log(r);debugger; onReceipt(r)});
+            tx.once('receipt', r => onReceipt(r));
+            tx.once('transactionHash', (hash)=> {
+                onTransactionHash(hash);
+                resolve(hash);
+            });
         });
     }
 }
