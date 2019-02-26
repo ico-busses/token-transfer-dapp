@@ -107,13 +107,10 @@ export default class Content extends HasAlert {
 
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
-        if (!this._mounted) {
+        if (!this._mounted || this.state.scouting) {
             return false;
         }
         this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
-        if (this.state.scouting) {
-            return;
-        }
         this.setState({ scouting: true });
         try {
             const accountsChanged = await web3Service.getAccountUpdates();
@@ -186,15 +183,18 @@ export default class Content extends HasAlert {
                 })
             );
             this.state.resetDetails();
+            this.setState({
+                sendingTokens: false,
+                totalRecipientsAmounts: 0,
+                isValidRecipientAmountsSet: false,
+                isValidRecipientAddressesSet: false
+            });
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
+            this.setState({
+                sendingTokens: false
+            });
         }
-        this.setState({
-            sendingTokens: false,
-            totalRecipientsAmounts: 0,
-            isValidRecipientAmountsSet: false,
-            isValidRecipientAddressesSet: false
-        });
     }
 
     search () {
