@@ -21,7 +21,7 @@ const settings = merge(baseConfig, {
       automaticNameDelimiter: '~',
       name: true,
       cacheGroups: {
-        "vendors~a-g": {
+        'vendors': {
           test: /[\\/]node_modules[\\/]/i,
           priority: -10,
           chunks: 'all',
