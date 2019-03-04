@@ -267,7 +267,7 @@ export default class Transactions extends Component {
                                             onChange={this.onChange('recipientAmounts', index)}
                                             onKeyUp={this.onChange('recipientAmounts', index)}
                                             onBlur={this.onChange('recipientAmounts', index)}
-                                            style={{width : "85%"}}
+                                            style={{ width : '85%' }}
                                             action={<Button icon color='blue' onClick={this.setMaxValue(index)} title='Send remaining Balance'>
                                                     <Icon name='suitcase'/>
                                                 </Button>}
@@ -301,7 +301,7 @@ export default class Transactions extends Component {
                                         onChange={this.onChange('recipientAmount')}
                                         onKeyUp={this.onChange('recipientAmount')}
                                         onBlur={this.onChange('recipientAmount')}
-                                        style={{width : "85%"}}
+                                        style={{ width : '85%' }}
                                         action={<Button icon color='blue' onClick={this.setMaxValue()} title='Send remaining Balance'>
                                                 <Icon name='suitcase'/>
                                             </Button>}
