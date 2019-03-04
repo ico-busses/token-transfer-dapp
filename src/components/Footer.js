@@ -10,12 +10,12 @@ export default class Footer extends Component {
             <div>
                 <Divider />
                 <Grid columns={2} divided>
-                    <Grid.Column width={2} floated='left' verticalAlign='middle'>
+                    <Grid.Column width={5} floated='left' verticalAlign='middle'>
                         <Header as='h3' >
                             Featured:
                         </Header>
                     </Grid.Column>
-                    <Grid.Column width={14} >
+                    <Grid.Column width={11} >
                         <Grid.Row verticalAlign='middle' style={footerStyle.features_row}>
                             { features.map( featured =>
                                 <Grid.Column key={featured.text} style={footerStyle.features_column}>
