@@ -248,7 +248,7 @@ export default class Transactions extends Component {
                         </Grid>
                         { this.state.recipientAddresses.map( (address, index) =>
                             <Grid columns={3} key={address} style={contentStyle.contentRow}>
-                                <Grid.Column width={9}>
+                                <Grid.Column width={7}>
                                     <Form.Field error={Boolean(address) && !this.props.isValidAddress(address)} >
                                         <Form.Input
                                             placeholder='Address'
@@ -259,7 +259,7 @@ export default class Transactions extends Component {
                                         />
                                     </Form.Field>
                                 </Grid.Column>
-                                <Grid.Column width={6}>
+                                <Grid.Column width={7}>
                                     <Form.Field error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
                                         <Form.Input
                                             placeholder={`${this.props.symbol}s to send`}
@@ -267,13 +267,14 @@ export default class Transactions extends Component {
                                             onChange={this.onChange('recipientAmounts', index)}
                                             onKeyUp={this.onChange('recipientAmounts', index)}
                                             onBlur={this.onChange('recipientAmounts', index)}
+                                            style={{ width : '85%' }}
                                             action={<Button icon color='blue' onClick={this.setMaxValue(index)} title='Send remaining Balance'>
                                                     <Icon name='suitcase'/>
                                                 </Button>}
                                         />
                                     </Form.Field>
                                 </Grid.Column>
-                                <Grid.Column width={1} style={{ paddingLeft: '0' }}>
+                                <Grid.Column width={2} >
                                     <Button icon basic color='red' onClick={this.removeFromArray(index)} title='Remove address'>
                                         <Icon name='delete' style={contentStyle.iconButton}  />
                                     </Button>
@@ -281,7 +282,7 @@ export default class Transactions extends Component {
                             </Grid>
                         )}
                         <Grid columns={3} style={contentStyle.contentRow}>
-                            <Grid.Column width={9}>
+                            <Grid.Column width={7}>
                                 <Form.Field error={Boolean(this.state.recipientAddress) && (!this.props.isValidAddress(this.state.recipientAddress) || this.state.recipientAddresses.includes(this.state.recipientAddress))} >
                                     <Form.Input
                                         placeholder='Address'
@@ -292,7 +293,7 @@ export default class Transactions extends Component {
                                     />
                                 </Form.Field>
                             </Grid.Column>
-                            <Grid.Column width={6}>
+                            <Grid.Column width={7}>
                                 <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
                                     <Form.Input
                                         placeholder={`${this.props.symbol}s to send`}
@@ -300,13 +301,14 @@ export default class Transactions extends Component {
                                         onChange={this.onChange('recipientAmount')}
                                         onKeyUp={this.onChange('recipientAmount')}
                                         onBlur={this.onChange('recipientAmount')}
+                                        style={{ width : '85%' }}
                                         action={<Button icon color='blue' onClick={this.setMaxValue()} title='Send remaining Balance'>
                                                 <Icon name='suitcase'/>
                                             </Button>}
                                     />
                                 </Form.Field>
                             </Grid.Column>
-                            <Grid.Column width={1} style={{ paddingLeft: '0' }}>
+                            <Grid.Column width={2}>
                                 <Button icon basic color='teal' onClick={this.addToArray} title='Add new address'>
                                     <Icon name='plus' style={contentStyle.iconButton}  />
                                 </Button>
