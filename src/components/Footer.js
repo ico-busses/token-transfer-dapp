@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Divider, Grid, Header, Image } from 'semantic-ui-react';
 import { footerStyle } from '../styles';
 import { features } from '../config';
+import '../styles/responsive.css';
 
 export default class Footer extends Component {
 
@@ -10,12 +11,12 @@ export default class Footer extends Component {
             <div>
                 <Divider />
                 <Grid columns={2} divided>
-                    <Grid.Column width={5} floated='left' verticalAlign='middle'>
+                    <Grid.Column className="featured"  floated='left' verticalAlign='middle'>
                         <Header as='h3' >
                             Featured:
                         </Header>
                     </Grid.Column>
-                    <Grid.Column width={11} >
+                    <Grid.Column className="stateOfDaps"  >
                         <Grid.Row verticalAlign='middle' style={footerStyle.features_row}>
                             { features.map( featured =>
                                 <Grid.Column key={featured.text} style={footerStyle.features_column}>
