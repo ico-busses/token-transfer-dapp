@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Divider, Grid, Header, Image } from 'semantic-ui-react';
+import { Divider, Grid, Header } from 'semantic-ui-react';
 import { footerStyle } from '../styles';
 import { features } from '../config';
 import '../styles/responsive.css';
 
 import InfiniteCarousel from 'react-leaf-carousel';
-
 
 export default class Footer extends Component {
 
