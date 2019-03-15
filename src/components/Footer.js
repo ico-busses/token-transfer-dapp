@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Divider, Grid, Header } from 'semantic-ui-react';
+import { Divider, Grid, Header, Image } from 'semantic-ui-react';
 import { footerStyle } from '../styles';
 import { features } from '../config';
 import '../styles/responsive.css';
@@ -44,7 +44,7 @@ export default class Footer extends Component {
                                         },
                                     },
                                 ]}
-                                dots={true}
+                                dots={false}
                                 showSides={true}
                                 sidesOpacity={.5}
                                 sideSize={.1}
@@ -57,7 +57,7 @@ export default class Footer extends Component {
                                 { features.map( featured =>
                                     <div key={featured.text} style={footerStyle.features_column}>
                                         <a target='_blank' title={featured.text} href={`${featured.link}?utm_source=token-transfer-dapp`} rel="noopener noreferrer" style={footerStyle.features}>
-                                            <img
+                                            <Image
                                                 style={footerStyle.features_img} src={featured.image}
                                                />
                                         </a>
