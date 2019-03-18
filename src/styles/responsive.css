@@ -34,3 +34,7 @@
         width: 79.5%!important;
     }
 }
+
+.stateOfDaps li {
+    top: -6px;
+}

@@ -4,6 +4,8 @@ import { footerStyle } from '../styles';
 import { features } from '../config';
 import '../styles/responsive.css';
 
+import InfiniteCarousel from 'react-leaf-carousel';
+
 export default class Footer extends Component {
 
     render() {
@@ -18,14 +20,56 @@ export default class Footer extends Component {
                     </Grid.Column>
                     <Grid.Column className="stateOfDaps"  >
                         <Grid.Row verticalAlign='middle' style={footerStyle.features_row}>
-                            { features.map( featured =>
-                                <Grid.Column key={featured.text} style={footerStyle.features_column}>
-                                    <a target='_blank' title={featured.text} href={`${featured.link}?utm_source=token-transfer-dapp`} rel="noopener noreferrer" style={footerStyle.features}>
-                                        <Image style={footerStyle.features_img} src={featured.image} />
-                                    </a>
-                                </Grid.Column>
+                            <InfiniteCarousel
+                                breakpoints={[
+                                    {
+                                        breakpoint: 350,
+                                        settings: {
+                                            slidesToShow: 1,
+                                            slidesToScroll: 1,
+                                        },
+                                    },
+                                    {
+                                        breakpoint: 500,
+                                        settings: {
+                                            slidesToShow: 2,
+                                            slidesToScroll: 2,
+                                        },
+                                    },
+                                    {
+                                        breakpoint: 768,
+                                        settings: {
+                                            slidesToShow: 3,
+                                            slidesToScroll: 3,
+                                        },
+                                    },
+                                ]}
+                                dots={false}
+                                showSides={true}
+                                sidesOpacity={.5}
+                                sideSize={.1}
+                                slidesToScroll={4}
+                                slidesToShow={4}
+                                scrollOnDevice={true}
+                            >
+
+
+                                { features.map( featured =>
+                                    <div key={featured.text} style={footerStyle.features_column}>
+                                        <a target='_blank' title={featured.text} href={`${featured.link}?utm_source=token-transfer-dapp`} rel="noopener noreferrer" style={footerStyle.features}>
+                                            <Image
+                                                style={footerStyle.features_img} src={featured.image}
+                                               />
+                                        </a>
+                                    </div>
                                 )
-                            }
+                                }
+
+
+
+
+                            </InfiniteCarousel>
+
                         </Grid.Row>
                     </Grid.Column>
                 </Grid>
