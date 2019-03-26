@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import ContractMap from 'eth-contract-metadata';
-import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader, Search } from 'semantic-ui-react';
+import { Button, Card, Dimmer, Divider, Form, Grid, Header, Icon, Image, Label, List, Loader, Search } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 import Transactions from './Transactions';
@@ -14,6 +14,7 @@ export default class Content extends HasAlert {
     constructor(props) {
         super(props);
 
+        this.addTokenToWallet = this.addTokenToWallet.bind(this);
         this.onChange = this.onChange.bind(this);
         this.next = this.next.bind(this);
         this.search = this.search.bind(this);
@@ -105,6 +106,9 @@ export default class Content extends HasAlert {
         return web3Service._web3.utils.isAddress(address);
     }
 
+    async addTokenToWallet () {
+        const { address, symbol, decimals, name } = this.state.contractDetails;
+        const wallet = web3Service.addToWallet({ address, symbol, decimals });
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
         if (!this._mounted || this.state.scouting) {
@@ -326,6 +330,14 @@ export default class Content extends HasAlert {
                                 <List.Item>
                                     <Label pointing='right'>Decimals</Label>
                                         {this.state.contractDetails.decimals}
+                                </List.Item>
+                                <List.Item style={{ textAlign: 'right' }}>
+                                    <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet}>
+                                        <Icon style={{ marginRight: '0.5em'}}>
+                                            <Image src="../image/wallet-solid.svg" />
+                                        </Icon>
+                                        Add Token to Web3 Wallet
+                                    </a>
                                 </List.Item>
                             </List>
                             }
