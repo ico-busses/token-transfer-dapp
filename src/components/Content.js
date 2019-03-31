@@ -106,15 +106,15 @@ export default class Content extends HasAlert {
         return web3Service._web3.utils.isAddress(address);
     }
 
-    async base64ViaFileReader(url, callback) {
+    async base64ViaFileReader(url) {
         return new Promise ((resolve, reject) => {
-            try{
+            try {
                 var xhr = new XMLHttpRequest();
                 xhr.onload = function() {
                   var reader = new FileReader();
                   reader.onloadend = function() {
                     resolve(reader.result);
-                  }
+                  };
                   reader.readAsDataURL(xhr.response);
                 };
                 xhr.open('GET', url);
@@ -135,12 +135,12 @@ export default class Content extends HasAlert {
                 image = `images/contractLogos/${ContractMap[address].logo}`;
                 image = await this.base64ViaFileReader(image);
             }
-    
+
             const tokenDetails = { address, symbol, decimals };
             image ? tokenDetails.image = image : null;
             const addCall = await web3Service.addToWallet(tokenDetails);
 
-            if (Boolean(addCall)) {
+            if (addCall) {
                 this.notify({ msg: `Token added to wallet`, type: 'success', autoClose: true });
             } else {
                 throw `Failed to add Token to wallet`;
@@ -375,7 +375,7 @@ export default class Content extends HasAlert {
                                 </List.Item>
                                 <List.Item style={{ textAlign: 'right' }}>
                                     <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet}>
-                                        <Icon style={{ marginRight: '0.5em'}}>
+                                        <Icon style={{ marginRight: '0.5em' }}>
                                             <Image src="../images/icons/wallet-solid.svg" />
                                         </Icon>
                                         Add Token to Web3 Wallet
