@@ -67,6 +67,11 @@ const settings = {
                 from: 'node_modules/eth-contract-metadata/images',
                 to: 'images/contractLogos',
                 test: /([^/]+)\/(.+)\.(png|jpg|jpeg|gif|svg|ttf|eot)$/
+            },
+            {
+                from: 'src/images/icons',
+                to: 'images/icons',
+                test: /([^/]+)\/(.+)\.(png|jpg|jpeg|gif|svg|ttf|eot)$/
             }
         ])
     ],

@@ -1,0 +1,40 @@
+@media only screen and (max-width: 382px) {
+    .featured{
+        width: 30.5%!important;
+    }
+    .stateOfDaps{
+        width: 66.5%!important;
+    }
+}
+
+
+@media only screen and (min-width: 993px) {
+    .featured{
+        width: 12.5%!important;
+    }
+    .stateOfDaps{
+        width: 87.5%!important;
+    }
+}
+
+@media (min-width: 383px) and (max-width: 470px) {
+    .featured{
+        width: 25.5%!important;
+    }
+    .stateOfDaps{
+        width: 73.5%!important;
+    }
+}
+
+@media (min-width: 471px) and (max-width: 992px){
+    .featured{
+        width: 20.5%!important;
+    }
+    .stateOfDaps{
+        width: 79.5%!important;
+    }
+}
+
+.stateOfDaps li {
+    top: -6px;
+}
