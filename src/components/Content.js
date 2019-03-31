@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import ContractMap from 'eth-contract-metadata';
-import { Header, Divider, Grid, Card, Form, Button, Label, List, Dimmer, Loader, Search } from 'semantic-ui-react';
+import { Button, Card, Dimmer, Divider, Form, Grid, Header, Icon, Image, Label, List, Loader, Search } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 import Transactions from './Transactions';
@@ -14,6 +14,7 @@ export default class Content extends HasAlert {
     constructor(props) {
         super(props);
 
+        this.addTokenToWallet = this.addTokenToWallet.bind(this);
         this.onChange = this.onChange.bind(this);
         this.next = this.next.bind(this);
         this.search = this.search.bind(this);
@@ -103,6 +104,51 @@ export default class Content extends HasAlert {
 
     isValidAddress (address) {
         return web3Service._web3.utils.isAddress(address);
+    }
+
+    async base64ViaFileReader(url) {
+        return new Promise ((resolve, reject) => {
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function() {
+                  var reader = new FileReader();
+                  reader.onloadend = function() {
+                    resolve(reader.result);
+                  };
+                  reader.readAsDataURL(xhr.response);
+                };
+                xhr.open('GET', url);
+                xhr.responseType = 'blob';
+                xhr.send();
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    async addTokenToWallet () {
+        const { address, symbol, decimals } = this.state.contractDetails;
+        let image;
+
+        try {
+            if (ContractMap[address] && ContractMap[address].logo) {
+                image = `images/contractLogos/${ContractMap[address].logo}`;
+                image = await this.base64ViaFileReader(image);
+            }
+
+            const tokenDetails = { address, symbol, decimals };
+            image ? tokenDetails.image = image : null;
+            const addCall = await web3Service.addToWallet(tokenDetails);
+
+            if (addCall) {
+                this.notify({ msg: `Token added to wallet`, type: 'success', autoClose: true });
+            } else {
+                throw `Failed to add Token to wallet`;
+            }
+        } catch (e) {
+            this.notify({ msg: e.message || e, type: 'error', autoClose: true });
+
+        }
     }
 
     async scoutUpdates() {
@@ -326,6 +372,14 @@ export default class Content extends HasAlert {
                                 <List.Item>
                                     <Label pointing='right'>Decimals</Label>
                                         {this.state.contractDetails.decimals}
+                                </List.Item>
+                                <List.Item style={{ textAlign: 'right' }}>
+                                    <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet}>
+                                        <Icon style={{ marginRight: '0.5em' }}>
+                                            <Image src="../images/icons/wallet-solid.svg" />
+                                        </Icon>
+                                        Add Token to Web3 Wallet
+                                    </a>
                                 </List.Item>
                             </List>
                             }

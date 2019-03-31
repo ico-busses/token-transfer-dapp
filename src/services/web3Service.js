@@ -75,6 +75,43 @@ class web3Service {
             return true;
     }
 
+    async addToWallet (options = {}) {
+        const { address, symbol, decimals, image } = options;
+        try {
+            if (!address || !symbol || (!decimals && decimals !== 0)) {
+                throw 'Incorrect Token details';
+            }
+            const rpcRequest = this.craftRpcCall (
+                'wallet_watchAsset',
+            );
+
+            const rpcOptions = { address, symbol, decimals };
+            image ? rpcOptions.image = image : null;
+
+            rpcRequest.params = {
+                type: 'ERC20',
+                options: rpcOptions
+            };
+
+            const send = this.getProviderSend();
+            const rpcCall = await new Promise ((resolve, reject) => {
+                send(
+                    rpcRequest, (err, data) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        resolve (data);
+                });
+            });
+            if (rpcCall.error) {
+                throw rpcCall.error;
+            }
+            return rpcCall.result;
+        } catch (e) {
+            this.emitter.emit('error', e);
+        }
+    }
+
     getProviderSend () {
         const provider =this._web3.givenProvider || this._web3.currentProvider;
         return provider.sendAsync || provider.send;
