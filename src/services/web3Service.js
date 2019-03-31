@@ -232,7 +232,7 @@ class web3Service {
         try {
             const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
             const name = await contract.methods.name().call();
-            return name.valueOf();
+            return name.toString();
         } catch (e) {
             const signature = this.getFunctionSignature(fnSignatures.tokenName);
             const rpcCall = await this.fetchRpcCall(
@@ -252,7 +252,7 @@ class web3Service {
         try {
             const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
             const symbol = await contract.methods.symbol().call();
-            return symbol.valueOf();
+            return symbol.toString();
         } catch (e) {
             const signature = this.getFunctionSignature(fnSignatures.tokenSymbol);
             const rpcCall = await this.fetchRpcCall(
@@ -272,7 +272,7 @@ class web3Service {
         try {
             const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
             const decimals = await contract.methods.decimals().call();
-            return decimals.valueOf();
+            return decimals.toString();
         } catch (e) {
             const signature = this.getFunctionSignature(fnSignatures.tokenDecimals);
             const rpcCall = await this.fetchRpcCall(
@@ -294,7 +294,7 @@ class web3Service {
         }
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
         const balance = await contract.methods.balanceOf(defaultAccount).call();
-        return balance.valueOf();
+        return balance.toString();
     }
 
     async transferTokens(tokenAddress, recipient, amount, { onTransactionHash, onReceipt }) {
@@ -310,11 +310,12 @@ class web3Service {
 
 
             tx.on('error', e => reject(e.message || e));
-            tx.once('receipt', r => onReceipt(r));
+            tx.once('receipt', r => console.log(r) || onReceipt(r));
             tx.once('transactionHash', (hash)=> {
                 onTransactionHash(hash);
                 resolve(hash);
             });
+            // tx.then(r => console.log(r) || onReceipt(r));
         });
     }
 }
