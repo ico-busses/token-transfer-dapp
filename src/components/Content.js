@@ -106,9 +106,51 @@ export default class Content extends HasAlert {
         return web3Service._web3.utils.isAddress(address);
     }
 
+    async base64ViaFileReader(url, callback) {
+        return new Promise ((resolve, reject) => {
+            try{
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function() {
+                  var reader = new FileReader();
+                  reader.onloadend = function() {
+                    resolve(reader.result);
+                  }
+                  reader.readAsDataURL(xhr.response);
+                };
+                xhr.open('GET', url);
+                xhr.responseType = 'blob';
+                xhr.send();
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
     async addTokenToWallet () {
-        const { address, symbol, decimals, name } = this.state.contractDetails;
-        const wallet = web3Service.addToWallet({ address, symbol, decimals });
+        const { address, symbol, decimals } = this.state.contractDetails;
+        let image;
+
+        try {
+            if (ContractMap[address] && ContractMap[address].logo) {
+                image = `images/contractLogos/${ContractMap[address].logo}`;
+                image = await this.base64ViaFileReader(image);
+            }
+    
+            const tokenDetails = { address, symbol, decimals };
+            image ? tokenDetails.image = image : null;
+            const addCall = await web3Service.addToWallet(tokenDetails);
+
+            if (Boolean(addCall)) {
+                this.notify({ msg: `Token added to wallet`, type: 'success', autoClose: true });
+            } else {
+                throw `Failed to add Token to wallet`;
+            }
+        } catch (e) {
+            this.notify({ msg: e.message || e, type: 'error', autoClose: true });
+
+        }
+    }
+
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
         if (!this._mounted || this.state.scouting) {
@@ -334,7 +376,7 @@ export default class Content extends HasAlert {
                                 <List.Item style={{ textAlign: 'right' }}>
                                     <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet}>
                                         <Icon style={{ marginRight: '0.5em'}}>
-                                            <Image src="../image/wallet-solid.svg" />
+                                            <Image src="../images/icons/wallet-solid.svg" />
                                         </Icon>
                                         Add Token to Web3 Wallet
                                     </a>
