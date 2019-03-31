@@ -310,7 +310,7 @@ class web3Service {
 
 
             tx.on('error', e => reject(e.message || e));
-            tx.once('receipt', r => console.log(r) || onReceipt(r));
+            tx.once('receipt', r => onReceipt(r));
             tx.once('transactionHash', (hash)=> {
                 onTransactionHash(hash);
                 resolve(hash);
