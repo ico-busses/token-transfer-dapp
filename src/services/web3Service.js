@@ -312,7 +312,7 @@ class web3Service {
 
             tx.on('error', e => reject(e.message || e));
             tx.once('receipt', r => receiptReceieved ? null : receiptReceieved = true && onReceipt(r));
-            tx.once('confirmation', (c,r) => receiptReceieved ? null : receiptReceieved = true && onReceipt(r))
+            tx.once('confirmation', (c,r) => receiptReceieved ? null : receiptReceieved = true && onReceipt(r));
             tx.once('transactionHash', (hash)=> {
                 onTransactionHash(hash);
                 resolve(hash);
