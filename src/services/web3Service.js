@@ -307,15 +307,16 @@ class web3Service {
         const contract = new _web3.eth.Contract(ERC20, tokenAddress);
         await new Promise((resolve, reject) => {
             const tx = contract.methods.transfer(recipient,amount).send({ from: this.defaultAccount });
+            let receiptReceieved;
 
 
             tx.on('error', e => reject(e.message || e));
-            tx.once('receipt', r => onReceipt(r));
+            tx.once('receipt', r => receiptReceieved ? null : receiptReceieved = true && onReceipt(r));
+            tx.once('confirmation', (c,r) => receiptReceieved ? null : receiptReceieved = true && onReceipt(r))
             tx.once('transactionHash', (hash)=> {
                 onTransactionHash(hash);
                 resolve(hash);
             });
-            // tx.then(r => console.log(r) || onReceipt(r));
         });
     }
 }

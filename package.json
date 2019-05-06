@@ -69,7 +69,7 @@
     "react-router-dom": "^5.0.0",
     "react-toastify": "^5.1.0",
     "semantic-ui-react": "^0.86.0",
-    "web3": "1.0.0-beta.37"
+    "web3": "^1.0.0-beta.54"
   },
   "pre-commit": [
     "lint"
