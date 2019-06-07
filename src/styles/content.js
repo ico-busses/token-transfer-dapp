@@ -26,4 +26,7 @@ export const contentStyle = {
         marginTop: '1.5em',
         marginBottom: '1.5em'
     },
+    yellowBg: {
+        background: '#f9a510'
+    }
 };

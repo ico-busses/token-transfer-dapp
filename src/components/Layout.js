@@ -22,8 +22,10 @@ export default class Layout extends Component {
 
     render () {
         return (
-            <Container style={{ marginTop: '3em' }}>
-                <Header as='h1' dividing >
+            <div>
+            <div style={contentStyle.yellowBg}>
+                <Container style={{ paddingTop: '3em', paddingBottom: '3em' }}>
+                <Header as='h1' dividing  >
                     Token Transfer Dapp
                     <small style={{ fontSize: '55%' }} > (
                         <a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
@@ -39,9 +41,13 @@ export default class Layout extends Component {
                     </a>
                 </Header>
                 <Content {...{ displayAddress: this.showUserAddress }}/>
+                </Container>
+            </div>
+            <Container style={{ marginTop: '3em' }}>
                 <Information/>
                 <Footer/>
             </Container>
+            </div>
         );
     }
 }
