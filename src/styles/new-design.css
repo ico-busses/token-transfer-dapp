@@ -1,5 +1,18 @@
-/*Logo Section*/
+/*LOGO SECTION*/
 .logo-wrapper{
+    color: #ffffff!important;
+}
+
+/*NOTIFICATION SECTION*/
+.alertWrapper{
+    background-color: #266baf!important;
+}
+
+.alertWrapper span{
+    color: #e2dfdf!important;
+}
+
+ .alertWrapper a{
     color: #ffffff!important;
 }
 
