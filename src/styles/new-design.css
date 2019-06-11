@@ -1,0 +1,35 @@
+/*Contract form*/
+.contract-form input{
+    background: transparent!important;
+    margin-bottom: 10px!important;
+    border: 1px solid #ffffff!important;
+    border-radius: 15px!important;
+}
+
+.contract-form input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #ffffff!important;
+}
+.contract-form input::-moz-placeholder { /* Firefox 19+ */
+    color: #ffffff!important;
+}
+.contract-form input:-ms-input-placeholder { /* IE 10+ */
+    color: #ffffff!important;
+}
+.contract-form input:-moz-placeholder { /* Firefox 18- */
+    color: #ffffff!important;
+}
+
+
+.contract-form  i.icon {
+    color: #ffffff!important;
+    line-height: 0.3!important;
+}
+
+
+
+/*ABOUT SECTION*/
+
+.about-section{
+    margin-top: 77px;
+    margin-bottom: 70px;
+}

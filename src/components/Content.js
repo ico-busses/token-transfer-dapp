@@ -7,6 +7,7 @@ import { Button, Card, Dimmer, Divider, Form, Grid, Header, Icon, Image, Label, 
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 import Transactions from './Transactions';
+import '../styles/new-design.css';
 
 const ContractMapAddresses = Object.keys(ContractMap);
 
@@ -322,7 +323,7 @@ export default class Content extends HasAlert {
                         <Grid.Column width={4} style={contentStyle.noBoxShadow}>
                         </Grid.Column>
                         <Grid.Column width={8} verticalAlign='middle' style={contentStyle.noBoxShadow}>
-                            <Form>
+                            <Form className="contract-form">
                                 <Form.Field error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}>
                                     <label></label>
                                     <Form.Input
