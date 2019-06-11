@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Header, Container } from 'semantic-ui-react';
+import { Grid, Header, Container, Message} from 'semantic-ui-react';
 import { web3Service } from '../services';
 import Content from './Content';
 import Information from './Information';
@@ -14,28 +14,50 @@ export default class Layout extends Component {
     }
 
     state = {
-        address: ''
+        address: '',
+        visible: true
     }
 
     showUserAddress (address) {
         this.setState({ address });
     }
+    handleDismiss = () => {
+        this.setState({ visible: false });
+    }
 
     render () {
         return (
             <div>
+              <div>
+                  <Container style={{ paddingTop: '3em', paddingBottom: '3em' }}>
+                      <Grid>
+                          <Grid.Row>
+                              <p>
+                                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                              </p>
+                              <a href="" onClick={this.handleDismiss} >Dismiss</a>
+                          </Grid.Row>
+                      </Grid>
+                  </Container>
+              </div>
             <div style={contentStyle.yellowBg}>
                 <Container style={{ paddingTop: '3em', paddingBottom: '3em' }}>
                 <Header as='h1' dividing  >
-                    Token Transfer Dapp
-                    <small style={{ fontSize: '55%' }} > (
-                        <a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
-                            {this.state.address}
-                        </a>)
-                    </small>
-                    { !web3Service.isWeb3Viewable &&
+                    <Grid columns={2}>
+                    <Grid.Column className="logo-wrapper">
+                        Token Transfer Dapp
+                    </Grid.Column>
+                    <Grid.Column textAlign="right">
+                        <small style={{ fontSize: '55%' }} > (
+                            <a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
+                                {this.state.address}
+                            </a>)
+                        </small>
+                        { !web3Service.isWeb3Viewable &&
                         <small> Loading Network ...</small>
-                    }
+                        }
+                    </Grid.Column>
+                    </Grid>
                 </Header>
                 <Content {...{ displayAddress: this.showUserAddress }}/>
                 </Container>
