@@ -11,14 +11,13 @@ export default class Footer extends Component {
     render() {
         return (
             <div>
-                <Divider />
                 <Grid columns={2} divided>
-                    <Grid.Column className="featured"  floated='left' verticalAlign='middle'>
+                    <Grid.Column className="featured"  floated='left' verticalAlign='middle' >
                         <Header as='h3' >
                             Featured:
                         </Header>
                     </Grid.Column>
-                    <Grid.Column className="stateOfDaps"  >
+                    <Grid.Column className="stateOfDaps" style={footerStyle.noBoxShadow}  >
                         <Grid.Row verticalAlign='middle' style={footerStyle.features_row}>
                             <InfiniteCarousel
                                 breakpoints={[
@@ -80,10 +79,12 @@ export default class Footer extends Component {
                         <b>
                             ETH - 0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
                         </b>
-                    </Grid.Column>
-                    <Grid.Row >
+                        <br/>
                         Powered by :
                         <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer">: ICO BUSSES</a> .
+                    </Grid.Column>
+                    <Grid.Row >
+
                     </Grid.Row>
                 </Grid>
             </div>

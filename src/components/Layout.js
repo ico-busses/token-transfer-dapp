@@ -5,6 +5,7 @@ import Content from './Content';
 import Information from './Information';
 import Footer from './Footer';
 import { contentStyle } from '../styles';
+import '../styles/new-design.css';
 
 export default class Layout extends Component {
     constructor (props) {
@@ -45,8 +46,12 @@ export default class Layout extends Component {
             </div>
             <Container style={{ marginTop: '3em' }}>
                 <Information/>
-                <Footer/>
             </Container>
+             <div className="footer-section">
+                 <Container style={{ marginTop: '3em' }}>
+                 <Footer/>
+                 </Container>
+             </div>
             </div>
         );
     }

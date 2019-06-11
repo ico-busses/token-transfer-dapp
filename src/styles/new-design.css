@@ -1,4 +1,4 @@
-/*Contract form*/
+/*CONTRACT FORM*/
 .contract-form input{
     background: transparent!important;
     margin-bottom: 10px!important;
@@ -32,4 +32,12 @@
 .about-section{
     margin-top: 77px;
     margin-bottom: 70px;
+}
+
+
+/*FOOTER SECTION*/
+.footer-section{
+    background-color: #ffdf9f!important;
+    padding-top: 40px!important;
+    padding-bottom: 40px!important;
 }

@@ -21,6 +21,9 @@ export const footerStyle = {
     features_img: {
         maxWidth: '140px',
         maxHeight: '30px'
+    },
+    noBoxShadow: {
+        boxShadow: 'none'
     }
 
 };
