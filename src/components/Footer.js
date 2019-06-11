@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Divider, Grid, Header, Image } from 'semantic-ui-react';
-import { footerStyle } from '../styles';
+import { Divider, Grid, Header, Icon, Image } from 'semantic-ui-react';
+import { contentStyle, footerStyle } from '../styles';
 import { features } from '../config';
 import '../styles/responsive.css';
 
@@ -14,7 +14,7 @@ export default class Footer extends Component {
                 <Grid columns={2} divided>
                     <Grid.Column className="featured"  floated='left' verticalAlign='middle' >
                         <Header as='h3' >
-                            Featured:
+                            Featured
                         </Header>
                     </Grid.Column>
                     <Grid.Column className="stateOfDaps" style={footerStyle.noBoxShadow}  >
@@ -73,7 +73,7 @@ export default class Footer extends Component {
                     </Grid.Column>
                 </Grid>
                 <Divider />
-                <Grid centered columns={2} style={footerStyle.base} >
+                <Grid columns={2} style={footerStyle.base} >
                     <Grid.Column floated='left' >
                         Contributions ::
                         <b>
@@ -83,9 +83,12 @@ export default class Footer extends Component {
                         Powered by :
                         <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer">: ICO BUSSES</a> .
                     </Grid.Column>
-                    <Grid.Row >
-
-                    </Grid.Row>
+                    <Grid.Column width={16} >
+                        <a href='https://github.com/ico-busses/token-transfer-dapp' style={contentStyle.source} >
+                            Source code
+                            <Icon color='black' size='large' name="github" style={contentStyle.sorceIcon} />
+                        </a>
+                    </Grid.Column>
                 </Grid>
             </div>
         );

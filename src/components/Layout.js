@@ -36,10 +36,6 @@ export default class Layout extends Component {
                     { !web3Service.isWeb3Viewable &&
                         <small> Loading Network ...</small>
                     }
-                    <a href='https://github.com/ico-busses/token-transfer-dapp' style={contentStyle.source} >
-                        Source code
-                    <Icon color='black' size='large' name="github" style={contentStyle.sorceIcon} />
-                    </a>
                 </Header>
                 <Content {...{ displayAddress: this.showUserAddress }}/>
                 </Container>
