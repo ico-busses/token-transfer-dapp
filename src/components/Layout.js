@@ -28,21 +28,23 @@ export default class Layout extends Component {
     render () {
         return (
             <div>
-              <div className="alertWrapper">
-                  <Container style={{ paddingTop: '3em', paddingBottom: '3em' }}>
-                      <Grid columns={2}>
-                          <Grid.Column width={14}>
+                {this.state.visible &&
+                <div className="alertWrapper">
+                    <Container style={{paddingTop: '3em', paddingBottom: '3em'}}>
+                        <Grid columns={2}>
+                            <Grid.Column width={14}>
                               <span>
                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                               </span>
 
-                          </Grid.Column>
-                          <Grid.Column width={2}>
-                              <a href="" onClick={this.handleDismiss}>Dismiss</a>
-                          </Grid.Column>
-                      </Grid>
-                  </Container>
-              </div>
+                            </Grid.Column>
+                            <Grid.Column width={2}>
+                                <a href="" onClick={this.handleDismiss}>Dismiss</a>
+                            </Grid.Column>
+                        </Grid>
+                    </Container>
+                </div>
+            }
             <div style={contentStyle.yellowBg}>
                 <Container style={{ paddingTop: '3em', paddingBottom: '3em' }}>
                 <Header as='h1' dividing  >
