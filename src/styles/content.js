@@ -28,5 +28,15 @@ export const contentStyle = {
     },
     yellowBg: {
         background: '#f9a510'
+    },
+    formSection: {
+        background: 'transparent',
+        boxShadow: 'none'
+    },
+    noBoxShadow: {
+        boxShadow: 'none'
+    },
+    formInput: {
+        background: 'transparent'
     }
 };

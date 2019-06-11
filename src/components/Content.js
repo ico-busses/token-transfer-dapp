@@ -316,10 +316,12 @@ export default class Content extends HasAlert {
 
     render() {
         return (
-            <Card fluid >
+            <Card fluid style={contentStyle.formSection} >
                 <Card.Header style={contentStyle.main}>
                     <Grid stackable divided padded='horizontally'>
-                        <Grid.Column width={8} verticalAlign='middle'>
+                        <Grid.Column width={4} style={contentStyle.noBoxShadow}>
+                        </Grid.Column>
+                        <Grid.Column width={8} verticalAlign='middle' style={contentStyle.noBoxShadow}>
                             <Form>
                                 <Form.Field error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}>
                                     <label></label>
@@ -346,47 +348,53 @@ export default class Content extends HasAlert {
                                 </Form.Field>
                             </Form>
                         </Grid.Column>
-                        <Grid.Column width={8}>
-                            { this.state.fetchingContract &&
-                                <Dimmer active={this.state.fetchingContract} inverted >
-                                    <Loader>Loading</Loader>
-                                </Dimmer>
-                            }
-                            {
-                                this.state.tokenLoaded &&
-                            <List>
-                                <List.Item>
-                                    <Label pointing='right'>Token Address</Label>
-                                        <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel="noopener noreferrer">
-                                            {this.state.tokenAddress}
-                                        </a>
-                                </List.Item>
-                                <List.Item>
-                                    <Label pointing='right'>Name</Label>
-                                        {this.state.contractDetails.name}
-                                </List.Item>
-                                <List.Item>
-                                    <Label pointing='right'>Symbol</Label>
-                                        {this.state.contractDetails.symbol}
-                                </List.Item>
-                                <List.Item>
-                                    <Label pointing='right'>Decimals</Label>
-                                        {this.state.contractDetails.decimals}
-                                </List.Item>
-                                <List.Item style={{ textAlign: 'right' }}>
-                                    <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet}>
-                                        <Icon style={{ marginRight: '0.5em' }}>
-                                            <Image src="../images/icons/wallet-solid.svg" />
-                                        </Icon>
-                                        Add Token to Web3 Wallet
-                                    </a>
-                                </List.Item>
-                            </List>
-                            }
+                        <Grid.Column width={4} style={contentStyle.noBoxShadow}>
                         </Grid.Column>
                     </Grid>
                 </Card.Header>
 
+                <div>
+                    <Grid>
+                        <Grid.Column width={8}>
+                            { this.state.fetchingContract &&
+                            <Dimmer active={this.state.fetchingContract} inverted >
+                                <Loader>Loading</Loader>
+                            </Dimmer>
+                            }
+                            {
+                                this.state.tokenLoaded &&
+                                <List>
+                                    <List.Item>
+                                        <Label pointing='right'>Token Address</Label>
+                                        <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel="noopener noreferrer">
+                                            {this.state.tokenAddress}
+                                        </a>
+                                    </List.Item>
+                                    <List.Item>
+                                        <Label pointing='right'>Name</Label>
+                                        {this.state.contractDetails.name}
+                                    </List.Item>
+                                    <List.Item>
+                                        <Label pointing='right'>Symbol</Label>
+                                        {this.state.contractDetails.symbol}
+                                    </List.Item>
+                                    <List.Item>
+                                        <Label pointing='right'>Decimals</Label>
+                                        {this.state.contractDetails.decimals}
+                                    </List.Item>
+                                    <List.Item style={{ textAlign: 'right' }}>
+                                        <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet}>
+                                            <Icon style={{ marginRight: '0.5em' }}>
+                                                <Image src="../images/icons/wallet-solid.svg" />
+                                            </Icon>
+                                            Add Token to Web3 Wallet
+                                        </a>
+                                    </List.Item>
+                                </List>
+                            }
+                        </Grid.Column>
+                    </Grid>
+                </div>
                 {
                     this.state.tokenLoaded &&
                     <div>
