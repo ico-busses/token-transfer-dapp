@@ -18,11 +18,13 @@
     content: "";
     display: block;
     opacity: 0.4;
-    width: 100%;
+    width: 37%;
     position: absolute;
     height: 100%;
-    left: 61%;
-    top: 50%;
+    left: 53%;
+    top: 116px;
+    z-index: 3;
+
 }
 
 /*NOTIFICATION SECTION*/
