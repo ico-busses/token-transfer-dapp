@@ -47,6 +47,7 @@ export default class Layout extends Component {
             <div  className="header-section">
                 <Container style={{ paddingTop: '2em', paddingBottom: '3em' }}>
                 <Header as='h1' dividing  style={{ paddingBottom: '0.5em' }} >
+
                     <Grid columns={2}>
                     <Grid.Column className="logo-wrapper">
                         <Image src="../images/icons/logo.svg" className="logo"/>Token Transfer Dapp
