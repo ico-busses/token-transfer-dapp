@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Grid, Header, Container, Message, Image} from 'semantic-ui-react';
+import { Grid, Header, Container, Image } from 'semantic-ui-react';
 import { web3Service } from '../services';
 import Content from './Content';
 import Information from './Information';
 import Footer from './Footer';
-import { contentStyle } from '../styles';
 import '../styles/new-design.css';
 
 export default class Layout extends Component {
@@ -30,7 +29,7 @@ export default class Layout extends Component {
             <div>
                 {this.state.visible &&
                 <div className="alertWrapper">
-                    <Container style={{paddingTop: '3em', paddingBottom: '3em'}}>
+                    <Container style={{ paddingTop: '3em', paddingBottom: '3em' }}>
                         <Grid columns={2}>
                             <Grid.Column width={14}>
                               <span>
