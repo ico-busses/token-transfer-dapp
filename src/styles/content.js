@@ -27,7 +27,7 @@ export const contentStyle = {
         marginBottom: '1.5em'
     },
     yellowBg: {
-        background: '#f9a510'
+        backgroundColor: '#f9a510'
     },
     formSection: {
         background: 'transparent',

@@ -3,6 +3,28 @@
     color: #ffffff!important;
 }
 
+.logo{
+    display: inline-block!important;
+    width: 51px;
+    margin-bottom: 8px;
+}
+
+
+/*HEADER SECTION*/
+
+.header-section::before {
+    background-image: url("../images/icons/logo.svg");
+    background-repeat: no-repeat;
+    content: "";
+    display: block;
+    opacity: 0.4;
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    left: 61%;
+    top: 50%;
+}
+
 /*NOTIFICATION SECTION*/
 .alertWrapper{
     background-color: #266baf!important;
