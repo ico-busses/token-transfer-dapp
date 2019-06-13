@@ -12,19 +12,13 @@
 
 /*HEADER SECTION*/
 
-.header-section::before {
-    background-image: url("../images/icons/logo.svg");
-    background-repeat: no-repeat;
-    content: "";
-    display: block;
-    opacity: 0.4;
-    width: 37%;
-    position: absolute;
-    height: 100%;
-    left: 53%;
-    top: 116px;
-    z-index: 3;
+.header-section{
+    background-image: url("../images/icons/background3.png");
+}
 
+
+.dismiss{
+    cursor: pointer;
 }
 
 /*NOTIFICATION SECTION*/

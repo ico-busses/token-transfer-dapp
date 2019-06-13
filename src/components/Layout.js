@@ -39,13 +39,13 @@ export default class Layout extends Component {
 
                             </Grid.Column>
                             <Grid.Column width={2}>
-                                <a href="" onClick={this.handleDismiss}>Dismiss</a>
+                                <a onClick={this.handleDismiss} className="dismiss">Dismiss</a>
                             </Grid.Column>
                         </Grid>
                     </Container>
                 </div>
             }
-            <div style={contentStyle.yellowBg} className="header-section">
+            <div  className="header-section">
                 <Container style={{ paddingTop: '2em', paddingBottom: '3em' }}>
                 <Header as='h1' dividing  style={{paddingBottom: '0.5em' }} >
                     <Grid columns={2}>
