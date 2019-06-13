@@ -3,6 +3,24 @@
     color: #ffffff!important;
 }
 
+.logo{
+    display: inline-block!important;
+    width: 51px;
+    margin-bottom: 8px;
+}
+
+
+/*HEADER SECTION*/
+
+.header-section{
+    background-image: url("../images/icons/background3.png");
+}
+
+
+.dismiss{
+    cursor: pointer;
+}
+
 /*NOTIFICATION SECTION*/
 .alertWrapper{
     background-color: #266baf!important;

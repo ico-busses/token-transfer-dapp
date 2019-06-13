@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Header, Container, Message} from 'semantic-ui-react';
+import { Grid, Header, Container, Message, Image} from 'semantic-ui-react';
 import { web3Service } from '../services';
 import Content from './Content';
 import Information from './Information';
@@ -39,18 +39,18 @@ export default class Layout extends Component {
 
                             </Grid.Column>
                             <Grid.Column width={2}>
-                                <a href="" onClick={this.handleDismiss}>Dismiss</a>
+                                <a onClick={this.handleDismiss} className="dismiss">Dismiss</a>
                             </Grid.Column>
                         </Grid>
                     </Container>
                 </div>
             }
-            <div style={contentStyle.yellowBg}>
-                <Container style={{ paddingTop: '3em', paddingBottom: '3em' }}>
-                <Header as='h1' dividing  >
+            <div  className="header-section">
+                <Container style={{ paddingTop: '2em', paddingBottom: '3em' }}>
+                <Header as='h1' dividing  style={{paddingBottom: '0.5em' }} >
                     <Grid columns={2}>
                     <Grid.Column className="logo-wrapper">
-                        Token Transfer Dapp
+                        <Image src="../images/icons/logo.svg" className="logo"/>Token Transfer Dapp
                     </Grid.Column>
                     <Grid.Column textAlign="right">
                         <small style={{ fontSize: '55%' }} > (
