@@ -12,13 +12,54 @@
 
 /*HEADER SECTION*/
 
-.header-section{
-    background-image: url("../images/icons/background3.png");
+
+
+.header-section {
+    position: relative;
+    background: #f9a510;
+}
+/* You could use :after - it doesn't really matter */
+.header-section:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    right: 0;
+    top: -1px;
+    width: 57%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.2;
+    background-image: url("../images/icons/logo.svg");
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    -ms-background-size: cover;
+    background-size: cover;
+    background-position: right;
 }
 
 
 .dismiss{
     cursor: pointer;
+}
+
+.ui.header {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.ui.dividing.header {
+    border-bottom: 1px solid #ffffff!important;
+}
+
+.ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url]{
+    color: #ffffff!important;
+}
+
+/*META ADDRESS*/
+
+.meta-address-holder{
+    display: inline-block;
+    background-color: #ffffff;
+    padding: 3px 20px;
 }
 
 /*NOTIFICATION SECTION*/

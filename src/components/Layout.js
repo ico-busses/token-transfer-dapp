@@ -5,6 +5,7 @@ import Content from './Content';
 import Information from './Information';
 import Footer from './Footer';
 import '../styles/new-design.css';
+import { contentStyle } from '../styles';
 
 export default class Layout extends Component {
     constructor (props) {
@@ -23,6 +24,7 @@ export default class Layout extends Component {
     handleDismiss = () => {
         this.setState({ visible: false });
     }
+
 
     render () {
         return (
@@ -53,7 +55,7 @@ export default class Layout extends Component {
                         <Image src="../images/icons/logo.svg" className="logo"/>Token Transfer Dapp
                     </Grid.Column>
                     <Grid.Column textAlign="right">
-                        <small style={{ fontSize: '55%' }} > (
+                        <small style={{ fontSize: '55%' }} className="meta-address-holder" > (
                             <a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
                                 {this.state.address}
                             </a>)
