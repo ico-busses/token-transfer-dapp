@@ -31,7 +31,9 @@ export const contentStyle = {
     },
     formSection: {
         background: 'transparent',
-        boxShadow: 'none'
+        boxShadow: 'none',
+        marginTop: '70px',
+        marginBottom: '20px'
     },
     noBoxShadow: {
         boxShadow: 'none'
