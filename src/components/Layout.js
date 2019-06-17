@@ -5,7 +5,6 @@ import Content from './Content';
 import Information from './Information';
 import Footer from './Footer';
 import '../styles/new-design.css';
-import { contentStyle } from '../styles';
 
 export default class Layout extends Component {
     constructor (props) {
