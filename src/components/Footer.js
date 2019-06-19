@@ -72,7 +72,7 @@ export default class Footer extends Component {
                         </Grid.Row>
                     </Grid.Column>
                 </Grid>
-                <Divider />
+                <Divider/>
                 <Grid columns={2} style={footerStyle.base} >
                     <Grid.Column floated='left' >
                         Contributions ::

@@ -48,6 +48,11 @@
 }
 
 .ui.dividing.header {
+    border-bottom: 2px solid #ffffff!important;
+}
+
+.ui.divider:not(.vertical):not(.horizontal) {
+    border-top: 2px solid #ffffff!important;
     border-bottom: 1px solid #ffffff!important;
 }
 
