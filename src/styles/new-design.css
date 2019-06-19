@@ -125,7 +125,14 @@
 .about-header {
     font-size: 2.7em!important;
     font-weight: normal!important;
-    margin-bottom: 33px!important;
+    margin-bottom: 36px!important;
+}
+
+.about-section p{
+    font-size: 1.5em!important;
+    color: #7491A5!important;
+    margin-bottom: 34px!important;
+    line-height: 31px!important;
 }
 
 
