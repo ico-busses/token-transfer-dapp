@@ -7,7 +7,7 @@ export default class Information extends Component {
     render() {
         return (
             <div className="about-section">
-                <Header as='h2'>
+                <Header as='h2' className="about-header">
                     ABOUT THE DAPP
                 </Header>
                 <Grid>
