@@ -1,11 +1,12 @@
 /*LOGO SECTION*/
 .logo-wrapper{
     color: #ffffff!important;
+    font-size: 0.9em;
 }
 
 .logo{
     display: inline-block!important;
-    width: 51px;
+    width: 45px;
     margin-bottom: 8px;
 }
 
