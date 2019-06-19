@@ -1,6 +1,6 @@
 export const footerStyle = {
     base: {
-       fontSize: '0.8em'
+       fontSize: '1em'
     },
     features: {
         maxWidth: '200px',
