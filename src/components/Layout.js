@@ -50,10 +50,10 @@ export default class Layout extends Component {
                 <Header as='h1' dividing  style={{ paddingBottom: '0.5em' }} >
 
                     <Grid columns={2}>
-                    <Grid.Column className="logo-wrapper">
+                    <Grid.Column className="logo-wrapper" width={10}>
                         <Image src="../images/icons/logo.svg" className="logo"/>Token Transfer Dapp
                     </Grid.Column>
-                    <Grid.Column textAlign="right">
+                    <Grid.Column textAlign="right" width={6}>
                         <small style={{ fontSize: '55%' }} className="meta-address-holder" ><a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
                                 {this.state.address}
                             </a>
