@@ -60,6 +60,16 @@
     display: inline-block;
     background-color: #ffffff;
     padding: 3px 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
+
+}
+
+.meta-address-holder > a{
+    color: #33669A!important;
 }
 
 /*NOTIFICATION SECTION*/
