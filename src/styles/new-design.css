@@ -123,6 +123,15 @@
 }
 
 
+/*Container Section*/
+@media only screen and (min-width: 1200px) {
+    .ui.container {
+        width: 1000px!important;
+    }
+}
+
+
+
 /*FOOTER SECTION*/
 .footer-section{
     background-color: #ffdf9f!important;
