@@ -19,7 +19,7 @@
     background: #f9a510;
 }
 /* You could use :after - it doesn't really matter */
-.header-section:before {
+.header-section:after {
     content: ' ';
     display: block;
     position: absolute;
