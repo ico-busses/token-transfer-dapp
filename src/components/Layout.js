@@ -39,7 +39,7 @@ export default class Layout extends Component {
 
                             </Grid.Column>
                             <Grid.Column width={2}>
-                                <a onClick={this.handleDismiss} className="dismiss">Dismiss</a>
+                                <a onClick={this.handleDismiss} className="dismiss">DISMISS</a>
                             </Grid.Column>
                         </Grid>
                     </Container>
