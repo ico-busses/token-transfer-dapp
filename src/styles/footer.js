@@ -23,6 +23,10 @@ export const footerStyle = {
     },
     noBoxShadow: {
         boxShadow: 'none'
+    },
+    footerLink:{
+        color: '#000000',
+        textDecoration: 'underline'
     }
 
 };
