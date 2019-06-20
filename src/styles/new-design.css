@@ -134,7 +134,7 @@
 }
 
 .about-section p{
-    font-size: 1.5em!important;
+    font-size: 1.3em!important;
     color: #7491A5!important;
     margin-bottom: 34px!important;
     line-height: 31px!important;
@@ -148,6 +148,12 @@
     }
 }
 
+
+/*META MASK FORM DETAILS*/
+
+.formDetails{
+    background-color: #FDFEFF;
+}
 
 
 /*FOOTER SECTION*/

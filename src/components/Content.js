@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import ContractMap from 'eth-contract-metadata';
-import { Button, Card, Dimmer, Divider, Form, Grid, Header, Icon, Image, Label, List, Loader, Search } from 'semantic-ui-react';
+import { Button, Card, Dimmer, Divider, Form, Grid, Header, Icon, Image, Label, List, Loader, Search, Container } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 import Transactions from './Transactions';
@@ -318,6 +318,7 @@ export default class Content extends HasAlert {
     render() {
         return (
             <Card fluid style={contentStyle.formSection} >
+                <Container>
                 <Card.Header style={contentStyle.main}>
                     <Grid stackable divided padded='horizontally'>
                         <Grid.Column width={4} style={contentStyle.noBoxShadow}>
@@ -353,7 +354,8 @@ export default class Content extends HasAlert {
                         </Grid.Column>
                     </Grid>
                 </Card.Header>
-
+                </Container>
+                <div className="formDetails">
                 <div>
                     <Grid>
                         <Grid.Column width={8}>
@@ -426,6 +428,7 @@ export default class Content extends HasAlert {
                         </Card.Content>
                     </div>
                 }
+                </div>
                 {super.render()}
             </Card>
         );

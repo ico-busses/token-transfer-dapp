@@ -64,8 +64,8 @@ export default class Layout extends Component {
                     </Grid.Column>
                     </Grid>
                 </Header>
-                <Content {...{ displayAddress: this.showUserAddress }}/>
                 </Container>
+                <Content {...{ displayAddress: this.showUserAddress }}/>
             </div>
             <Container style={{ marginTop: '3em' }}>
                 <Information/>
