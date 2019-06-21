@@ -355,11 +355,8 @@ export default class Content extends HasAlert {
                     </Grid>
                 </Card.Header>
                 </Container>
-<<<<<<< HEAD
                 {
                     this.state.tokenLoaded &&
-=======
->>>>>>> 4d68ab8... designed the first section of the meta mask form details
                 <div className="formDetails">
                     <Container>
                         <div>
@@ -432,7 +429,6 @@ export default class Content extends HasAlert {
                                 </Grid.Column>
                             </Grid>
                         </div>
-<<<<<<< HEAD
 
                            <div>
                                <Form >
@@ -462,38 +458,6 @@ export default class Content extends HasAlert {
 
                     </Container>
                 </div>}
-=======
-                        {
-                            this.state.tokenLoaded &&
-                           <div>
-                               <Form >
-                               <div className="formDetails-section2">
-                                   <Card.Content style={contentStyle.main}>
-                                       <Grid padded centered >
-                                           <Grid.Column width={16}>
-                                                   <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setResetDetails={this.setResetDetails} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
-                                           </Grid.Column>
-                                       </Grid>
-                                   </Card.Content>
-                               </div>
-                               <div className="btn-wrapper2">
-                                   <Grid>
-                                       <Grid.Column width={4}>
-
-                                       </Grid.Column>
-                                       <Grid.Column width={12}>
-                                           <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
-                                               Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
-                                           </Button>
-                                       </Grid.Column>
-                                   </Grid>
-                               </div>
-                           </Form>
-                           </div>
-                        }
-                    </Container>
-                </div>
->>>>>>> 4d68ab8... designed the first section of the meta mask form details
                 {super.render()}
             </Card>
         );
