@@ -355,6 +355,8 @@ export default class Content extends HasAlert {
                     </Grid>
                 </Card.Header>
                 </Container>
+                {
+                    this.state.tokenLoaded &&
                 <div className="formDetails">
                     <Container>
                         <div>
@@ -427,8 +429,7 @@ export default class Content extends HasAlert {
                                 </Grid.Column>
                             </Grid>
                         </div>
-                        {
-                            this.state.tokenLoaded &&
+
                            <div>
                                <Form >
                                <div className="formDetails-section2">
@@ -454,9 +455,9 @@ export default class Content extends HasAlert {
                                </div>
                            </Form>
                            </div>
-                        }
+
                     </Container>
-                </div>
+                </div>}
                 {super.render()}
             </Card>
         );
