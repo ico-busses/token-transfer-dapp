@@ -57,7 +57,7 @@ export default class Footer extends Component {
                                     <div key={featured.text} style={footerStyle.features_column}>
                                         <a target='_blank' title={featured.text} href={`${featured.link}?utm_source=token-transfer-dapp`} rel="noopener noreferrer" style={footerStyle.features}>
                                             <Image
-                                                style={footerStyle.features_img} src={featured.image}
+                                                 src={featured.image}
                                                />
                                         </a>
                                     </div>
