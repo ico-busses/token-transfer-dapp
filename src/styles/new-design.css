@@ -1,11 +1,12 @@
 /*LOGO SECTION*/
 .logo-wrapper{
     color: #ffffff!important;
+    font-size: 0.9em;
 }
 
 .logo{
     display: inline-block!important;
-    width: 51px;
+    width: 45px;
     margin-bottom: 8px;
 }
 
@@ -19,7 +20,7 @@
     background: #f9a510;
 }
 /* You could use :after - it doesn't really matter */
-.header-section:before {
+.header-section:after {
     content: ' ';
     display: block;
     position: absolute;
@@ -47,6 +48,11 @@
 }
 
 .ui.dividing.header {
+    border-bottom: 2px solid #ffffff!important;
+}
+
+.ui.divider:not(.vertical):not(.horizontal) {
+    border-top: 2px solid #ffffff!important;
     border-bottom: 1px solid #ffffff!important;
 }
 
@@ -60,6 +66,16 @@
     display: inline-block;
     background-color: #ffffff;
     padding: 3px 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
+
+}
+
+.meta-address-holder > a{
+    color: #33669A!important;
 }
 
 /*NOTIFICATION SECTION*/
@@ -115,6 +131,140 @@
     margin-bottom: 70px;
 }
 
+.about-header {
+    font-size: 2.7em!important;
+    font-weight: 800!important;
+    margin-bottom: 36px!important;
+}
+
+.about-section p{
+    font-size: 1.3em!important;
+    color: #7491A5!important;
+    margin-bottom: 34px!important;
+    line-height: 31px!important;
+}
+
+
+/*Container Section*/
+@media only screen and (min-width: 1200px) {
+    .ui.container {
+        width: 1000px!important;
+    }
+}
+
+
+/*META MASK FORM DETAILS*/
+
+.formDetails{
+    background-color: #FDFEFF;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+
+
+.formDetails-section1{
+    background-color: #ffffff;
+    padding: 44px 32px;
+    border-radius: 30px;
+    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+}
+
+.btnHolder{
+    padding: 30px;
+    text-align: right;
+}
+
+a.ash{
+    background-color: #7491A5;
+    color: #ffffff;
+    padding: 14px 25px;
+    border-radius: 23px;
+}
+
+.formDetails-section1 .header{
+    color: #000000!important;
+    font-weight: 900!important;
+    font-size: 1.7em!important;
+    margin-bottom: 3px!important;
+}
+
+.formDetails-section1 .description a, .formDetails-section1 .description{
+    color: #ADC5D8!important;
+}
+
+.formDetails-section1 .item{
+    padding-bottom: 15px!important;
+}
+
+.formDetails-section2{
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 44px 32px;
+    border-radius: 30px;
+    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+}
+
+.btn-wrapper2{
+    margin-top: 28px;
+    padding-bottom: 100px;
+
+}
+
+
+.formDetails-section1{
+    background-color: #ffffff;
+    padding: 44px 32px;
+    border-radius: 30px;
+    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+}
+
+.btnHolder{
+    padding: 30px;
+    text-align: right;
+}
+
+a.ash{
+    background-color: #7491A5;
+    color: #ffffff;
+    padding: 14px 25px;
+    border-radius: 23px;
+}
+
+.formDetails-section1 .header{
+    color: #000000!important;
+    font-weight: 900!important;
+    font-size: 1.7em!important;
+    margin-bottom: 3px!important;
+}
+
+.formDetails-section1 .description a, .formDetails-section1 .description{
+    color: #ADC5D8!important;
+}
+
+.formDetails-section1 .item{
+    padding-bottom: 15px!important;
+}
+
+
+.formDetails-section2{
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 44px 32px;
+    border-radius: 30px;
+    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+}
+
+.btn-wrapper2{
+    margin-top: 28px;
+}
 
 /*FOOTER SECTION*/
 .footer-section{

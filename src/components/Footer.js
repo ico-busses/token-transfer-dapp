@@ -57,7 +57,7 @@ export default class Footer extends Component {
                                     <div key={featured.text} style={footerStyle.features_column}>
                                         <a target='_blank' title={featured.text} href={`${featured.link}?utm_source=token-transfer-dapp`} rel="noopener noreferrer" style={footerStyle.features}>
                                             <Image
-                                                style={footerStyle.features_img} src={featured.image}
+                                                 src={featured.image}
                                                />
                                         </a>
                                     </div>
@@ -72,7 +72,7 @@ export default class Footer extends Component {
                         </Grid.Row>
                     </Grid.Column>
                 </Grid>
-                <Divider />
+                <Divider/>
                 <Grid columns={2} style={footerStyle.base} >
                     <Grid.Column floated='left' >
                         Contributions ::
@@ -81,7 +81,7 @@ export default class Footer extends Component {
                         </b>
                         <br/>
                         Powered by :
-                        <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer">: ICO BUSSES</a> .
+                        <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer" style={footerStyle.footerLink}>: ICO BUSSES</a> .
                     </Grid.Column>
                     <Grid.Column width={16} >
                         <a href='https://github.com/ico-busses/token-transfer-dapp' style={contentStyle.source} >

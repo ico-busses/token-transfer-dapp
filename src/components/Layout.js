@@ -39,7 +39,7 @@ export default class Layout extends Component {
 
                             </Grid.Column>
                             <Grid.Column width={2}>
-                                <a onClick={this.handleDismiss} className="dismiss">Dismiss</a>
+                                <a onClick={this.handleDismiss} className="dismiss">DISMISS</a>
                             </Grid.Column>
                         </Grid>
                     </Container>
@@ -50,14 +50,13 @@ export default class Layout extends Component {
                 <Header as='h1' dividing  style={{ paddingBottom: '0.5em' }} >
 
                     <Grid columns={2}>
-                    <Grid.Column className="logo-wrapper">
+                    <Grid.Column className="logo-wrapper" width={10}>
                         <Image src="../images/icons/logo.svg" className="logo"/>Token Transfer Dapp
                     </Grid.Column>
-                    <Grid.Column textAlign="right">
-                        <small style={{ fontSize: '55%' }} className="meta-address-holder" > (
-                            <a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
+                    <Grid.Column textAlign="right" width={6}>
+                        <small style={{ fontSize: '55%' }} className="meta-address-holder" ><a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
                                 {this.state.address}
-                            </a>)
+                            </a>
                         </small>
                         { !web3Service.isWeb3Viewable &&
                         <small> Loading Network ...</small>
@@ -67,7 +66,6 @@ export default class Layout extends Component {
                 </Header>
                 </Container>
                 <Content {...{ displayAddress: this.showUserAddress }}/>
-
             </div>
             <Container style={{ marginTop: '3em' }}>
                 <Information/>
