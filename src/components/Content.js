@@ -3,7 +3,22 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import ContractMap from 'eth-contract-metadata';
-import { Button, Card, Dimmer, Divider, Form, Grid, Header, Icon, Image, Label, List, Loader, Search } from 'semantic-ui-react';
+import {
+    Button,
+    Card,
+    Container,
+    Dimmer,
+    Divider,
+    Form,
+    Grid,
+    Header,
+    Icon,
+    Image,
+    Label,
+    List,
+    Loader,
+    Search
+} from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 import Transactions from './Transactions';
@@ -318,6 +333,7 @@ export default class Content extends HasAlert {
     render() {
         return (
             <Card fluid style={contentStyle.formSection} >
+                <Container>
                 <Card.Header style={contentStyle.main}>
                     <Grid stackable divided padded='horizontally'>
                         <Grid.Column width={4} style={contentStyle.noBoxShadow}>
@@ -353,79 +369,81 @@ export default class Content extends HasAlert {
                         </Grid.Column>
                     </Grid>
                 </Card.Header>
-
-                <div>
-                    <Grid>
-                        <Grid.Column width={8}>
-                            { this.state.fetchingContract &&
-                            <Dimmer active={this.state.fetchingContract} inverted >
-                                <Loader>Loading</Loader>
-                            </Dimmer>
-                            }
-                            {
-                                this.state.tokenLoaded &&
-                                <List>
-                                    <List.Item>
-                                        <Label pointing='right'>Token Address</Label>
-                                        <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel="noopener noreferrer">
-                                            {this.state.tokenAddress}
-                                        </a>
-                                    </List.Item>
-                                    <List.Item>
-                                        <Label pointing='right'>Name</Label>
-                                        {this.state.contractDetails.name}
-                                    </List.Item>
-                                    <List.Item>
-                                        <Label pointing='right'>Symbol</Label>
-                                        {this.state.contractDetails.symbol}
-                                    </List.Item>
-                                    <List.Item>
-                                        <Label pointing='right'>Decimals</Label>
-                                        {this.state.contractDetails.decimals}
-                                    </List.Item>
-                                    <List.Item style={{ textAlign: 'right' }}>
-                                        <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet}>
-                                            <Icon style={{ marginRight: '0.5em' }}>
-                                                <Image src="../images/icons/wallet-solid.svg" />
-                                            </Icon>
-                                            Add Token to Web3 Wallet
-                                        </a>
-                                    </List.Item>
-                                </List>
-                            }
-                        </Grid.Column>
-                    </Grid>
-                </div>
-                {
-                    this.state.tokenLoaded &&
-                    <div>
-                        <Card.Meta >
-                            <Grid rows={1} stackable divided padded='horizontally'>
-                                <Grid.Column width={16}>
-                                    <Divider />
-                                    <Header as='h3' >
-                                        Balance ≅
-                                        {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
-                                    </Header>
-                                </Grid.Column>
-                            </Grid>
-                        </Card.Meta>
-                        <Card.Content style={contentStyle.main}>
-                            <Divider />
-                            <Divider />
-                            <Grid padded centered >
-                                <Grid.Column width={16}>
-                                    <Form >
-                                        <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setResetDetails={this.setResetDetails} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
-                                        <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
-                                            Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
-                                        </Button>
-                                    </Form>
-                                </Grid.Column>
-                            </Grid>
-                        </Card.Content>
-                    </div>
-                }
+            </Container>
+               <div className="formDetails">
+                   <div>
+                       <Grid>
+                           <Grid.Column width={8}>
+                               { this.state.fetchingContract &&
+                               <Dimmer active={this.state.fetchingContract} inverted >
+                                   <Loader>Loading</Loader>
+                               </Dimmer>
+                               }
+                               {
+                                   this.state.tokenLoaded &&
+                                   <List>
+                                       <List.Item>
+                                           <Label pointing='right'>Token Address</Label>
+                                           <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel="noopener noreferrer">
+                                               {this.state.tokenAddress}
+                                           </a>
+                                       </List.Item>
+                                       <List.Item>
+                                           <Label pointing='right'>Name</Label>
+                                           {this.state.contractDetails.name}
+                                       </List.Item>
+                                       <List.Item>
+                                           <Label pointing='right'>Symbol</Label>
+                                           {this.state.contractDetails.symbol}
+                                       </List.Item>
+                                       <List.Item>
+                                           <Label pointing='right'>Decimals</Label>
+                                           {this.state.contractDetails.decimals}
+                                       </List.Item>
+                                       <List.Item style={{ textAlign: 'right' }}>
+                                           <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet}>
+                                               <Icon style={{ marginRight: '0.5em' }}>
+                                                   <Image src="../images/icons/wallet-solid.svg" />
+                                               </Icon>
+                                               Add Token to Web3 Wallet
+                                           </a>
+                                       </List.Item>
+                                   </List>
+                               }
+                           </Grid.Column>
+                       </Grid>
+                   </div>
+                   {
+                       this.state.tokenLoaded &&
+                       <div>
+                           <Card.Meta >
+                               <Grid rows={1} stackable divided padded='horizontally'>
+                                   <Grid.Column width={16}>
+                                       <Divider />
+                                       <Header as='h3' >
+                                           Balance ≅
+                                           {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
+                                       </Header>
+                                   </Grid.Column>
+                               </Grid>
+                           </Card.Meta>
+                           <Card.Content style={contentStyle.main}>
+                               <Divider />
+                               <Divider />
+                               <Grid padded centered >
+                                   <Grid.Column width={16}>
+                                       <Form >
+                                           <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setResetDetails={this.setResetDetails} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
+                                           <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
+                                               Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
+                                           </Button>
+                                       </Form>
+                                   </Grid.Column>
+                               </Grid>
+                           </Card.Content>
+                       </div>
+                   }
+               </div>
                 {super.render()}
             </Card>
         );
