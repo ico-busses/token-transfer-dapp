@@ -465,20 +465,31 @@ export default class Content extends HasAlert {
 =======
                         {
                             this.state.tokenLoaded &&
-                            <div className="formDetails-section2">
-                                <Card.Content style={contentStyle.main}>
-                                    <Grid padded centered >
-                                        <Grid.Column width={16}>
-                                            <Form >
-                                                <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setResetDetails={this.setResetDetails} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
-                                                <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
-                                                    Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
-                                                </Button>
-                                            </Form>
-                                        </Grid.Column>
-                                    </Grid>
-                                </Card.Content>
-                            </div>
+                           <div>
+                               <Form >
+                               <div className="formDetails-section2">
+                                   <Card.Content style={contentStyle.main}>
+                                       <Grid padded centered >
+                                           <Grid.Column width={16}>
+                                                   <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setResetDetails={this.setResetDetails} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
+                                           </Grid.Column>
+                                       </Grid>
+                                   </Card.Content>
+                               </div>
+                               <div className="btn-wrapper2">
+                                   <Grid>
+                                       <Grid.Column width={4}>
+
+                                       </Grid.Column>
+                                       <Grid.Column width={12}>
+                                           <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens} floated='right' inverted color='green' >
+                                               Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
+                                           </Button>
+                                       </Grid.Column>
+                                   </Grid>
+                               </div>
+                           </Form>
+                           </div>
                         }
                     </Container>
                 </div>
