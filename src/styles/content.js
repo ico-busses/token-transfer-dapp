@@ -9,7 +9,7 @@ export const contentStyle = {
     },
     main: {
         marginTop: '3em',
-        marginBottom: '3em'
+        marginBottom: '7em'
     },
     entire: {
         fontSize: '0.86em',
