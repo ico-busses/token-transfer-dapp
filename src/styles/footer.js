@@ -1,6 +1,6 @@
 export const footerStyle = {
     base: {
-       fontSize: '0.8em'
+       fontSize: '1em'
     },
     features: {
         maxWidth: '200px',
@@ -18,9 +18,13 @@ export const footerStyle = {
     features_row: {
         maxHeight: '72px',
     },
-    features_img: {
-        maxWidth: '140px',
-        maxHeight: '30px'
+    noBoxShadow: {
+        boxShadow: 'none'
+    },
+    footerLink:{
+        color: '#000000',
+        textDecoration: 'underline'
     }
+
 
 };

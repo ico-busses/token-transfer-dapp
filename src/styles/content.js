@@ -1,7 +1,7 @@
 export const contentStyle = {
     source: {
         float: 'right',
-        fontSize: '70%',
+        fontSize: '2em',
         color: 'black'
     },
     sorceIcon: {
@@ -9,7 +9,7 @@ export const contentStyle = {
     },
     main: {
         marginTop: '3em',
-        marginBottom: '3em'
+        marginBottom: '7em'
     },
     entire: {
         fontSize: '0.86em',
@@ -26,4 +26,20 @@ export const contentStyle = {
         marginTop: '1.5em',
         marginBottom: '1.5em'
     },
+    yellowBg: {
+        backgroundColor: '#f9a510'
+    },
+    formSection: {
+        background: 'transparent',
+        boxShadow: 'none',
+        marginTop: '22px',
+        marginBottom: '62px'
+    },
+    noBoxShadow: {
+        boxShadow: 'none'
+
+    },
+    formInput: {
+        background: 'transparent'
+    }
 };
