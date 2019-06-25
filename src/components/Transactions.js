@@ -314,23 +314,23 @@ export default class Transactions extends Component {
                 { !this.state.isBatch &&
                     <div>
                         <Form.Field error={Boolean(this.state.recipientAddress) && !this.props.isValidAddress(this.state.recipientAddress)} >
-                            <label>To Address: </label>
                             <Form.Input
                                 placeholder='Address'
                                 value={this.state.recipientAddress}
                                 onChange={this.onChange('recipientAddress')}
                                 onKeyUp={this.onChange('recipientAddress')}
                                 onBlur={this.onChange('recipientAddress')}
+                                size="huge"
                             />
                         </Form.Field>
                         <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
-                            <label>Amount to send</label>
                             <Form.Input
                                 placeholder={`${this.props.symbol}s to send`}
                                 value={this.state.recipientAmount}
                                 onChange={this.onChange('recipientAmount')}
                                 onKeyUp={this.onChange('recipientAmount')}
                                 onBlur={this.onChange('recipientAmount')}
+                                size="huge"
                             />
                             <a onClick={this.setMaxValue()} style={contentStyle.entire} >
                                 Send remaining Balance

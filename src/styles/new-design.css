@@ -212,11 +212,16 @@ a.ash{
 .formDetails-section2{
     margin-top: 20px;
     background-color: #ffffff;
-    padding: 10px 100px;
+    padding: 2px 100px;
     border-radius: 30px;
     -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
     -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
     box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+}
+
+.formDetails-section2 input{
+    border-radius: 50px!important;
+    margin-bottom: 20px!important;
 }
 
 .btn-wrapper2{
@@ -247,6 +252,49 @@ a.ash{
     border-radius: 23px;
 }
 
+.orange{
+background-color: #F9A510!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
+}
+
+.grey{
+    background-color: #ADC5D8!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
+}
+
+.ash{
+    background-color: #7491A5!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
+}
+
+.ui.toggle.checkbox input:focus:checked~.box:before,
+.ui.toggle.checkbox input:focus:checked~label:before {
+    background-color: grey !important;
+}
+
+.ui.toggle.checkbox .box:before, .ui.toggle.checkbox label:before {
+    background-color:#7491A5!important;
+}
+
+.ui.toggle.checkbox input:checked ~ .box:before,
+.ui.toggle.checkbox input:checked ~ label:before {
+    background-color: grey !important;
+}
+
+.ui.toggle.checkbox input:focus~.box:before, .ui.toggle.checkbox input:focus~label:before{
+    background-color:#7491A5!important;
+}
+
+div.toggle{
+    margin-top: 16px;
+}
+
 .formDetails-section1 .header{
     color: #000000!important;
     font-weight: 900!important;
@@ -263,15 +311,6 @@ a.ash{
 }
 
 
-.formDetails-section2{
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 44px 32px;
-    border-radius: 30px;
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-}
 
 .btn-wrapper2{
     margin-top: 28px;

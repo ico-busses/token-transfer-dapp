@@ -446,17 +446,17 @@ export default class Content extends HasAlert {
                                <div className="btn-wrapper2">
                                    <Grid>
                                        <Grid.Column width={4}>
-                                           <Checkbox slider  label='Multiple transfers' />
+                                           <Checkbox toggle  label='Multiple transfers' />
                                        </Grid.Column>
                                        <Grid.Column width={12}  textAlign='right'>
 
-                                           <Button icon color='blue'  title='Send remaining Balance'>
+                                           <Button icon   title='Send remaining Balance' className="ash">
                                                Send remaining Balance
                                            </Button>
-                                           <Button icon basic color='teal'  title='Add new address'>
+                                           <Button icon   title='Add new address' className="grey">
                                               Add new address
                                            </Button>
-                                           <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens}  inverted color='green' >
+                                           <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens}  inverted className="orange" >
                                                Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
                                            </Button>
                                        </Grid.Column>
