@@ -353,6 +353,13 @@ export default class Content extends HasAlert {
                         <Grid.Column width={4} style={contentStyle.noBoxShadow}>
                         </Grid.Column>
                     </Grid>
+                    <Grid >
+                        { this.state.fetchingContract &&
+                        <Dimmer active={this.state.fetchingContract} inverted style={{ marginTop: '5em' }} >
+                            <Loader>Loading</Loader>
+                        </Dimmer>
+                        }
+                    </Grid>
                 </Card.Header>
                 </Container>
                 {
@@ -362,11 +369,6 @@ export default class Content extends HasAlert {
                         <div>
                             <Grid>
                                 <Grid.Column width={16}>
-                                    { this.state.fetchingContract &&
-                                    <Dimmer active={this.state.fetchingContract} inverted >
-                                        <Loader>Loading</Loader>
-                                    </Dimmer>
-                                    }
                                     {
                                         this.state.tokenLoaded &&
                                         <div>

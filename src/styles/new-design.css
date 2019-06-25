@@ -10,6 +10,10 @@
     margin-bottom: 8px;
 }
 
+/*Loader*/
+.ui.inverted.dimmer{
+    background-color: transparent!important;
+}
 
 /*HEADER SECTION*/
 
