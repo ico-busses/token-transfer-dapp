@@ -54,10 +54,14 @@ export default class Layout extends Component {
                         <Image src="../images/icons/logo.svg" className="logo"/>Token Transfer Dapp
                     </Grid.Column>
                     <Grid.Column textAlign="right" width={6}>
-                        <small style={{ fontSize: '55%' }} className="meta-address-holder" ><a href={`${web3Service.explorer}address/${this.state.address}`} target='_blank' rel="noopener noreferrer">
-                                {this.state.address}
-                            </a>
+                        {web3Service.isWeb3Viewable &&
+                        <small style={{fontSize: '55%'}} className="meta-address-holder"><a
+                            href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
+                            rel="noopener noreferrer">
+                            {this.state.address}
+                        </a>
                         </small>
+                        }
                         { !web3Service.isWeb3Viewable &&
                         <small> Loading Network ...</small>
                         }
