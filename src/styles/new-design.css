@@ -10,6 +10,10 @@
     margin-bottom: 8px;
 }
 
+/*Loader*/
+.ui.inverted.dimmer{
+    background-color: transparent!important;
+}
 
 /*HEADER SECTION*/
 
@@ -71,6 +75,7 @@
     text-overflow: ellipsis;
     width: 100%;
     text-align: center;
+    margin-top: 6px;
 
 }
 
@@ -129,6 +134,12 @@
 .about-section{
     margin-top: 117px;
     margin-bottom: 70px;
+}
+
+.about-section a{
+    color: #7491A5;
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 .about-header {
@@ -269,7 +280,7 @@ a.ash{
 /*FOOTER SECTION*/
 .footer-section{
     background-color: #ffdf9f!important;
-    padding-top: 40px!important;
+    padding-top: 5px!important;
     padding-bottom: 40px!important;
 }
 

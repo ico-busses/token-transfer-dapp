@@ -37,6 +37,7 @@ export const contentStyle = {
     },
     noBoxShadow: {
         boxShadow: 'none'
+
     },
     formInput: {
         background: 'transparent'
