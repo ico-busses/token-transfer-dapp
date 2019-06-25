@@ -333,9 +333,6 @@ export default class Transactions extends Component {
                                 onBlur={this.onChange('recipientAmount')}
                                 size="huge"
                             />
-                            <a onClick={this.setMaxValue()} style={contentStyle.entire} >
-                                Send remaining Balance
-                            </a>
                         </Form.Field>
                     </div>
                 }
@@ -347,7 +344,7 @@ export default class Transactions extends Component {
                         </Grid.Column>
                         <Grid.Column width={12}  textAlign='right'>
 
-                            <Button icon   title='Send remaining Balance' className="ash">
+                            <Button icon   title='Send remaining Balance' className="ash" onClick={this.setMaxValue()}>
                                 Send remaining Balance
                             </Button>
                             <Button icon   title='Add new address' className="grey">
