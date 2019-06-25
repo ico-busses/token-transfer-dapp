@@ -9,7 +9,7 @@ export const contentStyle = {
     },
     main: {
         marginTop: '3em',
-        marginBottom: '3em'
+        marginBottom: '7em'
     },
     entire: {
         fontSize: '0.86em',
@@ -32,8 +32,8 @@ export const contentStyle = {
     formSection: {
         background: 'transparent',
         boxShadow: 'none',
-        marginTop: '70px',
-        marginBottom: '20px'
+        marginTop: '22px',
+        marginBottom: '62px'
     },
     noBoxShadow: {
         boxShadow: 'none'

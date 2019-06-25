@@ -227,7 +227,6 @@ export default class Transactions extends Component {
             <div>
                 <Grid.Row>
                     <Grid.Column style={contentStyle.slider}>
-                        <Checkbox slider checked={this.state.isBatch} onChange={this.toggleBatch} label='Multiple transfers' />
                     </Grid.Column>
                 </Grid.Row>
                 { this.state.isBatch &&
@@ -302,16 +301,12 @@ export default class Transactions extends Component {
                                         onKeyUp={this.onChange('recipientAmount')}
                                         onBlur={this.onChange('recipientAmount')}
                                         style={{ width : '85%' }}
-                                        action={<Button icon color='blue' onClick={this.setMaxValue()} title='Send remaining Balance'>
-                                                <Icon name='suitcase'/>
-                                            </Button>}
+                                        /*action={}*/
                                     />
                                 </Form.Field>
                             </Grid.Column>
                             <Grid.Column width={2}>
-                                <Button icon basic color='teal' onClick={this.addToArray} title='Add new address'>
-                                    <Icon name='plus' style={contentStyle.iconButton}  />
-                                </Button>
+
                             </Grid.Column>
                         </Grid>
                     </div>
