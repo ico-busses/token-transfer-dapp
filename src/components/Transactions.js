@@ -225,6 +225,7 @@ export default class Transactions extends Component {
     render () {
         return (
             <div>
+            <div className="formDetails-section2">
                 <Grid.Row>
                     <Grid.Column style={contentStyle.slider}>
                     </Grid.Column>
@@ -338,6 +339,26 @@ export default class Transactions extends Component {
                         </Form.Field>
                     </div>
                 }
+            </div>
+                <div className="btn-wrapper2">
+                    <Grid>
+                        <Grid.Column width={4}>
+                            <Checkbox toggle  label='Multiple transfers' />
+                        </Grid.Column>
+                        <Grid.Column width={12}  textAlign='right'>
+
+                            <Button icon   title='Send remaining Balance' className="ash">
+                                Send remaining Balance
+                            </Button>
+                            <Button icon   title='Add new address' className="grey">
+                                Add new address
+                            </Button>
+                            <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens}  inverted className="orange" >
+                                Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
+                            </Button>
+                        </Grid.Column>
+                    </Grid>
+                </div>
             </div>
         );
     }

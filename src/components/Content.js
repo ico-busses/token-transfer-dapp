@@ -434,7 +434,7 @@ export default class Content extends HasAlert {
 
                            <div>
                                <Form >
-                               <div className="formDetails-section2">
+                               <div >
                                    <Card.Content style={contentStyle.main}>
                                        <Grid padded centered >
                                            <Grid.Column width={16}>
@@ -443,25 +443,7 @@ export default class Content extends HasAlert {
                                        </Grid>
                                    </Card.Content>
                                </div>
-                               <div className="btn-wrapper2">
-                                   <Grid>
-                                       <Grid.Column width={4}>
-                                           <Checkbox toggle  label='Multiple transfers' />
-                                       </Grid.Column>
-                                       <Grid.Column width={12}  textAlign='right'>
 
-                                           <Button icon   title='Send remaining Balance' className="ash">
-                                               Send remaining Balance
-                                           </Button>
-                                           <Button icon   title='Add new address' className="grey">
-                                              Add new address
-                                           </Button>
-                                           <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens}  inverted className="orange" >
-                                               Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
-                                           </Button>
-                                       </Grid.Column>
-                                   </Grid>
-                               </div>
                            </Form>
                            </div>
 
