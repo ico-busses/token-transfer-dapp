@@ -60,9 +60,7 @@
     border-bottom: 1px solid #ffffff!important;
 }
 
-.ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url]{
-    color: #ffffff!important;
-}
+
 
 /*META ADDRESS*/
 
@@ -120,6 +118,13 @@
 
 .error > .ui > input{
     background: #f44e4e!important;
+    border: 1px solid #f44e4e!important;
+}
+
+.success > .ui > input{
+    background: #ffffff!important;
+    border: 1px solid #ffffff!important;
+    color: #000000!important;
 }
 
 

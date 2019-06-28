@@ -48,7 +48,9 @@ export default class Content extends HasAlert {
         totalRecipientsAmounts: 0,
         isValidRecipientAmountsSet: false,
         isValidRecipientAddressesSet: false,
-        fetchingContractError:false
+        fetchingContractError:false,
+        contractBgColor:'',
+        searchBgColor:''
     }
 
     get isValidTokenAddressSet (){
@@ -302,6 +304,11 @@ export default class Content extends HasAlert {
 
     onChange = (property) => (event) => {
         const { target } = event;
+        if (target.id == 'contract' && this.state.fetchingContractError != true){
+            this.setState({ contractBgColor: 'success' });
+        } else if (target.id == 'search' && this.state.fetchingContractError != true){
+            this.setState({ searchBgColor: 'success' });
+        }
         this.setState({ [property]: target.value });
     }
 
@@ -339,6 +346,8 @@ export default class Content extends HasAlert {
                                         onKeyUp={this.next}
                                         onBlur={this.next}
                                         error={Boolean(this.state.fetchingContractError)}
+                                        className={this.state.fetchingContractError ? 'error' : this.state.contractBgColor}
+                                        id="contract"
                                     />
                                     <Search
                                         loading={this.state.searchingPreloaded}
@@ -350,7 +359,8 @@ export default class Content extends HasAlert {
                                         onKeyUp={this.search}
                                         onBlur={this.search}
                                         fluid
-                                        className={this.state.fetchingContractError ? 'error' : ''}
+                                        className={this.state.fetchingContractError ? 'error' : this.state.searchBgColor}
+                                        id="search"
                                     />
                                 </Form.Field>
                             </Form>
