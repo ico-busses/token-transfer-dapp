@@ -48,6 +48,9 @@ export default class Content extends HasAlert {
         totalRecipientsAmounts: 0,
         isValidRecipientAmountsSet: false,
         isValidRecipientAddressesSet: false,
+        fetchingContractError:false,
+        contractBgColor:'',
+        searchBgColor:''
     }
 
     get isValidTokenAddressSet (){
@@ -196,8 +199,10 @@ export default class Content extends HasAlert {
             this.notify({ msg: 'Token contract details loaded', type: 'success' });
 
             this.setState({ contractDetails: details, tokenLoaded: true });
+            this.setState({ fetchingContractError: false });
             this.next();
         } catch (e) {
+            this.setState({ fetchingContractError: true });
             this.notify({ msg: `Error fetching token contract details: ${e.message || e}` });
         }
         this.setState({ fetchingContract: false });
@@ -299,6 +304,11 @@ export default class Content extends HasAlert {
 
     onChange = (property) => (event) => {
         const { target } = event;
+        if (target.id == 'contract' && this.state.fetchingContractError != true){
+            this.setState({ contractBgColor: 'success' });
+        } else if (target.id == 'search' && this.state.fetchingContractError != true){
+            this.setState({ searchBgColor: 'success' });
+        }
         this.setState({ [property]: target.value });
     }
 
@@ -335,6 +345,9 @@ export default class Content extends HasAlert {
                                         onChange={this.onChange('tokenAddress')}
                                         onKeyUp={this.next}
                                         onBlur={this.next}
+                                        error={Boolean(this.state.fetchingContractError)}
+                                        className={this.state.fetchingContractError ? 'error' : this.state.contractBgColor}
+                                        id="contract"
                                     />
                                     <Search
                                         loading={this.state.searchingPreloaded}
@@ -346,6 +359,8 @@ export default class Content extends HasAlert {
                                         onKeyUp={this.search}
                                         onBlur={this.search}
                                         fluid
+                                        className={this.state.fetchingContractError ? 'error' : this.state.searchBgColor}
+                                        id="search"
                                     />
                                 </Form.Field>
                             </Form>
