@@ -60,7 +60,9 @@
     border-bottom: 1px solid #ffffff!important;
 }
 
-
+.ui.search>.results {
+    top: 30px!important;
+}
 
 /*META ADDRESS*/
 
@@ -131,6 +133,10 @@
 .contract-form  i.icon {
     color: #ffffff!important;
     line-height: 0.3!important;
+}
+
+.success > .ui > #search{
+  border-radius: 15px 15px 0px 0px!important;
 }
 
 
