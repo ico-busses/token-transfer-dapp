@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import ContractMap from 'eth-contract-metadata';
-import {Button, Card, Dimmer, Form, Grid, List, Loader, Search, Container, Icon, Checkbox} from 'semantic-ui-react';
+import { Card, Dimmer, Form, Grid, List, Loader, Search, Container } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 import Transactions from './Transactions';
