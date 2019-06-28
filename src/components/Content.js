@@ -335,6 +335,7 @@ export default class Content extends HasAlert {
                                         onChange={this.onChange('tokenAddress')}
                                         onKeyUp={this.next}
                                         onBlur={this.next}
+                                        error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}
                                     />
                                     <Search
                                         loading={this.state.searchingPreloaded}
@@ -346,6 +347,7 @@ export default class Content extends HasAlert {
                                         onKeyUp={this.search}
                                         onBlur={this.search}
                                         fluid
+                                        error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}
                                     />
                                 </Form.Field>
                             </Form>

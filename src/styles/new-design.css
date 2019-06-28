@@ -118,6 +118,11 @@
 }
 
 
+.error > .ui > input{
+    background: #f44e4e!important;
+}
+
+
 .contract-form  i.icon {
     color: #ffffff!important;
     line-height: 0.3!important;
