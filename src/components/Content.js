@@ -48,6 +48,7 @@ export default class Content extends HasAlert {
         totalRecipientsAmounts: 0,
         isValidRecipientAmountsSet: false,
         isValidRecipientAddressesSet: false,
+        fetchingContractError:false
     }
 
     get isValidTokenAddressSet (){
@@ -196,8 +197,10 @@ export default class Content extends HasAlert {
             this.notify({ msg: 'Token contract details loaded', type: 'success' });
 
             this.setState({ contractDetails: details, tokenLoaded: true });
+            this.setState({ fetchingContractError: false });
             this.next();
         } catch (e) {
+            this.setState({ fetchingContractError: true });
             this.notify({ msg: `Error fetching token contract details: ${e.message || e}` });
         }
         this.setState({ fetchingContract: false });
@@ -335,7 +338,7 @@ export default class Content extends HasAlert {
                                         onChange={this.onChange('tokenAddress')}
                                         onKeyUp={this.next}
                                         onBlur={this.next}
-                                        error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}
+                                        error={Boolean(this.state.fetchingContractError)}
                                     />
                                     <Search
                                         loading={this.state.searchingPreloaded}
@@ -347,7 +350,7 @@ export default class Content extends HasAlert {
                                         onKeyUp={this.search}
                                         onBlur={this.search}
                                         fluid
-                                        error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}
+                                        className={this.state.fetchingContractError ? 'error' : ''}
                                     />
                                 </Form.Field>
                             </Form>
