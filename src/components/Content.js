@@ -464,7 +464,6 @@ export default class Content extends HasAlert {
 
                     </Container>
                 </div>}
-
                 {super.render()}
             </Card>
         );
