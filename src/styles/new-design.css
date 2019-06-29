@@ -17,12 +17,18 @@
 
 /*HEADER SECTION*/
 
-
+.header-section, .header-section-mobile {
+    position: relative;
+}
 
 .header-section {
-    position: relative;
     background: #f9a510;
 }
+
+.header-section-mobile {
+    background: white;
+}
+
 /* You could use :after - it doesn't really matter */
 .header-section:after {
     content: ' ';
@@ -34,7 +40,7 @@
     height: 100%;
     z-index: 1;
     opacity: 0.2;
-    background-image: url("../images/icons/logo.svg");
+    background-image: url("../images/icons/logo-white.svg");
     background-repeat: no-repeat;
     background-position: 50% 0;
     -ms-background-size: cover;
@@ -67,6 +73,29 @@
 /*META ADDRESS*/
 
 .meta-address-holder{
+    display: inline-block;
+    padding: 3px 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
+}
+
+.meta-address-holder{
+    display: inline-block;
+    background-color: #ffffff;
+    padding: 3px 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
+    margin-top: 6px;
+
+}
+
+.meta-address-holder-mobile{
     display: inline-block;
     background-color: #ffffff;
     padding: 3px 20px;
