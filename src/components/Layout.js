@@ -9,6 +9,13 @@ import Footer from './Footer';
 import '../styles/new-design.css';
 import '../styles/layout.css';
 
+const mobilePadding = {
+    paddingLeft: '7%',
+    paddingRight: '7%' 
+};
+
+const appName = 'Token Transfer DApp';
+
 export default class Layout extends Component {
     constructor (props) {
         super(props);
@@ -31,84 +38,84 @@ export default class Layout extends Component {
 
     render () {
         return (
-            <div>
-                {this.state.visible &&
-                <div className="alertWrapper">
-                    <Container style={{ paddingTop: '3em', paddingBottom: '3em' }}>
-                        <Grid columns={call2Action.columns || 2}>
-                            <Grid.Column width={14}>
-                              <span>
-                                  {call2Action.message}
-                              </span>
+            <div className={this.props.isMobile ? 'mobile' : ''} >
+                {call2Action.message && this.state.visible &&
+                    <div className="alertWrapper">
+                        <Container style={this.props.isMobile ? { paddingTop: '1em', paddingBottom: '1em' } : { paddingTop: '2em', paddingBottom: '2em' }}>
+                            <Grid columns={call2Action.columns || 2}>
+                                <Grid.Column width={14}>
+                                <span>
+                                    {call2Action.message}
+                                </span>
+                                </Grid.Column>
+                                <Grid.Column width={2} verticalAlign="middle">
+                                    { this.props.isMobile ?
+                                        <Button icon='close' basic className="white" onClick={this.handleDismiss}/> :
+                                        <a onClick={this.handleDismiss} className="dismiss">DISMISS</a>
+                                    }
+                                </Grid.Column>
+                            </Grid>
+                        </Container>
+                    </div>
+                }
+                <div  className="header-section">
+                    <Container style={{ paddingTop: '2em', paddingBottom: this.props.isMobile ? '0' : '3em', width: '100%'}}>
+                        { this.props.isMobile ?
+                            <Header as='h1' style={{ paddingBottom: '0.5em', margin: 0 }} >
+                                <Grid rows={2}>
+                                    <Grid.Row className="logo-wrapper mobile" style={Object.assign({ paddingTop: '0.5em', paddingBottom: '0.1em', margin: '0'}, mobilePadding)}>
+                                        <Grid.Column verticalAlign="middle">
+                                            <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row textAlign="right" width={6} >
+                                        {web3Service.isWeb3Viewable &&
+                                            <small style={{ fontSize: '55%' }} className="meta-address-holder">
+                                                <a
+                                                    href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
+                                                    rel="noopener noreferrer">
+                                                    {this.state.address}
+                                                </a>
+                                            </small>
+                                        }
+                                    </Grid.Row>
+                                </Grid>
+                            </Header> :
+                            <Header as='h1' dividing  style={{ paddingBottom: '0.5em' }} >
 
-                            </Grid.Column>
-                            <Grid.Column width={2} verticalAlign="middle">
-                                { this.props.isMobile ?
-                                    <Button icon='close' basic color="white" onClick={this.handleDismiss}/> :
-                                    <a onClick={this.handleDismiss} className="dismiss">DISMISS</a>
-                                }
-                            </Grid.Column>
-                        </Grid>
+                                <Grid columns={2}>
+                                    <Grid.Column className="logo-wrapper" width={10} style={{color: "reset"}}>
+                                        <Image src="../images/icons/logo-white.svg" className="logo"/> {appName}
+                                    </Grid.Column>
+                                    <Grid.Column textAlign="right" width={6}>
+                                        {web3Service.isWeb3Viewable &&
+                                        <small style={{ fontSize: '55%' }} className="meta-address-holder"><a
+                                            href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
+                                            rel="noopener noreferrer">
+                                            {this.state.address}
+                                        </a>
+                                        </small>
+                                        }
+                                        { !web3Service.isWeb3Viewable &&
+                                        <small> Loading Network ...</small>
+                                        }
+                                    </Grid.Column>
+                                </Grid>
+                            </Header>
+                        }
+                    </Container>
+                    <div style={this.props.isMobile ? mobilePadding : {}}>
+                        <Content isMobile={this.props.isMobile} {...{ displayAddress: this.showUserAddress }}/>
+                    </div>
+                </div>
+                <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>
+                    <Information/>
+                </Container>
+                <div className="footer-section">
+                    <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>
+                        <Footer/>
                     </Container>
                 </div>
-            }
-            <div  className={this.props.isMobile ? "header-section-mobile" : "header-section"}>
-                <Container style={{ paddingTop: '2em', paddingBottom: '3em' }}>
-                    { this.props.isMobile ?
-                        <Header as='h1' style={{ paddingBottom: '0.5em' }} >
-
-                            <Grid rows={2}>
-                                <Grid.Row className="logo-wrapper">
-                                    <Image src="../images/icons/logo-colored.svg" className="logo"/>Token Transfer DApp
-                                </Grid.Row>
-                                <Grid.Row textAlign="right" width={6}>
-                                    {web3Service.isWeb3Viewable &&
-                                    <small style={{ fontSize: '55%' }} className="meta-address-holder-mobile"><a
-                                        href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
-                                        rel="noopener noreferrer">
-                                        {this.state.address}
-                                    </a>
-                                    </small>
-                                    }
-                                    { !web3Service.isWeb3Viewable &&
-                                    <small> Loading Network ...</small>
-                                    }
-                                </Grid.Row>
-                            </Grid>
-                        </Header> :
-                        <Header as='h1' dividing  style={{ paddingBottom: '0.5em' }} >
-
-                            <Grid columns={2}>
-                                <Grid.Column className="logo-wrapper" width={10} style={{color: "reset"}}>
-                                    <Image src="../images/icons/logo-white.svg" className="logo"/>Token Transfer DApp
-                                </Grid.Column>
-                                <Grid.Column textAlign="right" width={6}>
-                                    {web3Service.isWeb3Viewable &&
-                                    <small style={{ fontSize: '55%' }} className="meta-address-holder"><a
-                                        href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
-                                        rel="noopener noreferrer">
-                                        {this.state.address}
-                                    </a>
-                                    </small>
-                                    }
-                                    { !web3Service.isWeb3Viewable &&
-                                    <small> Loading Network ...</small>
-                                    }
-                                </Grid.Column>
-                            </Grid>
-                        </Header>
-                    }
-                </Container>
-                <Content {...{ displayAddress: this.showUserAddress }}/>
-            </div>
-            <Container style={{ marginTop: '3em' }}>
-                <Information/>
-            </Container>
-             <div className="footer-section">
-                 <Container style={{ marginTop: '3em' }}>
-                 <Footer/>
-                 </Container>
-             </div>
             </div>
         );
     }

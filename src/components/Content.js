@@ -321,9 +321,11 @@ export default class Content extends HasAlert {
                 <Container>
                 <Card.Header style={contentStyle.main}>
                     <Grid stackable divided padded='horizontally'>
-                        <Grid.Column width={4} style={contentStyle.noBoxShadow}>
-                        </Grid.Column>
-                        <Grid.Column width={8} verticalAlign='middle' style={contentStyle.noBoxShadow}>
+                        { !this.props.isMobile &&
+                            <Grid.Column width={4} style={contentStyle.noBoxShadow}>
+                            </Grid.Column>
+                        }
+                        <Grid.Column width={this.props.isMobile ? 16 : 8} verticalAlign='middle' style={contentStyle.noBoxShadow}>
                             <Form className="contract-form">
                                 <Form.Field error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}>
                                     <label></label>
@@ -350,8 +352,10 @@ export default class Content extends HasAlert {
                                 </Form.Field>
                             </Form>
                         </Grid.Column>
-                        <Grid.Column width={4} style={contentStyle.noBoxShadow}>
-                        </Grid.Column>
+                        { !this.props.isMobile &&
+                            <Grid.Column width={4} style={contentStyle.noBoxShadow}>
+                            </Grid.Column>
+                        }
                     </Grid>
                     <Grid >
                         { this.state.fetchingContract &&
@@ -467,5 +471,6 @@ export default class Content extends HasAlert {
 }
 
 Content.propTypes = {
-    displayAddress: PropTypes.any
+    displayAddress: PropTypes.any,
+    isMobile: PropTypes.bool.isRequired
 };

@@ -1,14 +1,26 @@
 /*LOGO SECTION*/
+.logo{
+    display: inline-block!important;
+    width: 45px;
+    margin: 0 0 8px;
+}
+
+.mobile .logo{
+    width: 75px;
+    margin-bottom: 17px;
+}
+
 .logo-wrapper{
     color: #ffffff!important;
     font-size: 0.9em;
 }
-
-.logo{
-    display: inline-block!important;
-    width: 45px;
-    margin-bottom: 8px;
+.mobile .logo-wrapper{
+    color: black!important;
+    font-size: 1.2em;
+    font-weight: 900;
 }
+
+
 
 /*Loader*/
 .ui.inverted.dimmer{
@@ -25,7 +37,7 @@
     background: #f9a510;
 }
 
-.header-section-mobile {
+.mobile .header-section {
     background: white;
 }
 
@@ -68,48 +80,41 @@
 
 .ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url]{
     color: #ffffff!important;
+    font-weight: 700;
+    letter-spacing: 0.2;
+}
+
+.mobile .ui.form input:not([type]), .mobile .ui.form input[type=date], .mobile .ui.form input[type=datetime-local], .mobile .ui.form input[type=email], .mobile .ui.form input[type=file], .mobile .ui.form input[type=number], .mobile .ui.form input[type=password], .ui.form input[type=search], .mobile .ui.form input[type=tel], .mobile .ui.form input[type=text], .mobile .ui.form input[type=time], .mobile .ui.form input[type=url]{
+    color: black !important;
 }
 
 /*META ADDRESS*/
 
-.meta-address-holder{
+.meta-address-holder {
     display: inline-block;
-    padding: 3px 20px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
     text-align: center;
-}
-
-.meta-address-holder{
-    display: inline-block;
     background-color: #ffffff;
     padding: 3px 20px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    text-align: center;
     margin-top: 6px;
-
 }
 
-.meta-address-holder-mobile{
-    display: inline-block;
-    background-color: #ffffff;
-    padding: 3px 20px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    text-align: center;
-    margin-top: 6px;
-
+.mobile .meta-address-holder{
+    background: #266baf;
+    padding: 0;
+    margin-top: 0;
 }
 
 .meta-address-holder > a{
     color: #33669A!important;
+}
+
+.mobile .meta-address-holder > a{
+    color: white !important;
+    text-decoration: underline;
 }
 
 /*NOTIFICATION SECTION*/
@@ -129,21 +134,40 @@
 .contract-form input{
     background: transparent!important;
     margin-bottom: 10px!important;
-    border: 1px solid #ffffff!important;
-    border-radius: 15px!important;
+    border: 2px solid #ffffff!important;
+    border-radius: 35px !important;
+    line-height: 2.5em !important;
+    margin-bottom: 15px !important;
+    padding: 7px 25px !important;
+    font-size: 1.2em !important
+}
+.mobile .contract-form input{
+    border: 2px solid #cecece !important;
 }
 
 .contract-form input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: #ffffff!important;
 }
+.mobile .contract-form input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #cecece !important;
+}
 .contract-form input::-moz-placeholder { /* Firefox 19+ */
     color: #ffffff!important;
+}
+.mobile .contract-form input::-moz-placeholder {
+    color: #cecece !important;
 }
 .contract-form input:-ms-input-placeholder { /* IE 10+ */
     color: #ffffff!important;
 }
+.mobile .contract-form input:-ms-input-placeholder {
+    color: #cecece !important;
+}
 .contract-form input:-moz-placeholder { /* Firefox 18- */
     color: #ffffff!important;
+}
+.mobile .contract-form input:-moz-placeholder {
+    color: #cecece !important;
 }
 
 

@@ -28,12 +28,12 @@ export default class Home extends Component {
     }
 
     get isMobile () {
-        return this.state.screenWidth <= 696;
+        return this.state.screenWidth <= 780;
     }
 
     render () {
         return (
-            <Layout isMobile={this.isMobile}/>
+            <Layout isMobile={this.isMobile} />
         );
     }
 }
