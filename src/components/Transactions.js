@@ -225,9 +225,9 @@ export default class Transactions extends Component {
     render () {
         return (
             <div>
+            <div className="formDetails-section2">
                 <Grid.Row>
                     <Grid.Column style={contentStyle.slider}>
-                        <Checkbox slider checked={this.state.isBatch} onChange={this.toggleBatch} label='Multiple transfers' />
                     </Grid.Column>
                 </Grid.Row>
                 { this.state.isBatch &&
@@ -302,16 +302,12 @@ export default class Transactions extends Component {
                                         onKeyUp={this.onChange('recipientAmount')}
                                         onBlur={this.onChange('recipientAmount')}
                                         style={{ width : '85%' }}
-                                        action={<Button icon color='blue' onClick={this.setMaxValue()} title='Send remaining Balance'>
-                                                <Icon name='suitcase'/>
-                                            </Button>}
+                                        /*action={}*/
                                     />
                                 </Form.Field>
                             </Grid.Column>
                             <Grid.Column width={2}>
-                                <Button icon basic color='teal' onClick={this.addToArray} title='Add new address'>
-                                    <Icon name='plus' style={contentStyle.iconButton}  />
-                                </Button>
+
                             </Grid.Column>
                         </Grid>
                     </div>
@@ -319,30 +315,47 @@ export default class Transactions extends Component {
                 { !this.state.isBatch &&
                     <div>
                         <Form.Field error={Boolean(this.state.recipientAddress) && !this.props.isValidAddress(this.state.recipientAddress)} >
-                            <label>To Address: </label>
                             <Form.Input
                                 placeholder='Address'
                                 value={this.state.recipientAddress}
                                 onChange={this.onChange('recipientAddress')}
                                 onKeyUp={this.onChange('recipientAddress')}
                                 onBlur={this.onChange('recipientAddress')}
+                                size="huge"
                             />
                         </Form.Field>
                         <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
-                            <label>Amount to send</label>
                             <Form.Input
                                 placeholder={`${this.props.symbol}s to send`}
                                 value={this.state.recipientAmount}
                                 onChange={this.onChange('recipientAmount')}
                                 onKeyUp={this.onChange('recipientAmount')}
                                 onBlur={this.onChange('recipientAmount')}
+                                size="huge"
                             />
-                            <a onClick={this.setMaxValue()} style={contentStyle.entire} >
-                                Send remaining Balance
-                            </a>
                         </Form.Field>
                     </div>
                 }
+            </div>
+                <div className="btn-wrapper2">
+                    <Grid>
+                        <Grid.Column width={4}>
+                            <Checkbox toggle  label='Multiple transfers' />
+                        </Grid.Column>
+                        <Grid.Column width={12}  textAlign='right'>
+
+                            <Button icon   title='Send remaining Balance' className="ash" onClick={this.setMaxValue()}>
+                                Send remaining Balance
+                            </Button>
+                            <Button icon   title='Add new address' className="grey">
+                                Add new address
+                            </Button>
+                            <Button onClick={this.transferTokens} disabled={this.state.sendingTokens || !this.canSend} loading={this.state.sendingTokens}  inverted className="orange" >
+                                Transfer {Boolean(Number(this.state.totalRecipientsAmounts)) && `${this.state.totalRecipientsAmounts} ${this.state.contractDetails.symbol}(s)`}
+                            </Button>
+                        </Grid.Column>
+                    </Grid>
+                </div>
             </div>
         );
     }

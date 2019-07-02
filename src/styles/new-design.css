@@ -60,8 +60,8 @@
     border-bottom: 1px solid #ffffff!important;
 }
 
-.ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url]{
-    color: #ffffff!important;
+.ui.search>.results {
+    top: 30px!important;
 }
 
 /*META ADDRESS*/
@@ -117,13 +117,36 @@
     color: #ffffff!important;
 }
 
+.error > .ui > input{
+    background: #f44e4e!important;
+    border: 1px solid #f44e4e!important;
+}
+
+.success > .ui > input{
+    background: #ffffff!important;
+    border: 1px solid #ffffff!important;
+    color: #000000!important;
+}
 
 .contract-form  i.icon {
     color: #ffffff!important;
     line-height: 0.3!important;
 }
 
+.success > .ui > #search{
+  border-radius: 15px 15px 0px 0px!important;
+}
 
+
+.success > .ui > #search{
+  border-radius: 15px 15px 0px 0px!important;
+}
+
+
+/*Form Detail Section*/
+.formDetails{
+    background-color: #ffffff;
+}
 
 /*ABOUT SECTION*/
 
@@ -208,11 +231,17 @@ a.ash{
 .formDetails-section2{
     margin-top: 20px;
     background-color: #ffffff;
-    padding: 44px 32px;
+    padding: 38px 100px 54px 100px;
     border-radius: 30px;
     -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
     -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
     box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+}
+
+
+.formDetails-section2 input{
+    border-radius: 50px!important;
+    margin-bottom: 20px!important;
 }
 
 .btn-wrapper2{
@@ -243,6 +272,50 @@ a.ash{
     border-radius: 23px;
 }
 
+
+.orange{
+background-color: #F9A510!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
+}
+
+.grey{
+    background-color: #ADC5D8!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
+}
+
+.ash{
+    background-color: #7491A5!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
+}
+
+.ui.toggle.checkbox input:focus:checked~.box:before,
+.ui.toggle.checkbox input:focus:checked~label:before {
+    background-color: grey !important;
+}
+
+.ui.toggle.checkbox .box:before, .ui.toggle.checkbox label:before {
+    background-color:#7491A5!important;
+}
+
+.ui.toggle.checkbox input:checked ~ .box:before,
+.ui.toggle.checkbox input:checked ~ label:before {
+    background-color: grey !important;
+}
+
+.ui.toggle.checkbox input:focus~.box:before, .ui.toggle.checkbox input:focus~label:before{
+    background-color:#7491A5!important;
+}
+
+div.toggle{
+    margin-top: 16px;
+}
+
 .formDetails-section1 .header{
     color: #000000!important;
     font-weight: 900!important;
@@ -256,17 +329,6 @@ a.ash{
 
 .formDetails-section1 .item{
     padding-bottom: 15px!important;
-}
-
-
-.formDetails-section2{
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 44px 32px;
-    border-radius: 30px;
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
 }
 
 .btn-wrapper2{
