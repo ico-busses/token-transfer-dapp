@@ -317,7 +317,9 @@ export default class Content extends HasAlert {
 
     render() {
         return (
-            <Card fluid style={contentStyle.formSection} >
+            <Card fluid style={Object.assign({}, contentStyle.formSection, this.props.isMobile ? {
+                paddingTop: '48px',
+                paddingBottom: '48px'} : {}) } >
                 <Container>
                 <Card.Header style={contentStyle.main}>
                     <Grid stackable divided padded='horizontally'>

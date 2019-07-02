@@ -78,6 +78,11 @@
     border-bottom: 1px solid #ffffff!important;
 }
 
+.mobile .about-section .ui.divider {
+    border-top: 3px solid #f9a510 !important;
+    border-bottom: none !important;
+}
+
 .ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url]{
     color: #ffffff!important;
     font-weight: 700;
@@ -181,8 +186,13 @@
 /*ABOUT SECTION*/
 
 .about-section{
-    margin-top: 117px;
+    margin-top: 48px;
     margin-bottom: 70px;
+}
+
+.mobile .about-section{
+    margin-top: 0;
+    margin-bottom: 48px;
 }
 
 .about-section a{

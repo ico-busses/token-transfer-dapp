@@ -109,7 +109,7 @@ export default class Layout extends Component {
                     </div>
                 </div>
                 <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>
-                    <Information/>
+                    <Information isMobile={this.props.isMobile} />
                 </Container>
                 <div className="footer-section">
                     <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {  Grid, Header } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { Divider, Grid, Header } from 'semantic-ui-react';
 import '../styles/new-design.css';
 
 export default class Information extends Component {
@@ -7,6 +8,9 @@ export default class Information extends Component {
     render() {
         return (
             <div className="about-section">
+                { this.props.isMobile &&
+                    <Divider />
+                }
                 <Header as='h2' className="about-header">
                     ABOUT THE DAPP
                 </Header>
@@ -39,3 +43,7 @@ export default class Information extends Component {
         );
     }
 }
+
+Information.propTypes = {
+    isMobile: PropTypes.bool.isRequired
+};
