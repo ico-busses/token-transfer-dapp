@@ -10,15 +10,14 @@
     margin-bottom: 8px;
 }
 
-/*Loader*/
-.ui.inverted.dimmer{
-    background-color: transparent!important;
-}
-
 /*HEADER SECTION*/
 
 .header-section {
-    background: url("../images/icons/logo-white-transparent.svg") top -100px right / 65% 150% no-repeat #f9a510;
+    background: url("../images/icons/logo-white-transparent.svg") top -230px right / 65% 230% no-repeat #f9a510;
+}
+
+.header-section.tokenLoaded {
+    background: url("../images/icons/logo-white-transparent.svg") top -260px right / 930px 1200px no-repeat #f9a510;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -26,8 +25,11 @@
         position: relative;
         background: url("../images/icons/logo-white-transparent.svg") top -130px right / 63% 160% no-repeat #f9a510;
     }
-}
 
+    .header-section.tokenLoaded {
+        background: url("../images/icons/logo-white-transparent.svg") top -240px right / 630px 1000px no-repeat #f9a510;
+    }
+}
 
 .dismiss{
     cursor: pointer;
@@ -51,6 +53,10 @@
 }
 
 /*META ADDRESS*/
+
+.ui.form .field {
+    margin-bottom: 0px;
+}
 
 .meta-address-holder{
     display: inline-block;
@@ -183,16 +189,43 @@
 
 /*META MASK FORM DETAILS*/
 
+.mt-0 {
+    margin-top: 0px !important;
+}
+
+.mb-0 {
+    margin-bottom: 0px !important;
+}
+
+.mt-24 {
+    margin-top: 24px !important;
+}
+
+.mb-24 {
+    margin-bottom: 24px !important;
+}
+
+.mt-48 {
+    margin-top: 48px !important;
+}
+
+.mb-48 {
+    margin-bottom: 48px !important;
+}
+
+.mr-12 {
+    margin-right: 12px !important;
+}
+
 .formDetails{
     background-color: #FDFEFF;
     padding-top: 30px;
     padding-bottom: 80px;
 }
 
-
-.formDetails-section1{
+.card.board {
     background-color: #ffffff;
-    padding: 44px 32px;
+    padding: 48px 48px;
     border-radius: 30px;
     -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
     -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
@@ -204,40 +237,38 @@
     text-align: right;
 }
 
-a.ash{
+a.ash, button.ash {
     background-color: #7491A5;
     color: #ffffff;
     padding: 14px 25px;
     border-radius: 23px;
 }
 
-.formDetails-section1 .header{
+.formDetails button, .formDetails .ui.button{
+    padding: 15px 30px !important;
+    line-height: 1.1em;
+}
+
+.formDetails button.wide-button.ui.button {
+    padding: 15px 45px !important;
+}
+
+.formDetails .item{
+    padding-bottom: 15px!important;
+}
+
+.formDetails .item .header{
     color: #000000!important;
     font-weight: 900!important;
     font-size: 1.7em!important;
     margin-bottom: 3px!important;
 }
 
-.formDetails-section1 .description a, .formDetails-section1 .description{
+.formDetails .item .description a, .formDetails .item .description{
     color: #ADC5D8!important;
 }
 
-.formDetails-section1 .item{
-    padding-bottom: 15px!important;
-}
-
-.formDetails-section2{
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 38px 100px 54px 100px;
-    border-radius: 30px;
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-}
-
-
-.formDetails-section2 input{
+.formDetails input{
     border-radius: 50px!important;
     margin-bottom: 20px!important;
 }
@@ -248,34 +279,27 @@ a.ash{
 
 }
 
-
-.formDetails-section1{
-    background-color: #ffffff;
-    padding: 44px 32px;
-    border-radius: 30px;
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-}
-
 .btnHolder{
     padding: 30px;
     text-align: right;
 }
 
-a.ash{
-    background-color: #7491A5;
-    color: #ffffff;
-    padding: 14px 25px;
-    border-radius: 23px;
-}
-
-
-.orange{
-background-color: #F9A510!important;
+.ash{
+    background-color: #7491A5!important;
     color: #ffffff!important;
     padding: 14px 25px!important;
     border-radius: 23px!important;
+}
+
+.transfer{
+    background-color: #F9A510!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
+}
+
+.transfer:hover {
+    background-color: rgb(245, 155, 0)!important;
 }
 
 .grey{
@@ -285,11 +309,43 @@ background-color: #F9A510!important;
     border-radius: 23px!important;
 }
 
-.ash{
-    background-color: #7491A5!important;
-    color: #ffffff!important;
-    padding: 14px 25px!important;
-    border-radius: 23px!important;
+div.ui.toggle.checkbox {
+    margin-top: 5px;
+}
+
+.ui.toggle.checkbox input {
+    width: 5rem;
+    height: 2.5rem;
+}
+
+.ui.toggle.checkbox label {
+    width: 50px;
+    min-height: 2.5rem;
+    padding-left: 6rem;
+}
+
+.ui.toggle.checkbox label:before {
+    width: 5rem;
+    height: 2.5rem;
+}
+
+.ui.toggle.checkbox label:after {
+    width: 2.3rem;
+    height: 2.3rem;
+    left: 0.2rem;
+    top: 0.1rem;
+}
+
+.ui.toggle.checkbox input~.box:after, .ui.toggle.checkbox input~label:after {
+    left: 0.2rem;
+}
+
+.ui.toggle.checkbox.checked label:after {
+    left: 2.52rem;
+}
+
+.ui.toggle.checkbox input:checked~.box:after, .ui.toggle.checkbox input:checked~label:after {
+    left: 2.52rem;
 }
 
 .ui.toggle.checkbox input:focus:checked~.box:before,
@@ -310,27 +366,8 @@ background-color: #F9A510!important;
     background-color:#7491A5!important;
 }
 
-div.toggle{
-    margin-top: 16px;
-}
-
-.formDetails-section1 .header{
-    color: #000000!important;
-    font-weight: 900!important;
-    font-size: 1.7em!important;
-    margin-bottom: 3px!important;
-}
-
-.formDetails-section1 .description a, .formDetails-section1 .description{
-    color: #ADC5D8!important;
-}
-
-.formDetails-section1 .item{
-    padding-bottom: 15px!important;
-}
-
-.btn-wrapper2{
-    margin-top: 28px;
+.ui .delete-button {
+    position: absolute;
 }
 
 /*FOOTER SECTION*/

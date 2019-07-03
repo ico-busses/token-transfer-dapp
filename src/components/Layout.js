@@ -52,7 +52,7 @@ export default class Layout extends Component {
                         </Container>
                     </div>
                 }
-                <div  className="header-section">
+                <div  className={`header-section ${this.state.tokenLoaded ? 'tokenLoaded' : ''}`}>
                     <Container style={{ paddingTop: '2em', paddingBottom: '3em' }}>
                         <Header as='h1' dividing className='white-bordered'  style={{ paddingBottom: '0.5em' }} >
                             <Grid columns={2}>

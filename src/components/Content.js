@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import ContractMap from 'eth-contract-metadata';
-import { Card, Dimmer, Form, Grid, List, Loader, Search, Container } from 'semantic-ui-react';
+import { Button, Card, Form, Grid, List, Loader, Search, Container } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
 import Transactions from './Transactions';
@@ -106,7 +106,7 @@ export default class Content extends HasAlert {
     }
 
     clearTokenAddress () {
-        this.setState({ tokenAddress: '' });
+        this.setState({ tokenAddress: '' }, () => this.next());
     }
 
     isValidAddress (address) {
@@ -206,7 +206,7 @@ export default class Content extends HasAlert {
             this.notify({ msg: 'Token contract details loaded', type: 'success' });
 
             this.setState({ contractDetails: details, tokenLoaded: true }, () => {
-                this.setLayoutTokenLoaded()
+                this.setLayoutTokenLoaded();
             });
             this.next();
         } catch (e) {
@@ -333,18 +333,18 @@ export default class Content extends HasAlert {
     render() {
         const iconProp = {};
         if (this.state.tokenAddress) {
-            iconProp.icon = { name: 'close', onClick: this.clearTokenAddress };
+            iconProp.icon = { name: 'close', style: { cursor: 'pointer', pointerEvents: 'auto' }, onClick: this.clearTokenAddress };
         }
 
         return (
-            <Card fluid style={Object.assign({}, contentStyle.formSection, this.state.tokenLoaded ? {paddingBottom: 0} : {})} >
+            <Card fluid style={Object.assign({}, contentStyle.formSection, this.state.tokenLoaded ? { paddingBottom: 0 } : {})} >
                 <Container>
                     <Card.Header style={contentStyle.main}>
-                        <Grid stackable divided padded='horizontally'>
+                        <Grid stackable divided padded='horizontally' className={this.state.tokenLoaded ? 'mb-24' : ''}>
                             <Grid.Column width={4} style={contentStyle.noBoxShadow}>
                             </Grid.Column>
                             <Grid.Column width={8} verticalAlign='middle' style={contentStyle.noBoxShadow}>
-                                <Form className="contract-form">
+                                <Form className='contract-form'>
                                     <Form.Field error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}>
                                         <label></label>
                                         <Form.Input
@@ -379,100 +379,110 @@ export default class Content extends HasAlert {
                         </Grid>
                         <Grid >
                             { this.state.fetchingContract &&
-                            <Dimmer active={this.state.fetchingContract} inverted style={{ marginTop: '5em' }} >
-                                <Loader>Loading</Loader>
-                            </Dimmer>
+                                <div style={{ position: 'relative', margin: '6em auto 3em' }} >
+                                    <Loader active={this.state.fetchingContract} size='massive' ></Loader>
+                                </div>
                             }
                         </Grid>
                     </Card.Header>
                 </Container>
                 {
                     this.state.tokenLoaded &&
-                <div className="formDetails">
-                    <Container>
-                        <div>
-                            <Grid>
-                                <Grid.Column width={16}>
-                                    {
-                                        this.state.tokenLoaded &&
-                                        <div>
-                                       <div className="formDetails-section1">
-                                           <List divided relaxed>
-                                               <List.Item>
-                                                   <List.Content>
-                                                       <List.Header as='h2'>Token Address</List.Header>
-                                                       <List.Description as='p'>
-                                                           <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel="noopener noreferrer">
-                                                           {this.state.tokenAddress}
-                                                       </a></List.Description>
-                                                   </List.Content>
-                                               </List.Item>
-                                               <List.Item>
-                                                   <List.Content>
-                                                       <Grid>
-                                                           <Grid.Column width={8}>
-                                                               <List.Header as='h2'>Name</List.Header>
-                                                               <List.Description as='p'>
-                                                                   {this.state.contractDetails.name}
-                                                               </List.Description>
-                                                           </Grid.Column>
-                                                           <Grid.Column width={8}>
-                                                               <List.Header as='h2'>Decimals</List.Header>
-                                                               <List.Description as='p'>
-                                                                   {this.state.contractDetails.decimals}
-                                                               </List.Description>
-                                                           </Grid.Column>
-                                                       </Grid>
-                                                   </List.Content>
-                                               </List.Item>
-                                               <List.Item>
-                                                   <List.Content>
-                                                       <Grid>
-                                                           <Grid.Column width={8}>
-                                                               <List.Header as='h2'>Symbol</List.Header>
-                                                               <List.Description as='p'>
-                                                                   {this.state.contractDetails.symbol}
-                                                               </List.Description>
-                                                           </Grid.Column>
-                                                           <Grid.Column width={8}>
-                                                               <List.Header as='h2'>Balance(approx.)</List.Header>
-                                                               <List.Description as='p'>
-                                                                   {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
-                                                               </List.Description>
-                                                           </Grid.Column>
-                                                       </Grid>
-                                                   </List.Content>
-                                               </List.Item>
-                                           </List>
-                                       </div>
-                                            <div className="btnHolder">
-                                                <a style={{ lineHeight: '2em' }} onClick={this.addTokenToWallet} className="ash">
-                                                    Add Token to Web3 Wallet
-                                                </a>
-                                            </div>
+                        <div className='formDetails'>
+                            <Container>
+                                <div>
+                                    <Grid>
+                                        <Grid.Column width={16}>
+                                            {
+                                                this.state.tokenLoaded &&
+                                                    <div>
+                                                        <Card fluid className='board mt-24 mb-0'>
+                                                            <List divided relaxed>
+                                                                <List.Item>
+                                                                    <List.Content>
+                                                                        <List.Header as='h2'>Token Address</List.Header>
+                                                                        <List.Description as='p'>
+                                                                            <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel='noopener noreferrer'>
+                                                                            {this.state.tokenAddress}
+                                                                        </a></List.Description>
+                                                                    </List.Content>
+                                                                </List.Item>
+                                                                <List.Item>
+                                                                    <List.Content>
+                                                                        <Grid>
+                                                                            <Grid.Column width={8}>
+                                                                                <List.Header as='h2'>Name</List.Header>
+                                                                                <List.Description as='p'>
+                                                                                    {this.state.contractDetails.name}
+                                                                                </List.Description>
+                                                                            </Grid.Column>
+                                                                            <Grid.Column width={8}>
+                                                                                <List.Header as='h2'>Decimals</List.Header>
+                                                                                <List.Description as='p'>
+                                                                                    {this.state.contractDetails.decimals}
+                                                                                </List.Description>
+                                                                            </Grid.Column>
+                                                                        </Grid>
+                                                                    </List.Content>
+                                                                </List.Item>
+                                                                <List.Item>
+                                                                    <List.Content>
+                                                                        <Grid>
+                                                                            <Grid.Column width={8}>
+                                                                                <List.Header as='h2'>Symbol</List.Header>
+                                                                                <List.Description as='p'>
+                                                                                    {this.state.contractDetails.symbol}
+                                                                                </List.Description>
+                                                                            </Grid.Column>
+                                                                            <Grid.Column width={8}>
+                                                                                <List.Header as='h2'>Balance(approx.)</List.Header>
+                                                                                <List.Description as='p'>
+                                                                                    {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
+                                                                                </List.Description>
+                                                                            </Grid.Column>
+                                                                        </Grid>
+                                                                    </List.Content>
+                                                                </List.Item>
+                                                            </List>
+                                                        </Card>
+                                                        <div className='btnHolder'>
+                                                            <Button className='ash wide-button' onClick={this.addTokenToWallet}>
+                                                                Add Token to Web3 Wallet
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                            }
+                                        </Grid.Column>
+                                    </Grid>
+                                </div>
+                                <div>
+                                    <Form >
+                                        <div >
+                                            <Grid style={contentStyle.main} >
+                                                <Grid.Column width={16}>
+                                                        <Transactions
+                                                            balance={this.state.userBalance || '0'}
+                                                            symbol={this.state.contractDetails.symbol}
+                                                            isValidAddress={this.isValidAddress}
+                                                            parseTokenAmount={this.parseTokenAmount}
+                                                            updateTotalAmount={this.updateTotalAmount}
+                                                            setResetDetails={this.setResetDetails}
+                                                            setTransferDetailsFetcher={this.setTransferDetailsFetcher}
+                                                            setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
+                                                            setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
+                                                            canSend={this.canSend}
+                                                            sendingTokens={this.state.sendingTokens}
+                                                            transferTokens={this.transferTokens}
+                                                            totalRecipientsAmounts={this.state.totalRecipientsAmounts}
+                                                        />
+                                                </Grid.Column>
+                                            </Grid>
                                         </div>
-                                    }
-                                </Grid.Column>
-                            </Grid>
-                        </div>
-
-                           <div>
-                               <Form >
-                               <div >
-                                   <Card.Content style={contentStyle.main}>
-                                       <Grid padded centered >
-                                           <Grid.Column width={16}>
-                                                   <Transactions balance={this.state.userBalance || '0'} symbol={this.state.contractDetails.symbol} isValidAddress={this.isValidAddress} parseTokenAmount={this.parseTokenAmount} updateTotalAmount={this.updateTotalAmount} setResetDetails={this.setResetDetails} setTransferDetailsFetcher={this.setTransferDetailsFetcher} setValidRecipientAddressesSet={this.setValidRecipientAddressesSet} setValidRecipientAmountsSet={this.setValidRecipientAmountsSet} />
-                                           </Grid.Column>
-                                       </Grid>
-                                   </Card.Content>
-                               </div>
-
-                           </Form>
-                           </div>
-
-                    </Container>
-                </div>}
+                                    </Form>
+                                </div>
+                        </Container>
+                    </div>
+                }
                 {super.render()}
             </Card>
         );
