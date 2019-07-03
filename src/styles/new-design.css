@@ -17,21 +17,25 @@
 
 /*HEADER SECTION*/
 
-
-
 .header-section {
-    position: relative;
-    background: #f9a510;
+    background: url("../images/icons/logo-white-transparent.svg") top -100px right / 65% 150% no-repeat #f9a510;
+}
+
+@media only screen and (max-width: 1200px) {
+    .header-section {
+        position: relative;
+        background: url("../images/icons/logo-white-transparent.svg") top -130px right / 63% 160% no-repeat #f9a510;
+    }
 }
 /* You could use :after - it doesn't really matter */
-.header-section:after {
+/* .header-section:after {
     content: ' ';
     display: block;
     position: absolute;
     right: 0;
     top: -1px;
     width: 57%;
-    height: 100%;
+    height: 100%;84px
     z-index: 1;
     opacity: 0.2;
     background-image: url("../images/icons/logo.svg");
@@ -40,7 +44,7 @@
     -ms-background-size: cover;
     background-size: cover;
     background-position: right;
-}
+} */
 
 
 .dismiss{
@@ -51,11 +55,11 @@
     font-family: 'Roboto', sans-serif !important;
 }
 
-.ui.dividing.header {
+.white-bordered.ui.dividing.header {
     border-bottom: 2px solid #ffffff!important;
 }
 
-.ui.divider:not(.vertical):not(.horizontal) {
+.white-bordered-double.ui.divider {
     border-top: 2px solid #ffffff!important;
     border-bottom: 1px solid #ffffff!important;
 }
@@ -178,7 +182,19 @@
 /*Container Section*/
 @media only screen and (min-width: 1200px) {
     .ui.container {
-        width: 1000px!important;
+        width: 1140px !important;
+    }
+    .mobile .ui.container {
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .ui.container {
+        width: 95%!important;
+    }
+    .mobile .ui.container {
+        width: 100% !important;
     }
 }
 
