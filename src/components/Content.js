@@ -369,7 +369,7 @@ export default class Content extends HasAlert {
                                             onKeyUp={this.search}
                                             onBlur={this.search}
                                             fluid
-                                            className={`${(this.state.tokenAddress && this.isValidTokenAddressSet) || (this.state.searchToken && this.state.searchToken.length > 0) ? 'white-background' : ''} ${(this.state.tokenAddress && !this.isValidTokenAddressSet) ? 'error' : ''}`}
+                                            className={`${this.state.searchToken && this.state.searchToken.length > 0 ? 'white-background' : ''} ${(this.state.tokenAddress && !this.isValidTokenAddressSet) ? 'error' : ''}`}
                                         />
                                     </Form.Field>
                                 </Form>

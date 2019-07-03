@@ -1,4 +1,12 @@
 export const footerStyle = {
+    source: {
+        float: 'right',
+        fontSize: '2em',
+        color: 'black'
+    },
+    sorceIcon: {
+        marginLeft: '0.2em'
+    },
     base: {
        fontSize: '1em'
     },

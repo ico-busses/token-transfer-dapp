@@ -1,12 +1,4 @@
 export const contentStyle = {
-    source: {
-        float: 'right',
-        fontSize: '2em',
-        color: 'black'
-    },
-    sorceIcon: {
-        marginLeft: '0.2em'
-    },
     main: {
     },
     entire: {
