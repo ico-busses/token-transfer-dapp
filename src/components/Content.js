@@ -22,7 +22,9 @@ export default class Content extends HasAlert {
         this.searchSelected = this.searchSelected.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
         this.parseTokenAmount = this.parseTokenAmount.bind(this);
+        this.clearTokenAddress = this.clearTokenAddress.bind(this);
         this.updateTotalAmount = this.updateTotalAmount.bind(this);
+        this.setLayoutTokenLoaded = this.setLayoutTokenLoaded.bind(this);
         this.setResetDetails = this.setResetDetails.bind(this);
         this.setTransferDetailsFetcher= this.setTransferDetailsFetcher.bind(this);
         this.setValidRecipientAddressesSet = this.setValidRecipientAddressesSet.bind(this);
@@ -48,9 +50,6 @@ export default class Content extends HasAlert {
         totalRecipientsAmounts: 0,
         isValidRecipientAmountsSet: false,
         isValidRecipientAddressesSet: false,
-        fetchingContractError:false,
-        contractBgColor:'',
-        searchBgColor:''
     }
 
     get isValidTokenAddressSet (){
@@ -106,8 +105,16 @@ export default class Content extends HasAlert {
         }
     }
 
+    clearTokenAddress () {
+        this.setState({ tokenAddress: '' });
+    }
+
     isValidAddress (address) {
         return web3Service._web3.utils.isAddress(address);
+    }
+
+    setLayoutTokenLoaded () {
+        this.props.tokenLoadedFunc(this.state.tokenLoaded);
     }
 
     async base64ViaFileReader(url) {
@@ -198,11 +205,11 @@ export default class Content extends HasAlert {
             await this.getTokenBalance();
             this.notify({ msg: 'Token contract details loaded', type: 'success' });
 
-            this.setState({ contractDetails: details, tokenLoaded: true });
-            this.setState({ fetchingContractError: false });
+            this.setState({ contractDetails: details, tokenLoaded: true }, () => {
+                this.setLayoutTokenLoaded()
+            });
             this.next();
         } catch (e) {
-            this.setState({ fetchingContractError: true });
             this.notify({ msg: `Error fetching token contract details: ${e.message || e}` });
         }
         this.setState({ fetchingContract: false });
@@ -291,24 +298,22 @@ export default class Content extends HasAlert {
                 if (tokenAddress !== contractDetails.address && !fetchingContract) {
                     this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0 }, () => {
                         this.loadTokenInfo();
+                        this.setLayoutTokenLoaded();
                     });
                 }
             } else if (!fetchingContract || tokenAddress !== contractDetails.address) {
                 this.loadTokenInfo();
             }
         } else {
-            this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0, runningNext: false });
+            this.setState({ tokenLoaded: false, contractDetails: {}, userBalance: 0, runningNext: false }, () => {
+                this.setLayoutTokenLoaded();
+            });
         }
         this.setState({ runningNext: false });
     }
 
     onChange = (property) => (event) => {
         const { target } = event;
-        if (target.id == 'contract' && this.state.fetchingContractError != true){
-            this.setState({ contractBgColor: 'success' });
-        } else if (target.id == 'search' && this.state.fetchingContractError != true){
-            this.setState({ searchBgColor: 'success' });
-        }
         this.setState({ [property]: target.value });
     }
 
@@ -326,56 +331,60 @@ export default class Content extends HasAlert {
     }
 
     render() {
+        const iconProp = {};
+        if (this.state.tokenAddress) {
+            iconProp.icon = { name: 'close', onClick: this.clearTokenAddress };
+        }
+
         return (
-            <Card fluid style={contentStyle.formSection} >
+            <Card fluid style={Object.assign({}, contentStyle.formSection, this.state.tokenLoaded ? {paddingBottom: 0} : {})} >
                 <Container>
-                <Card.Header style={contentStyle.main}>
-                    <Grid stackable divided padded='horizontally'>
-                        <Grid.Column width={4} style={contentStyle.noBoxShadow}>
-                        </Grid.Column>
-                        <Grid.Column width={8} verticalAlign='middle' style={contentStyle.noBoxShadow}>
-                            <Form className="contract-form">
-                                <Form.Field error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}>
-                                    <label></label>
-                                    <Form.Input
-                                        fluid
-                                        loading={this.state.fetchingContract}
-                                        value={this.state.tokenAddress}
-                                        placeholder='Contract Address'
-                                        onChange={this.onChange('tokenAddress')}
-                                        onKeyUp={this.next}
-                                        onBlur={this.next}
-                                        error={Boolean(this.state.fetchingContractError)}
-                                        className={this.state.fetchingContractError ? 'error' : this.state.contractBgColor}
-                                        id="contract"
-                                    />
-                                    <Search
-                                        loading={this.state.searchingPreloaded}
-                                        value={this.state.searchToken}
-                                        placeholder='Search by Contract Name, Symbol or Address snippet'
-                                        onResultSelect={this.searchSelected}
-                                        onSearchChange={this.onChange('searchToken')}
-                                        results={this.tokenFilterList}
-                                        onKeyUp={this.search}
-                                        onBlur={this.search}
-                                        fluid
-                                        className={this.state.fetchingContractError ? 'error' : this.state.searchBgColor}
-                                        id="search"
-                                    />
-                                </Form.Field>
-                            </Form>
-                        </Grid.Column>
-                        <Grid.Column width={4} style={contentStyle.noBoxShadow}>
-                        </Grid.Column>
-                    </Grid>
-                    <Grid >
-                        { this.state.fetchingContract &&
-                        <Dimmer active={this.state.fetchingContract} inverted style={{ marginTop: '5em' }} >
-                            <Loader>Loading</Loader>
-                        </Dimmer>
-                        }
-                    </Grid>
-                </Card.Header>
+                    <Card.Header style={contentStyle.main}>
+                        <Grid stackable divided padded='horizontally'>
+                            <Grid.Column width={4} style={contentStyle.noBoxShadow}>
+                            </Grid.Column>
+                            <Grid.Column width={8} verticalAlign='middle' style={contentStyle.noBoxShadow}>
+                                <Form className="contract-form">
+                                    <Form.Field error={Boolean(this.state.tokenAddress) && !this.isValidTokenAddressSet}>
+                                        <label></label>
+                                        <Form.Input
+                                            fluid
+                                            loading={this.state.fetchingContract}
+                                            value={this.state.tokenAddress}
+                                            placeholder='Contract Address'
+                                            onChange={this.onChange('tokenAddress')}
+                                            onKeyUp={this.next}
+                                            onBlur={this.next}
+                                            error={Boolean(this.state.tokenAddress && !this.isValidTokenAddressSet)}
+                                            className={`${this.state.tokenAddress && this.isValidTokenAddressSet ? 'white-background' : ''} ${(this.state.tokenAddress && !this.isValidTokenAddressSet) ? 'error' : ''}`}
+                                            {...iconProp}
+                                        />
+                                        <Search
+                                            loading={this.state.searchingPreloaded}
+                                            value={this.state.searchToken}
+                                            placeholder='Search by Contract Name, Symbol or Address snippet'
+                                            onResultSelect={this.searchSelected}
+                                            onSearchChange={this.onChange('searchToken')}
+                                            results={this.tokenFilterList}
+                                            onKeyUp={this.search}
+                                            onBlur={this.search}
+                                            fluid
+                                            className={`${(this.state.tokenAddress && this.isValidTokenAddressSet) || (this.state.searchToken && this.state.searchToken.length > 0) ? 'white-background' : ''} ${(this.state.tokenAddress && !this.isValidTokenAddressSet) ? 'error' : ''}`}
+                                        />
+                                    </Form.Field>
+                                </Form>
+                            </Grid.Column>
+                            <Grid.Column width={4} style={contentStyle.noBoxShadow}>
+                            </Grid.Column>
+                        </Grid>
+                        <Grid >
+                            { this.state.fetchingContract &&
+                            <Dimmer active={this.state.fetchingContract} inverted style={{ marginTop: '5em' }} >
+                                <Loader>Loading</Loader>
+                            </Dimmer>
+                            }
+                        </Grid>
+                    </Card.Header>
                 </Container>
                 {
                     this.state.tokenLoaded &&
@@ -471,5 +480,6 @@ export default class Content extends HasAlert {
 }
 
 Content.propTypes = {
-    displayAddress: PropTypes.any
+    displayAddress: PropTypes.func,
+    tokenLoadedFunc: PropTypes.func
 };

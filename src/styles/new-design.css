@@ -27,24 +27,6 @@
         background: url("../images/icons/logo-white-transparent.svg") top -130px right / 63% 160% no-repeat #f9a510;
     }
 }
-/* You could use :after - it doesn't really matter */
-/* .header-section:after {
-    content: ' ';
-    display: block;
-    position: absolute;
-    right: 0;
-    top: -1px;
-    width: 57%;
-    height: 100%;84px
-    z-index: 1;
-    opacity: 0.2;
-    background-image: url("../images/icons/logo.svg");
-    background-repeat: no-repeat;
-    background-position: 50% 0;
-    -ms-background-size: cover;
-    background-size: cover;
-    background-position: right;
-} */
 
 
 .dismiss{
@@ -124,9 +106,10 @@
 .error > .ui > input{
     background: #f44e4e!important;
     border: 1px solid #f44e4e!important;
+    color: #ffffff !important;
 }
 
-.success > .ui > input{
+.white-background > .ui > input{
     background: #ffffff!important;
     border: 1px solid #ffffff!important;
     color: #000000!important;
@@ -137,12 +120,11 @@
     line-height: 0.3!important;
 }
 
-.success > .ui > #search{
-  border-radius: 15px 15px 0px 0px!important;
+.contract-form .white-background i.icon {
+    color: black !important;
 }
 
-
-.success > .ui > #search{
+.white-background.visible  > .ui > input{
   border-radius: 15px 15px 0px 0px!important;
 }
 

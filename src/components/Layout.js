@@ -11,16 +11,23 @@ export default class Layout extends Component {
     constructor (props) {
         super(props);
         this.showUserAddress = this.showUserAddress.bind(this);
+        this.setTokenLoaded = this.setTokenLoaded.bind(this);
     }
 
     state = {
         address: '',
-        visible: true
+        visible: true,
+        tokenLoaded: false
     }
 
     showUserAddress (address) {
         this.setState({ address });
     }
+
+    setTokenLoaded (tokenLoaded) {
+        this.setState({ tokenLoaded });
+    }
+
     handleDismiss = () => {
         this.setState({ visible: false });
     }
@@ -68,10 +75,13 @@ export default class Layout extends Component {
                             </Grid>
                         </Header>
                     </Container>
-                    <Content {...{ displayAddress: this.showUserAddress }}/>
+                    <Content {...{ displayAddress: this.showUserAddress, tokenLoadedFunc: this.setTokenLoaded }}/>
                 </div>
                 <Container style={{ marginTop: '3em' }}>
-                    <Information/>
+                    { !this.state.tokenLoaded ?
+                        <Information/> :
+                        <div></div>
+                    }
                 </Container>
                 <div className="footer-section">
                     <Container style={{ marginTop: '3em' }}>
