@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
-import { Card, Checkbox, Grid, Form, Icon, Button } from 'semantic-ui-react';
+import { Card, Checkbox, Divider, Grid, Form, Icon, Button } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 
 export default class Transactions extends Component {
@@ -227,10 +227,20 @@ export default class Transactions extends Component {
         return (
             <div>
                 <div className='mb-24'>
-                    <Grid.Row>
-                        <Grid.Column style={contentStyle.slider}>
-                        </Grid.Column>
-                    </Grid.Row>
+                    { this.props.isMobile &&
+                        <Grid>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Divider className='orange single-bordered single-bottom-bordered' />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Checkbox toggle  label='Multiple Transfers' onChange={this.toggleBatch} />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    }
                         <div>
                             { this.state.recipientAddresses.map( (address, index) =>
                                 <Card fluid className='board mb-48' key={index}>
@@ -294,9 +304,11 @@ export default class Transactions extends Component {
                 </div>
                 <div className="btn-wrapper2">
                     <Grid>
-                        <Grid.Column width={4}>
-                            <Checkbox toggle  label='Multiple Transfers' onChange={this.toggleBatch} />
-                        </Grid.Column>
+                        { !this.props.isMobile &&
+                            <Grid.Column width={4}>
+                                <Checkbox toggle  label='Multiple Transfers' onChange={this.toggleBatch} />
+                            </Grid.Column>
+                        }
                         <Grid.Column width={12}  textAlign='right'>
                             <Grid>
                                 <Grid.Column width={12}>
@@ -323,6 +335,7 @@ export default class Transactions extends Component {
 
 Transactions.propTypes = {
     balance: PropTypes.string.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     isValidAddress: PropTypes.func.isRequired,
     parseTokenAmount: PropTypes.func.isRequired,
     updateTotalAmount: PropTypes.func.isRequired,
