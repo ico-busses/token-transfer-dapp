@@ -21,16 +21,23 @@ export default class Layout extends Component {
         super(props);
         this.handleDismiss = this.handleDismiss.bind(this);
         this.showUserAddress = this.showUserAddress.bind(this);
+        this.setTokenLoaded = this.setTokenLoaded.bind(this);
     }
 
     state = {
         address: '',
-        visible: true
+        visible: true,
+        tokenLoaded: false
     }
 
     showUserAddress (address) {
         this.setState({ address });
     }
+
+    setTokenLoaded (tokenLoaded) {
+        this.setState({ tokenLoaded });
+    }
+
     handleDismiss = () => {
         this.setState({ visible: false });
     }
@@ -48,7 +55,7 @@ export default class Layout extends Component {
                                     {call2Action.message}
                                 </span>
                                 </Grid.Column>
-                                <Grid.Column width={2} verticalAlign="middle">
+                                <Grid.Column width={2} verticalAlign="middle"  textAlign="center">
                                     { this.props.isMobile ?
                                         <Button icon='close' basic className="white" onClick={this.handleDismiss}/> :
                                         <a onClick={this.handleDismiss} className="dismiss">DISMISS</a>
@@ -58,7 +65,7 @@ export default class Layout extends Component {
                         </Container>
                     </div>
                 }
-                <div  className="header-section">
+                <div  className={`header-section ${this.state.tokenLoaded ? 'tokenLoaded' : ''}`}>
                     <Container style={{ paddingTop: '2em', paddingBottom: this.props.isMobile ? '0' : '3em', width: '100%'}}>
                         { this.props.isMobile ?
                             <Header as='h1' style={{ paddingBottom: '0.5em', margin: 0 }} >
@@ -81,19 +88,19 @@ export default class Layout extends Component {
                                     </Grid.Row>
                                 </Grid>
                             </Header> :
-                            <Header as='h1' dividing  style={{ paddingBottom: '0.5em' }} >
-
+                            <Header as='h1' dividing className='white-bordered' style={{ paddingBottom: '0.5em' }} >
                                 <Grid columns={2}>
                                     <Grid.Column className="logo-wrapper" width={10} style={{color: "reset"}}>
                                         <Image src="../images/icons/logo-white.svg" className="logo"/> {appName}
                                     </Grid.Column>
                                     <Grid.Column textAlign="right" width={6}>
                                         {web3Service.isWeb3Viewable &&
-                                        <small style={{ fontSize: '55%' }} className="meta-address-holder"><a
-                                            href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
-                                            rel="noopener noreferrer">
-                                            {this.state.address}
-                                        </a>
+                                        <small style={{ fontSize: '55%' }} className="meta-address-holder">
+                                            <a
+                                                href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
+                                                rel="noopener noreferrer">
+                                                {this.state.address}
+                                            </a>
                                         </small>
                                         }
                                         { !web3Service.isWeb3Viewable &&
@@ -105,11 +112,14 @@ export default class Layout extends Component {
                         }
                     </Container>
                     <div style={this.props.isMobile ? mobilePadding : {}}>
-                        <Content isMobile={this.props.isMobile} {...{ displayAddress: this.showUserAddress }}/>
+                        <Content isMobile={this.props.isMobile} {...{ displayAddress: this.showUserAddress, tokenLoadedFunc: this.setTokenLoaded }}/>
                     </div>
                 </div>
                 <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>
-                    <Information isMobile={this.props.isMobile} />
+                    { !this.state.tokenLoaded ?
+                        <Information isMobile={this.props.isMobile} /> :
+                        <div></div>
+                    }
                 </Container>
                 <div className="footer-section">
                     <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>

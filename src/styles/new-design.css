@@ -20,13 +20,6 @@
     font-weight: 900;
 }
 
-
-
-/*Loader*/
-.ui.inverted.dimmer{
-    background-color: transparent!important;
-}
-
 /*HEADER SECTION*/
 
 .header-section, .header-section-mobile {
@@ -34,32 +27,27 @@
 }
 
 .header-section {
-    background: #f9a510;
+    background: url("../images/icons/logo-white-transparent.svg") top -230px right / 65% 230% no-repeat #f9a510;
+}
+
+.header-section.tokenLoaded {
+    background: url("../images/icons/logo-white-transparent.svg") top -260px right / 930px 1200px no-repeat #f9a510;
 }
 
 .mobile .header-section {
     background: white;
 }
 
-/* You could use :after - it doesn't really matter */
-.header-section:after {
-    content: ' ';
-    display: block;
-    position: absolute;
-    right: 0;
-    top: -1px;
-    width: 57%;
-    height: 100%;
-    z-index: 1;
-    opacity: 0.2;
-    background-image: url("../images/icons/logo-white.svg");
-    background-repeat: no-repeat;
-    background-position: 50% 0;
-    -ms-background-size: cover;
-    background-size: cover;
-    background-position: right;
-}
+@media only screen and (max-width: 1200px) {
+    .header-section {
+        position: relative;
+        background: url("../images/icons/logo-white-transparent.svg") top -130px right / 63% 160% no-repeat #f9a510;
+    }
 
+    .header-section.tokenLoaded {
+        background: url("../images/icons/logo-white-transparent.svg") top -240px right / 630px 1000px no-repeat #f9a510;
+    }
+}
 
 .dismiss{
     cursor: pointer;
@@ -69,11 +57,11 @@
     font-family: 'Roboto', sans-serif !important;
 }
 
-.ui.dividing.header {
+.white-bordered.ui.dividing.header {
     border-bottom: 2px solid #ffffff!important;
 }
 
-.ui.divider:not(.vertical):not(.horizontal) {
+.white-bordered-double.ui.divider {
     border-top: 2px solid #ffffff!important;
     border-bottom: 1px solid #ffffff!important;
 }
@@ -83,19 +71,17 @@
     border-bottom: none !important;
 }
 
-.ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url]{
-    color: #ffffff!important;
-    font-weight: 700;
-    letter-spacing: 0.2;
-}
-
-.mobile .ui.form input:not([type]), .mobile .ui.form input[type=date], .mobile .ui.form input[type=datetime-local], .mobile .ui.form input[type=email], .mobile .ui.form input[type=file], .mobile .ui.form input[type=number], .mobile .ui.form input[type=password], .ui.form input[type=search], .mobile .ui.form input[type=tel], .mobile .ui.form input[type=text], .mobile .ui.form input[type=time], .mobile .ui.form input[type=url]{
-    color: black !important;
+.ui.search>.results {
+    top: 30px!important;
 }
 
 /*META ADDRESS*/
 
-.meta-address-holder {
+.ui.form .field {
+    margin-bottom: 0px;
+}
+
+.meta-address-holder{
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
@@ -175,13 +161,36 @@
     color: #cecece !important;
 }
 
+.error > .ui > input{
+    background: #f44e4e!important;
+    border: 1px solid #f44e4e!important;
+    color: #ffffff !important;
+}
+
+.white-background > .ui > input{
+    background: #ffffff!important;
+    border: 1px solid #ffffff!important;
+    color: #000000!important;
+}
 
 .contract-form  i.icon {
     color: #ffffff!important;
-    line-height: 0.3!important;
+    line-height: 0!important;
+}
+
+.contract-form .white-background i.icon {
+    color: black !important;
+}
+
+.white-background.visible  > .ui > input{
+  border-radius: 15px 15px 0px 0px!important;
 }
 
 
+/*Form Detail Section*/
+.formDetails{
+    background-color: #ffffff;
+}
 
 /*ABOUT SECTION*/
 
@@ -218,12 +227,52 @@
 /*Container Section*/
 @media only screen and (min-width: 1200px) {
     .ui.container {
-        width: 1000px!important;
+        width: 1140px !important;
+    }
+    .mobile .ui.container {
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .ui.container {
+        width: 95%!important;
+    }
+    .mobile .ui.container {
+        width: 100% !important;
     }
 }
 
 
 /*META MASK FORM DETAILS*/
+
+.mt-0 {
+    margin-top: 0px !important;
+}
+
+.mb-0 {
+    margin-bottom: 0px !important;
+}
+
+.mt-24 {
+    margin-top: 24px !important;
+}
+
+.mb-24 {
+    margin-bottom: 24px !important;
+}
+
+.mt-48 {
+    margin-top: 48px !important;
+}
+
+.mb-48 {
+    margin-bottom: 48px !important;
+}
+
+.mr-12 {
+    margin-right: 12px !important;
+}
 
 .formDetails{
     background-color: #FDFEFF;
@@ -231,10 +280,9 @@
     padding-bottom: 80px;
 }
 
-
-.formDetails-section1{
+.card.board {
     background-color: #ffffff;
-    padding: 44px 32px;
+    padding: 48px 48px;
     border-radius: 30px;
     -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
     -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
@@ -246,36 +294,33 @@
     text-align: right;
 }
 
-a.ash{
-    background-color: #7491A5;
-    color: #ffffff;
-    padding: 14px 25px;
-    border-radius: 23px;
+.formDetails button, .formDetails .ui.button{
+    padding: 15px 30px !important;
+    line-height: 1.1em;
 }
 
-.formDetails-section1 .header{
+.formDetails button.wide-button.ui.button {
+    padding: 15px 45px !important;
+}
+
+.formDetails .item{
+    padding-bottom: 15px!important;
+}
+
+.formDetails .item .header{
     color: #000000!important;
     font-weight: 900!important;
     font-size: 1.7em!important;
     margin-bottom: 3px!important;
 }
 
-.formDetails-section1 .description a, .formDetails-section1 .description{
+.formDetails .item .description a, .formDetails .item .description{
     color: #ADC5D8!important;
 }
 
-.formDetails-section1 .item{
-    padding-bottom: 15px!important;
-}
-
-.formDetails-section2{
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 44px 32px;
-    border-radius: 30px;
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+.formDetails input{
+    border-radius: 50px!important;
+    margin-bottom: 20px!important;
 }
 
 .btn-wrapper2{
@@ -284,56 +329,95 @@ a.ash{
 
 }
 
-
-.formDetails-section1{
-    background-color: #ffffff;
-    padding: 44px 32px;
-    border-radius: 30px;
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-}
-
 .btnHolder{
     padding: 30px;
     text-align: right;
 }
 
-a.ash{
-    background-color: #7491A5;
-    color: #ffffff;
-    padding: 14px 25px;
-    border-radius: 23px;
+.transfer{
+    background-color: #F9A510!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
 }
 
-.formDetails-section1 .header{
-    color: #000000!important;
-    font-weight: 900!important;
-    font-size: 1.7em!important;
-    margin-bottom: 3px!important;
+.transfer:hover {
+    background-color: rgb(245, 155, 0)!important;
 }
 
-.formDetails-section1 .description a, .formDetails-section1 .description{
-    color: #ADC5D8!important;
+.ash{
+    background-color: #7491A5!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
 }
 
-.formDetails-section1 .item{
-    padding-bottom: 15px!important;
+.grey{
+    background-color: #ADC5D8!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+    border-radius: 23px!important;
 }
 
-
-.formDetails-section2{
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 44px 32px;
-    border-radius: 30px;
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
-    box-shadow: 0px 4px 10px 0px rgba(212,212,212,1);
+div.ui.toggle.checkbox {
+    margin-top: 5px;
 }
 
-.btn-wrapper2{
-    margin-top: 28px;
+.ui.toggle.checkbox input {
+    width: 5rem;
+    height: 2.5rem;
+}
+
+.ui.toggle.checkbox label {
+    width: 50px;
+    min-height: 2.5rem;
+    padding-left: 6rem;
+}
+
+.ui.toggle.checkbox label:before {
+    width: 5rem;
+    height: 2.5rem;
+}
+
+.ui.toggle.checkbox label:after {
+    width: 2.3rem;
+    height: 2.3rem;
+    left: 0.2rem;
+    top: 0.1rem;
+}
+
+.ui.toggle.checkbox input~.box:after, .ui.toggle.checkbox input~label:after {
+    left: 0.2rem;
+}
+
+.ui.toggle.checkbox.checked label:after {
+    left: 2.52rem;
+}
+
+.ui.toggle.checkbox input:checked~.box:after, .ui.toggle.checkbox input:checked~label:after {
+    left: 2.52rem;
+}
+
+.ui.toggle.checkbox input:focus:checked~.box:before,
+.ui.toggle.checkbox input:focus:checked~label:before {
+    background-color: grey !important;
+}
+
+.ui.toggle.checkbox .box:before, .ui.toggle.checkbox label:before {
+    background-color:#7491A5!important;
+}
+
+.ui.toggle.checkbox input:checked ~ .box:before,
+.ui.toggle.checkbox input:checked ~ label:before {
+    background-color: grey !important;
+}
+
+.ui.toggle.checkbox input:focus~.box:before, .ui.toggle.checkbox input:focus~label:before{
+    background-color:#7491A5!important;
+}
+
+.ui .delete-button {
+    position: absolute;
 }
 
 /*FOOTER SECTION*/

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Divider, Grid, Header, Icon, Image } from 'semantic-ui-react';
-import { contentStyle, footerStyle } from '../styles';
+import { footerStyle } from '../styles';
 import { features } from '../config';
 import '../styles/responsive.css';
 
@@ -72,7 +72,7 @@ export default class Footer extends Component {
                         </Grid.Row>
                     </Grid.Column>
                 </Grid>
-                <Divider/>
+                <Divider className='white-bordered-double'/>
                 <Grid columns={2} style={footerStyle.base} >
                     <Grid.Column floated='left' >
                         Contributions ::
@@ -84,9 +84,9 @@ export default class Footer extends Component {
                         <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer" style={footerStyle.footerLink}>: ICO BUSSES</a> .
                     </Grid.Column>
                     <Grid.Column width={16} >
-                        <a href='https://github.com/ico-busses/token-transfer-dapp' style={contentStyle.source} >
+                        <a href='https://github.com/ico-busses/token-transfer-dapp' style={footerStyle.source} >
                             Source code
-                            <Icon color='black' size='large' name="github" style={contentStyle.sorceIcon} />
+                            <Icon color='black' size='large' name="github" style={footerStyle.sorceIcon} />
                         </a>
                     </Grid.Column>
                 </Grid>
