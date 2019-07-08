@@ -330,5 +330,9 @@ Transactions.propTypes = {
     setTransferDetailsFetcher: PropTypes.func.isRequired,
     setValidRecipientAddressesSet: PropTypes.func.isRequired,
     setValidRecipientAmountsSet: PropTypes.func.isRequired,
-    symbol: PropTypes.string.isRequired
+    symbol: PropTypes.string.isRequired,
+    canSend: PropTypes.bool.isRequired,
+    sendingTokens: PropTypes.bool.isRequired,
+    transferTokens: PropTypes.func.isRequired,
+    totalRecipientsAmounts: PropTypes.number.isRequired
 };
