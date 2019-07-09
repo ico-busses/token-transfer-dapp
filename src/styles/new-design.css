@@ -101,6 +101,12 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     font-size: 16;
 }
 
+.ui.input input {
+    line-height: 2.5em !important;
+    padding: 7px 25px !important;
+    margin-bottom: 15px !important;
+}
+
 /*META ADDRESS*/
 
 .ui.form .field {
@@ -153,9 +159,6 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 10px!important;
     border: 2px solid #ffffff!important;
     border-radius: 35px !important;
-    line-height: 2.5em !important;
-    margin-bottom: 15px !important;
-    padding: 7px 25px !important;
     font-size: 1.2em !important;
     font-weight: 700;
 }
@@ -350,7 +353,7 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 
 .mobile .card.board {
-    padding: 0 36px;
+    padding: 0;
     border-radius: 0;
     -webkit-box-shadow: 0px;
     -moz-box-shadow: 0px;
@@ -381,6 +384,11 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     font-size: 1.7em!important;
     margin-bottom: 3px!important;
 }
+
+.mobile .formDetails .item .header{
+    font-size: 1.2em!important;
+}
+
 
 .formDetails .item .description a, .formDetails .item .description{
     color: #ADC5D8!important;
