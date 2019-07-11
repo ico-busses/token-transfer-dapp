@@ -2,6 +2,18 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     font-family: 'Roboto', sans-serif !important;
 }
 
+.address {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.address * {
+    width: auto;
+}
+
 /*LOGO SECTION*/
 .logo{
     display: inline-block!important;
@@ -118,10 +130,6 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 
 .meta-address-holder{
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     width: 100%;
     text-align: center;
     background-color: #ffffff;

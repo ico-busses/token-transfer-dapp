@@ -75,14 +75,14 @@ export default class Layout extends Component {
                                             <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
                                         </Grid.Column>
                                     </Grid.Row>
-                                    <Grid.Row textAlign="right" width={6} >
+                                    <Grid.Row textAlign="right" >
                                         <Grid.Column verticalAlign="middle">
                                             {web3Service.isWeb3Viewable &&
-                                                <small className="meta-address-holder">
+                                                <small className="meta-address-holder address">
                                                     { this.state.address &&
                                                         <a
                                                             href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
-                                                            rel="noopener noreferrer">
+                                                            rel="noopener noreferrer" >
                                                             {this.state.address || '...'}
                                                         </a>
                                                     }
@@ -102,11 +102,11 @@ export default class Layout extends Component {
                                     </Grid.Column>
                                     <Grid.Column textAlign="right" width={6}>
                                         {web3Service.isWeb3Viewable &&
-                                        <small className="meta-address-holder">
+                                        <small className="meta-address-holder address">
                                             { this.state.address &&
                                                 <a
                                                     href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
-                                                    rel="noopener noreferrer">
+                                                    rel="noopener noreferrer" >
                                                     {this.state.address}
                                                 </a>
                                             }
@@ -135,7 +135,7 @@ export default class Layout extends Component {
                 </Container>
                 <div className="footer-section">
                     <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>
-                        <Footer/>
+                        <Footer  isMobile={this.props.isMobile}/>
                     </Container>
                 </div>
             </div>

@@ -408,7 +408,7 @@ export default class Content extends HasAlert {
                                                                     <List.Item>
                                                                         <List.Content>
                                                                             <List.Header as='h2'>Token Address</List.Header>
-                                                                            <List.Description as='p'>
+                                                                            <List.Description as='p' className='address'>
                                                                                 <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel='noopener noreferrer'>
                                                                                     {this.state.tokenAddress}
                                                                                 </a>
@@ -454,7 +454,7 @@ export default class Content extends HasAlert {
                                                                     <List.Item>
                                                                         <List.Content>
                                                                             <List.Header as='h2'>Token Address</List.Header>
-                                                                            <List.Description as='p'>
+                                                                            <List.Description as='p' className='address'>
                                                                                 <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel='noopener noreferrer'>
                                                                                     {this.state.tokenAddress}
                                                                                 </a>
