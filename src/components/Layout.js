@@ -51,9 +51,9 @@ export default class Layout extends Component {
                         <Container style={this.props.isMobile ? { paddingTop: '1em', paddingBottom: '1em' } : { paddingTop: '2em', paddingBottom: '2em' }}>
                             <Grid columns={call2Action.columns || 2}>
                                 <Grid.Column width={14}>
-                                <span>
-                                    {call2Action.message}
-                                </span>
+                                    <span>
+                                        {call2Action.message}
+                                    </span>
                                 </Grid.Column>
                                 <Grid.Column width={2} verticalAlign="middle"  textAlign="center">
                                     { this.props.isMobile ?
@@ -76,15 +76,22 @@ export default class Layout extends Component {
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row textAlign="right" width={6} >
-                                        {web3Service.isWeb3Viewable &&
-                                            <small style={{ fontSize: '55%' }} className="meta-address-holder">
-                                                <a
-                                                    href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
-                                                    rel="noopener noreferrer">
-                                                    {this.state.address}
-                                                </a>
-                                            </small>
-                                        }
+                                        <Grid.Column verticalAlign="middle">
+                                            {web3Service.isWeb3Viewable &&
+                                                <small className="meta-address-holder">
+                                                    { this.state.address &&
+                                                        <a
+                                                            href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
+                                                            rel="noopener noreferrer">
+                                                            {this.state.address || '...'}
+                                                        </a>
+                                                    }
+                                                    { !this.state.address &&
+                                                        '...'
+                                                    }
+                                                </small>
+                                            }
+                                            </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
                             </Header> :
@@ -95,16 +102,21 @@ export default class Layout extends Component {
                                     </Grid.Column>
                                     <Grid.Column textAlign="right" width={6}>
                                         {web3Service.isWeb3Viewable &&
-                                        <small style={{ fontSize: '55%' }} className="meta-address-holder">
-                                            <a
-                                                href={`${web3Service.explorer}address/${this.state.address}`} target='_blank'
-                                                rel="noopener noreferrer">
-                                                {this.state.address}
-                                            </a>
+                                        <small className="meta-address-holder">
+                                            { this.state.address &&
+                                                <a
+                                                    href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
+                                                    rel="noopener noreferrer">
+                                                    {this.state.address}
+                                                </a>
+                                            }
+                                            { !this.state.address &&
+                                                '...'
+                                            }
                                         </small>
                                         }
                                         { !web3Service.isWeb3Viewable &&
-                                        <small> Loading Network ...</small>
+                                            <small> Loading Network ...</small>
                                         }
                                     </Grid.Column>
                                 </Grid>

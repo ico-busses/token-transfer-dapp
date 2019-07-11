@@ -20,11 +20,15 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 .mobile .logo-wrapper{
     color: black!important;
-    font-size: 1.2em;
+    font-size: 0.8em;
     font-weight: 900;
 }
 
 /*HEADER SECTION*/
+
+.header-section .header small {
+    font-size: 50%;
+}
 
 .header-section, .header-section-mobile {
     position: relative;
@@ -102,7 +106,7 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 
 .ui.input input {
-    line-height: 2.5em !important;
+    line-height: 2.6em !important;
     padding: 7px 25px !important;
     margin-bottom: 15px !important;
 }
@@ -123,12 +127,14 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     background-color: #ffffff;
     padding: 3px 20px;
     margin-top: 6px;
+    font-size: 55%;
 }
 
 .mobile .meta-address-holder{
     background: #266baf;
     padding: 0;
     margin-top: 0;
+    font-size: 45%;
 }
 
 .meta-address-holder > a{
@@ -164,6 +170,7 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 .mobile .contract-form input{
     border: 2px solid #cecece !important;
+    font-size: 1em !important;
 }
 
 .contract-form input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -268,11 +275,19 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 36px!important;
 }
 
+.mobile .about-header {
+    font-size: 1.5em!important;
+}
+
 .about-section p{
     font-size: 1.3em!important;
     color: #7491A5!important;
     margin-bottom: 34px!important;
-    line-height: 31px!important;
+}
+
+.mobile .about-section p{
+    font-size: 1em!important;
+    line-height: 1.3em!important;
 }
 
 
