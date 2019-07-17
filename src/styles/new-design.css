@@ -123,6 +123,13 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 15px !important;
 }
 
+.ui button.curved-border {
+    border-radius: 23px!important;
+}
+
+.curved-border input {
+    border-radius: 50px!important;
+}
 /*META ADDRESS*/
 
 .ui.form .field {
@@ -335,6 +342,14 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0px !important;
 }
 
+.mt-12 {
+    margin-top: 12px !important;
+}
+
+.mb-12 {
+    margin-bottom: 12px !important;
+}
+
 .mt-24 {
     margin-top: 24px !important;
 }
@@ -351,8 +366,36 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 48px !important;
 }
 
+.mb-60 {
+    margin-bottom: 60px !important;
+}
+
 .mr-12 {
     margin-right: 12px !important;
+}
+
+.pt-0 {
+    padding-top: 0px !important;
+}
+
+.pb-0 {
+    padding-bottom: 0px !important;
+}
+
+.pt-12 {
+    padding-top: 12px !important;
+}
+
+.pb-12 {
+    padding-bottom: 12px !important;
+}
+
+.pt-24 {
+    padding-top: 24px !important;
+}
+
+.pb-24 {
+    padding-bottom: 24px !important;
 }
 
 .formDetails{
@@ -418,7 +461,6 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 
 .formDetails input{
-    border-radius: 50px!important;
     margin-bottom: 20px!important;
 }
 
@@ -437,7 +479,6 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     background-color: #F9A510!important;
     color: #ffffff!important;
     padding: 14px 25px!important;
-    border-radius: 23px!important;
 }
 
 .transfer:hover {
@@ -448,14 +489,12 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     background-color: #7491A5!important;
     color: #ffffff!important;
     padding: 14px 25px!important;
-    border-radius: 23px!important;
 }
 
 .grey{
     background-color: #ADC5D8!important;
     color: #ffffff!important;
     padding: 14px 25px!important;
-    border-radius: 23px!important;
 }
 
 div.ui.toggle.checkbox {
@@ -516,7 +555,7 @@ div.ui.toggle.checkbox {
 }
 
 .ui .delete-button {
-    position: absolute;
+    /* position: absolute; */
 }
 
 /*FOOTER SECTION*/

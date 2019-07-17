@@ -501,7 +501,7 @@ export default class Content extends HasAlert {
                                                             </Card>
                                                         }
                                                         <div className='btnHolder'>
-                                                            <Button className='ash wide-button' onClick={this.addTokenToWallet}>
+                                                            <Button className='ash curved-border wide-button' onClick={this.addTokenToWallet}>
                                                                 Add Token to Web3 Wallet
                                                             </Button>
                                                         </div>
