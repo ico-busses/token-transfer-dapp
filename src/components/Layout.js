@@ -47,7 +47,7 @@ export default class Layout extends Component {
         return (
             <div className={this.props.isMobile ? 'mobile' : ''} >
                 {call2Action.message && this.state.visible &&
-                    <div className="alertWrapper">
+                    <div className={call2Action.wrapperStyle ? "" : "alertWrapper"} style={call2Action.wrapperStyle || {}}>
                         <Container style={this.props.isMobile ? { paddingTop: '1em', paddingBottom: '1em' } : { paddingTop: '2em', paddingBottom: '2em' }}>
                             <Grid columns={call2Action.columns || 2}>
                                 <Grid.Column width={14}>
