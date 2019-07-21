@@ -76,6 +76,9 @@ export default class Content extends HasAlert {
         });
     }
 
+    resolveUrlAddress () {
+    }
+
     setResetDetails (value) {
         this.setState({ resetDetails: value });
     }
@@ -323,6 +326,7 @@ export default class Content extends HasAlert {
         await web3Service.awaitInitialized();
         this.props.displayAddress(web3Service.defaultAccount);
         this.scoutUpdates();
+        this.resolveUrlAddress();
     }
 
     componentWillUnmount() {
@@ -547,6 +551,7 @@ export default class Content extends HasAlert {
 
 Content.propTypes = {
     displayAddress: PropTypes.func.isRequired,
+    history: PropTypes.Object.isRequired,
     isMobile: PropTypes.bool.isRequired,
     tokenLoadedFunc: PropTypes.func.isRequired
 };
