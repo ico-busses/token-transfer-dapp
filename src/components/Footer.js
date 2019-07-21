@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Divider, Grid, Header, Icon, Image } from 'semantic-ui-react';
 import { footerStyle } from '../styles';
 import { features } from '../config';
@@ -73,24 +74,55 @@ export default class Footer extends Component {
                     </Grid.Column>
                 </Grid>
                 <Divider className='white-bordered-double'/>
-                <Grid columns={2} style={footerStyle.base} >
-                    <Grid.Column floated='left' >
-                        Contributions ::
-                        <b>
-                            ETH - 0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
-                        </b>
-                        <br/>
-                        Powered by :
-                        <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer" style={footerStyle.footerLink}>: ICO BUSSES</a> .
-                    </Grid.Column>
-                    <Grid.Column width={16} >
-                        <a href='https://github.com/ico-busses/token-transfer-dapp' style={footerStyle.source} >
-                            Source code
-                            <Icon color='black' size='large' name="github" style={footerStyle.sorceIcon} />
-                        </a>
-                    </Grid.Column>
-                </Grid>
+                { this.props.isMobile ?
+                    <Grid rows={2} style={footerStyle.base} >
+                        <Grid.Row >
+                            <Grid.Column>
+                                <p>
+                                    Contributions :: <br/>
+                                    <b>
+                                        ETH -
+                                        <span className="address">
+                                            0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
+                                        </span>
+                                    </b>
+                                </p>
+                                Powered by :
+                                <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer" style={footerStyle.footerLink}>: ICO BUSSES</a> .
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row >
+                            <Grid.Column>
+                                <a href='https://github.com/ico-busses/token-transfer-dapp' style={footerStyle.source} >
+                                    Source code
+                                    <Icon color='black' size='large' name="github" style={footerStyle.sorceIcon} />
+                                </a>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid> :
+                    <Grid columns={2} style={footerStyle.base} >
+                        <Grid.Column floated='left'>
+                            Contributions :: <br/>
+                            <b className="address">
+                                ETH - 0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
+                            </b>
+                            <br/>
+                            Powered by :
+                            <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer" style={footerStyle.footerLink}>: ICO BUSSES</a> .
+                        </Grid.Column>
+                        <Grid.Column width={4} >
+                            <a href='https://github.com/ico-busses/token-transfer-dapp' style={footerStyle.source} >
+                                Source code
+                                <Icon color='black' size='large' name="github" style={footerStyle.sorceIcon} />
+                            </a>
+                        </Grid.Column>
+                    </Grid>
+                }
             </div>
         );
     }
 }
+
+Footer.propTypes= {
+    isMobile: PropTypes.bool.isRequired
+};
