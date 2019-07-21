@@ -6,7 +6,7 @@ export default class Home extends Component {
         super(props);
         this.state = {
             screenWidth: 0
-        }
+        };
         this.screenSizeChanged = this.screenSizeChanged.bind(this);
     }
 

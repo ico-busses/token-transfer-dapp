@@ -81,7 +81,7 @@ export default class Footer extends Component {
                                 <p>
                                     Contributions :: <br/>
                                     <b>
-                                        ETH - 
+                                        ETH -
                                         <span className="address">
                                             0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
                                         </span>

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
-import { Card, Checkbox, Divider, Grid, Form, Icon, Button } from 'semantic-ui-react';
-import { contentStyle } from '../styles';
+import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
 
 export default class Transactions extends Component {
 
@@ -224,13 +223,13 @@ export default class Transactions extends Component {
     }
 
     render () {
-        const balanceButtonProps = {}
+        const balanceButtonProps = {};
 
         const addAddressButtonProps = {};
 
         if (this.props.isMobile) {
-            balanceButtonProps.floated = 'left'
-            addAddressButtonProps.floated = 'right'
+            balanceButtonProps.floated = 'left';
+            addAddressButtonProps.floated = 'right';
         }
         return (
             <div>
@@ -244,7 +243,7 @@ export default class Transactions extends Component {
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column>
-                                    <Checkbox toggle  label='Multiple Transfers' onChange={this.toggleBatch} />
+                                    <Checkbox toggle  label='Multiple Transfers' checked={this.state.isBatch} onChange={this.toggleBatch} />
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
@@ -331,7 +330,7 @@ export default class Transactions extends Component {
                     <Grid>
                         { !this.props.isMobile &&
                             <Grid.Column width={4}>
-                                <Checkbox toggle  label='Multiple Transfers' onChange={this.toggleBatch} />
+                                <Checkbox toggle  label='Multiple Transfers'  checked={this.state.isBatch} onChange={this.toggleBatch} />
                             </Grid.Column>
                         }
                         <Grid.Column width={this.props.isMobile ? 16 : 12}  textAlign='right'>

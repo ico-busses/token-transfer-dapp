@@ -11,7 +11,7 @@ import '../styles/layout.css';
 
 const mobilePadding = {
     paddingLeft: '7%',
-    paddingRight: '7%' 
+    paddingRight: '7%'
 };
 
 const appName = 'Token Transfer DApp';
@@ -47,7 +47,7 @@ export default class Layout extends Component {
         return (
             <div className={this.props.isMobile ? 'mobile' : ''} >
                 {call2Action.message && this.state.visible &&
-                    <div className={call2Action.wrapperStyle ? "" : "alertWrapper"} style={call2Action.wrapperStyle || {}}>
+                    <div className={call2Action.wrapperStyle ? '' : 'alertWrapper'} style={call2Action.wrapperStyle || {}}>
                         <Container style={this.props.isMobile ? { paddingTop: '1em', paddingBottom: '1em' } : { paddingTop: '2em', paddingBottom: '2em' }}>
                             <Grid columns={call2Action.columns || 2}>
                                 <Grid.Column width={14}>
@@ -66,11 +66,11 @@ export default class Layout extends Component {
                     </div>
                 }
                 <div  className={`header-section ${this.state.tokenLoaded ? 'tokenLoaded' : ''}`}>
-                    <Container style={{ paddingTop: '2em', paddingBottom: this.props.isMobile ? '0' : '3em', width: '100%'}}>
+                    <Container style={{ paddingTop: '2em', paddingBottom: this.props.isMobile ? '0' : '3em', width: '100%' }}>
                         { this.props.isMobile ?
                             <Header as='h1' style={{ paddingBottom: '0.5em', margin: 0 }} >
                                 <Grid rows={2}>
-                                    <Grid.Row className="logo-wrapper mobile" style={Object.assign({ paddingTop: '0.5em', paddingBottom: '0.1em', margin: '0'}, mobilePadding)}>
+                                    <Grid.Row className="logo-wrapper mobile" style={Object.assign({ paddingTop: '0.5em', paddingBottom: '0.1em', margin: '0' }, mobilePadding)}>
                                         <Grid.Column verticalAlign="middle">
                                             <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
                                         </Grid.Column>
@@ -97,7 +97,7 @@ export default class Layout extends Component {
                             </Header> :
                             <Header as='h1' dividing className='white-bordered' style={{ paddingBottom: '0.5em' }} >
                                 <Grid columns={2}>
-                                    <Grid.Column className="logo-wrapper" width={10} style={{color: "reset"}}>
+                                    <Grid.Column className="logo-wrapper" width={10} style={{ color: 'reset' }}>
                                         <Image src="../images/icons/logo-white.svg" className="logo"/> {appName}
                                     </Grid.Column>
                                     <Grid.Column textAlign="right" width={6}>

@@ -339,7 +339,7 @@ export default class Content extends HasAlert {
         return (
             <Card fluid style={Object.assign({}, contentStyle.formSection, this.state.tokenLoaded ? { paddingBottom: 0 } : {}, this.props.isMobile ? {
                 paddingTop: '48px',
-                paddingBottom: '48px'} : {})} >
+                paddingBottom: '48px' } : {})} >
                 <Container>
                     <Card.Header style={contentStyle.main}>
                         <Grid stackable divided padded='horizontally' className={this.state.tokenLoaded ? 'mb-24' : ''}>
@@ -409,7 +409,7 @@ export default class Content extends HasAlert {
                                                                         <List.Content>
                                                                             <List.Header as='h2'>Token Address</List.Header>
                                                                             <List.Description as='p' className='address'>
-                                                                                <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel='noopener noreferrer'>
+                                                                                <a href={`${web3Service.explorer}token/${this.state.tokenAddress}`} target='_blank' rel='noopener noreferrer'>
                                                                                     {this.state.tokenAddress}
                                                                                 </a>
                                                                             </List.Description>
