@@ -76,6 +76,14 @@ export default class Content extends HasAlert {
         });
     }
 
+    resolveUrlAddress () {
+        if (this.props.match.params && this.props.match.params.address) {
+            this.setState({
+                tokenAddress: this.props.match.params.address
+            }, () => this.next());
+        }
+    }
+
     setResetDetails (value) {
         this.setState({ resetDetails: value });
     }
@@ -164,10 +172,14 @@ export default class Content extends HasAlert {
 
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
-        if (!this._mounted || this.state.scouting) {
+        if (!this._mounted) {
             return false;
         }
         this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
+
+        if (this.state.scouting) {
+            return false;
+        }
         this.setState({ scouting: true });
         try {
             const accountsChanged = await web3Service.getAccountUpdates();
@@ -293,6 +305,9 @@ export default class Content extends HasAlert {
         }
         this.setState({ runningNext: true });
         const { fetchingContract, tokenLoaded, tokenAddress, contractDetails } = this.state;
+        if (this.props.match.params.address !== tokenAddress) {
+            this.props.history.push(`/${tokenAddress}`);
+        }
         if ( this.isValidTokenAddressSet ) {
             if (tokenLoaded) {
                 if (tokenAddress !== contractDetails.address && !fetchingContract) {
@@ -323,6 +338,7 @@ export default class Content extends HasAlert {
         await web3Service.awaitInitialized();
         this.props.displayAddress(web3Service.defaultAccount);
         this.scoutUpdates();
+        this.resolveUrlAddress();
     }
 
     componentWillUnmount() {
@@ -547,6 +563,8 @@ export default class Content extends HasAlert {
 
 Content.propTypes = {
     displayAddress: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    match: PropTypes.object.isRequired,
     tokenLoadedFunc: PropTypes.func.isRequired
 };

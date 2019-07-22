@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { HashRouter, Route } from 'react-router-dom';
 import { Button, Grid, Header, Container, Image } from 'semantic-ui-react';
 import { web3Service } from '../services';
 import { call2Action } from '../config';
@@ -123,9 +124,11 @@ export default class Layout extends Component {
                             </Header>
                         }
                     </Container>
-                    <div style={this.props.isMobile ? mobilePadding : {}}>
-                        <Content isMobile={this.props.isMobile} {...{ displayAddress: this.showUserAddress, tokenLoadedFunc: this.setTokenLoaded }}/>
-                    </div>
+                    <HashRouter style={this.props.isMobile ? mobilePadding : {}}>
+                        < Route path="/:address?" render ={ props =>
+                            <Content isMobile={this.props.isMobile} {...{ displayAddress: this.showUserAddress, tokenLoadedFunc: this.setTokenLoaded }} {...props}/>
+                        }/>
+                    </HashRouter>
                 </div>
                 <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>
                     { !this.state.tokenLoaded ?
