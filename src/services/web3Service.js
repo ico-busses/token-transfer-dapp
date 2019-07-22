@@ -39,6 +39,7 @@ class web3Service {
     }
 
     async initAccounts () {
+        const REJECTWORDS = ['rejected', 'denied'];
         if (this.checkingAccounts) {
             return;
         }
@@ -53,7 +54,7 @@ class web3Service {
                 this.defaultAccount = this.accounts[0];
                 this.accountsRejected = false;
             } catch (e) {
-                if (e.includes('User rejected provider access')) {
+                if (REJECTWORDS.some( word => (e.message || e).includes(word))) {
                     this.accountsRejected = true;
                 }
                 this.emitter.emit('error', e);
