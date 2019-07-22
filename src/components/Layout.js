@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { HashRouter, Route } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import { Button, Grid, Header, Container, Image } from 'semantic-ui-react';
 import { web3Service } from '../services';
 import { call2Action } from '../config';
@@ -73,7 +73,9 @@ export default class Layout extends Component {
                                 <Grid rows={2}>
                                     <Grid.Row className="logo-wrapper mobile" style={Object.assign({ paddingTop: '0.5em', paddingBottom: '0.1em', margin: '0' }, mobilePadding)}>
                                         <Grid.Column verticalAlign="middle">
-                                            <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
+                                            <Link to='/'>
+                                                <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
+                                            </Link>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row textAlign="right" >
@@ -99,7 +101,9 @@ export default class Layout extends Component {
                             <Header as='h1' dividing className='white-bordered' style={{ paddingBottom: '0.5em' }} >
                                 <Grid columns={2}>
                                     <Grid.Column className="logo-wrapper" width={10} style={{ color: 'reset' }}>
-                                        <Image src="../images/icons/logo-white.svg" className="logo"/> {appName}
+                                        <Link to='/'>
+                                            <Image src="../images/icons/logo-white.svg" className="logo"/> {appName}
+                                        </Link>
                                     </Grid.Column>
                                     <Grid.Column textAlign="right" width={6}>
                                         {web3Service.isWeb3Viewable &&
@@ -124,11 +128,11 @@ export default class Layout extends Component {
                             </Header>
                         }
                     </Container>
-                    <HashRouter style={this.props.isMobile ? mobilePadding : {}}>
+                    <div style={this.props.isMobile ? mobilePadding : {}}>
                         < Route path="/:address?" render ={ props =>
                             <Content isMobile={this.props.isMobile} {...{ displayAddress: this.showUserAddress, tokenLoadedFunc: this.setTokenLoaded }} {...props}/>
                         }/>
-                    </HashRouter>
+                    </div>
                 </div>
                 <Container style={Object.assign({ marginTop: '3em' }, this.props.isMobile ? mobilePadding : {})}>
                     { !this.state.tokenLoaded ?
