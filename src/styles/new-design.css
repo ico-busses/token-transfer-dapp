@@ -26,11 +26,11 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 17px;
 }
 
-.logo-wrapper{
+.logo-wrapper, .logo-wrapper a{
     color: #ffffff!important;
     font-size: 0.9em;
 }
-.mobile .logo-wrapper{
+.mobile .logo-wrapper, .mobile .logo-wrapper a{
     color: black!important;
     font-size: 0.8em;
     font-weight: 900;
@@ -451,6 +451,9 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     padding: 30px;
     text-align: right;
 }
+.mobile .btnHolder{
+    text-align: center;
+}
 
 .formDetails button, .formDetails .ui.button{
     padding: 15px 30px !important;
@@ -492,8 +495,6 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 
 .btn-wrapper2{
     margin-top: 28px;
-    padding-bottom: 100px;
-
 }
 
 .btnHolder{

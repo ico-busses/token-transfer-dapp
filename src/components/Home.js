@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { HashRouter } from 'react-router-dom';
 import Layout from './Layout';
 
 export default class Home extends Component {
@@ -33,7 +34,9 @@ export default class Home extends Component {
 
     render () {
         return (
-            <Layout isMobile={this.isMobile} />
+            <HashRouter>
+                <Layout isMobile={this.isMobile} />
+            </HashRouter>
         );
     }
 }
