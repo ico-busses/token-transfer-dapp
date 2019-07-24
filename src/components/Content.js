@@ -341,6 +341,14 @@ export default class Content extends HasAlert {
         this.resolveUrlAddress();
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location
+             && this.props.location.pathname === '/'
+        ) {
+          this.clearTokenAddress();
+        }
+    }
+
     componentWillUnmount() {
         clearTimeout(this.timeout);
         this._mounted=false;
@@ -354,8 +362,8 @@ export default class Content extends HasAlert {
 
         return (
             <Card fluid style={Object.assign({}, contentStyle.formSection, this.state.tokenLoaded ? { paddingBottom: 0 } : {}, this.props.isMobile ? {
-                paddingTop: '48px',
-                paddingBottom: '48px' } : {})} >
+                paddingTop: '36px',
+                paddingBottom: '36px' } : {})} >
                 <Container>
                     <Card.Header style={contentStyle.main}>
                         <Grid stackable divided padded='horizontally' className={this.state.tokenLoaded ? 'mb-24' : ''}>

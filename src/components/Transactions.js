@@ -326,7 +326,7 @@ export default class Transactions extends Component {
                         </Card>
                     </div>
                 </div>
-                <div className="btn-wrapper2">
+                <div className="btn-wrapper2" style={this.props.isMobile ? {} : {paddingBottom: '100px'}}>
                     <Grid>
                         { !this.props.isMobile &&
                             <Grid.Column width={4}>
@@ -335,19 +335,21 @@ export default class Transactions extends Component {
                         }
                         <Grid.Column width={this.props.isMobile ? 16 : 12}  textAlign='right'>
                             <Grid>
-                                <Grid.Column width={12}>
-                                    <Button title='Send remaining Balance' className="ash curved-border mr-12" onClick={this.setMaxValue()} {...balanceButtonProps} >
-                                        Send remaining Balance
-                                    </Button>
-                                    <Button title='Add new address' className="ash curved-border" disabled={!this.state.isBatch} onClick={this.addToArray} {...addAddressButtonProps}>
-                                        Add new address
-                                    </Button>
-                                </Grid.Column>
-                                <Grid.Column width={4}  textAlign='right'>
-                                    <Button onClick={this.props.transferTokens} disabled={this.props.sendingTokens || !this.props.canSend} loading={this.props.sendingTokens}  className="transfer curved-border" >
-                                        Transfer {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.totalRecipientsAmounts} ${this.props.symbol}(s)`}
-                                    </Button>
-                                </Grid.Column>
+                                <Grid.Row>
+                                    <Grid.Column width={this.props.isMobile ? 10 : 12}>
+                                        <Button title='Send remaining Balance' className="ash curved-border mr-12" onClick={this.setMaxValue()} {...balanceButtonProps} >
+                                            Send remaining Balance
+                                        </Button>
+                                        <Button title='Add new address' className="ash curved-border" disabled={!this.state.isBatch} onClick={this.addToArray} {...addAddressButtonProps}>
+                                            Add new address
+                                        </Button>
+                                    </Grid.Column>
+                                    <Grid.Column width={this.props.isMobile ? 6 : 4}  textAlign='right'>
+                                        <Button onClick={this.props.transferTokens} disabled={this.props.sendingTokens || !this.props.canSend} loading={this.props.sendingTokens}  className="transfer curved-border" >
+                                            Transfer {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.totalRecipientsAmounts} ${this.props.symbol}(s)`}
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
                             </Grid>
                         </Grid.Column>
                     </Grid>

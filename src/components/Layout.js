@@ -49,85 +49,89 @@ export default class Layout extends Component {
             <div className={this.props.isMobile ? 'mobile' : ''} >
                 {call2Action.message && this.state.visible &&
                     <div className={call2Action.wrapperStyle ? '' : 'alertWrapper'} style={call2Action.wrapperStyle || {}}>
-                        <Container style={this.props.isMobile ? { paddingTop: '1em', paddingBottom: '1em' } : { paddingTop: '2em', paddingBottom: '2em' }}>
-                            <Grid columns={call2Action.columns || 2}>
-                                <Grid.Column width={14}>
-                                    <span>
-                                        {call2Action.message}
-                                    </span>
-                                </Grid.Column>
-                                <Grid.Column width={2} verticalAlign="middle"  textAlign="center">
-                                    { this.props.isMobile ?
-                                        <Button icon='close' basic className="white" onClick={this.handleDismiss}/> :
-                                        <a onClick={this.handleDismiss} className="dismiss">DISMISS</a>
-                                    }
-                                </Grid.Column>
+                        <div style={this.props.isMobile ? { padding: '0', paddingTop: '1em', paddingBottom: '1em' } : { paddingTop: '2em', paddingBottom: '2em' }}>
+                            <Grid>
+                                <Grid.Row columns={call2Action.columns || 2}>
+                                    <Grid.Column width={14}>
+                                        <Container>
+                                            {call2Action.message}
+                                        </Container>
+                                    </Grid.Column>
+                                    <Grid.Column width={2} verticalAlign="middle"  textAlign="center">
+                                        { this.props.isMobile ?
+                                            <Button icon='close' basic className="white" onClick={this.handleDismiss}/> :
+                                            <a onClick={this.handleDismiss} className="dismiss">DISMISS</a>
+                                        }
+                                    </Grid.Column>
+                                </Grid.Row>
                             </Grid>
-                        </Container>
+                        </div>
                     </div>
                 }
                 <div  className={`header-section ${this.state.tokenLoaded ? 'tokenLoaded' : ''}`}>
-                    <Container style={{ paddingTop: '2em', paddingBottom: this.props.isMobile ? '0' : '3em', width: '100%' }}>
                         { this.props.isMobile ?
-                            <Header as='h1' style={{ paddingBottom: '0.5em', margin: 0 }} >
-                                <Grid rows={2}>
-                                    <Grid.Row className="logo-wrapper mobile" style={Object.assign({ paddingTop: '0.5em', paddingBottom: '0.1em', margin: '0' }, mobilePadding)}>
-                                        <Grid.Column verticalAlign="middle">
+                            <div style={{ paddingTop: '2em', paddingBottom: '0', width: '100%' }}>
+                                <Header as='h1' style={{ paddingBottom: '0.5em', margin: 0 }} >
+                                    <div rows={2}>
+                                        <div className="logo-wrapper mobile" style={{paddingBottom: '0 !important'}}>
+                                            <div style={Object.assign({ verticalAlign:'middle', paddingTop: '0.5em', paddingBottom: '0.1em', margin: '0' }, mobilePadding)}>
+                                                <Link to='/'>
+                                                    <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
+                                                </Link>
+                                            </div>
+                                        </div>
+                                        <div style={{textAlign: 'right'}} >
+                                            <div style={{verticalAlign: 'middle'}}>
+                                                {web3Service.isWeb3Viewable &&
+                                                    <small className="meta-address-holder address">
+                                                        { this.state.address &&
+                                                            <a
+                                                                href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
+                                                                rel="noopener noreferrer" >
+                                                                {this.state.address || '...'}
+                                                            </a>
+                                                        }
+                                                        { !this.state.address &&
+                                                            '...'
+                                                        }
+                                                    </small>
+                                                }
+                                                </div>
+                                        </div>
+                                    </div>
+                                </Header>
+                            </div> :
+                            <Container style={{ paddingTop: '2em', paddingBottom: '3em', width: '100%' }}>
+                                <Header as='h1' dividing className='white-bordered' style={{ paddingBottom: '0.5em' }} >
+                                    <Grid columns={2}>
+                                        <Grid.Column className="logo-wrapper" width={10} style={{ color: 'reset' }}>
                                             <Link to='/'>
-                                                <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
+                                                <Image src="../images/icons/logo-white.svg" className="logo"/> {appName}
                                             </Link>
                                         </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row textAlign="right" >
-                                        <Grid.Column verticalAlign="middle">
+                                        <Grid.Column textAlign="right" width={6}>
                                             {web3Service.isWeb3Viewable &&
-                                                <small className="meta-address-holder address">
-                                                    { this.state.address &&
-                                                        <a
-                                                            href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
-                                                            rel="noopener noreferrer" >
-                                                            {this.state.address || '...'}
-                                                        </a>
-                                                    }
-                                                    { !this.state.address &&
-                                                        '...'
-                                                    }
-                                                </small>
+                                            <small className="meta-address-holder address">
+                                                { this.state.address &&
+                                                    <a
+                                                        href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
+                                                        rel="noopener noreferrer" >
+                                                        {this.state.address}
+                                                    </a>
+                                                }
+                                                { !this.state.address &&
+                                                    '...'
+                                                }
+                                            </small>
                                             }
-                                            </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </Header> :
-                            <Header as='h1' dividing className='white-bordered' style={{ paddingBottom: '0.5em' }} >
-                                <Grid columns={2}>
-                                    <Grid.Column className="logo-wrapper" width={10} style={{ color: 'reset' }}>
-                                        <Link to='/'>
-                                            <Image src="../images/icons/logo-white.svg" className="logo"/> {appName}
-                                        </Link>
-                                    </Grid.Column>
-                                    <Grid.Column textAlign="right" width={6}>
-                                        {web3Service.isWeb3Viewable &&
-                                        <small className="meta-address-holder address">
-                                            { this.state.address &&
-                                                <a
-                                                    href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
-                                                    rel="noopener noreferrer" >
-                                                    {this.state.address}
-                                                </a>
+                                            { !web3Service.isWeb3Viewable &&
+                                                <small> Loading Network ...</small>
                                             }
-                                            { !this.state.address &&
-                                                '...'
-                                            }
-                                        </small>
-                                        }
-                                        { !web3Service.isWeb3Viewable &&
-                                            <small> Loading Network ...</small>
-                                        }
-                                    </Grid.Column>
-                                </Grid>
-                            </Header>
+                                        </Grid.Column>
+                                    </Grid>
+                                </Header>
+                            </Container>
                         }
-                    </Container>
                     <div style={this.props.isMobile ? mobilePadding : {}}>
                         < Route path="/:address?" render ={ props =>
                             <Content isMobile={this.props.isMobile} {...{ displayAddress: this.showUserAddress, tokenLoadedFunc: this.setTokenLoaded }} {...props}/>
