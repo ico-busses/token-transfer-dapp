@@ -326,7 +326,7 @@ export default class Transactions extends Component {
                         </Card>
                     </div>
                 </div>
-                <div className="btn-wrapper2" style={this.props.isMobile ? {} : {paddingBottom: '100px'}}>
+                <div className="btn-wrapper2" style={this.props.isMobile ? {} : { paddingBottom: '100px' }}>
                     <Grid>
                         { !this.props.isMobile &&
                             <Grid.Column width={4}>

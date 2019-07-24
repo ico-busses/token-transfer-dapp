@@ -73,15 +73,15 @@ export default class Layout extends Component {
                             <div style={{ paddingTop: '2em', paddingBottom: '0', width: '100%' }}>
                                 <Header as='h1' style={{ paddingBottom: '0.5em', margin: 0 }} >
                                     <div rows={2}>
-                                        <div className="logo-wrapper mobile" style={{paddingBottom: '0 !important'}}>
+                                        <div className="logo-wrapper mobile" style={{ paddingBottom: '0 !important' }}>
                                             <div style={Object.assign({ verticalAlign:'middle', paddingTop: '0.5em', paddingBottom: '0.1em', margin: '0' }, mobilePadding)}>
                                                 <Link to='/'>
                                                     <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
                                                 </Link>
                                             </div>
                                         </div>
-                                        <div style={{textAlign: 'right'}} >
-                                            <div style={{verticalAlign: 'middle'}}>
+                                        <div style={{ textAlign: 'right' }} >
+                                            <div style={{ verticalAlign: 'middle' }}>
                                                 {web3Service.isWeb3Viewable &&
                                                     <small className="meta-address-holder address">
                                                         { this.state.address &&
