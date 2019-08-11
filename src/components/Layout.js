@@ -76,7 +76,7 @@ export default class Layout extends Component {
                                         <div className="logo-wrapper mobile" style={{ paddingBottom: '0 !important' }}>
                                             <div style={Object.assign({ verticalAlign:'middle', paddingTop: '0.5em', paddingBottom: '0.1em', margin: '0' }, mobilePadding)}>
                                                 <Link to='/'>
-                                                    <Image src="../images/icons/logo-colored.svg" className="logo"/> {appName}
+                                                    <Image src="./images/icons/logo-colored.svg" className="logo"/> {appName}
                                                 </Link>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@ export default class Layout extends Component {
                                     <Grid columns={2}>
                                         <Grid.Column className="logo-wrapper" width={10} style={{ color: 'reset' }}>
                                             <Link to='/'>
-                                                <Image src="../images/icons/logo-white.svg" className="logo"/> {appName}
+                                                <Image src="./images/icons/logo-white.svg" className="logo"/> {appName}
                                             </Link>
                                         </Grid.Column>
                                         <Grid.Column textAlign="right" width={6}>
