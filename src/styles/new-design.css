@@ -139,9 +139,13 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 
 .ui.input input {
-    line-height: 2.6em !important;
+    line-height: 3em !important;
     padding: 7px 25px !important;
     margin-bottom: 15px !important;
+}
+
+.mobile .ui.input input {
+    line-height: 2.6em !important;
 }
 
 .ui button.curved-border {

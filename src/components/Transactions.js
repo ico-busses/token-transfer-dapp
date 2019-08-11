@@ -250,7 +250,7 @@ export default class Transactions extends Component {
                     }
                     <div>
                         { this.state.recipientAddresses.map( (address, index) =>
-                            <Card fluid className={`board ${!this.props.isMobile ? 'mb-60 pt-24 pb-24' : 'mb-0'}`} key={index}>
+                            <Card fluid className={`board ${!this.props.isMobile ? 'mb-60' : 'mb-0'}`} key={index}>
                                 <Grid className={`${!this.props.isMobile ? 'mt-24 mb-24' : 'mt-0 mb-0'}`}>
                                     <Grid.Row columns={this.props.isMobile ? 1 : 3 } >
                                         { !this.props.isMobile &&
@@ -292,7 +292,7 @@ export default class Transactions extends Component {
                                 }
                             </Card>
                         )}
-                        <Card fluid className={`board ${!this.props.isMobile ? 'mb-60 pt-24 pb-24' : 'mb-0'}`}>
+                        <Card fluid className={`board ${!this.props.isMobile ? 'mb-60' : 'mb-0'}`}>
                             <Grid columns={this.props.isMobile ? 1 : 3} className={`${!this.props.isMobile ? 'mt-24 mb-24' : 'mt-0 mb-0'}`}>
                                 { !this.props.isMobile &&
                                     <Grid.Column width={2}></Grid.Column>
