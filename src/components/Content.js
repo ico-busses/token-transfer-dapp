@@ -153,10 +153,14 @@ export default class Content extends HasAlert {
 
     async scoutUpdates() {
         const SCOUT_TIMEOUT = 1000;
-        if (!this._mounted || this.state.scouting) {
+        if (!this._mounted) {
             return false;
         }
         this.timeout = setTimeout(() => this.scoutUpdates(), SCOUT_TIMEOUT);
+
+        if (this.state.scouting) {
+            return false;
+        }
         this.setState({ scouting: true });
         try {
             const accountsChanged = await web3Service.getAccountUpdates();
@@ -217,7 +221,7 @@ export default class Content extends HasAlert {
         try {
             await Promise.all(
                 txDetails.addresses.map( (address, index) => {
-                    return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).valueOf(), {
+                    return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).toFixed(), {
                         onTransactionHash: (hash) => {
                             this.notify({ msg: 'Transfer successful, track transaction.', type: 'success', autoClose: 1000 });
                             this.notify({ msg: <div><b>Transaction hash:</b> {hash}</div>, type: 'info' });
