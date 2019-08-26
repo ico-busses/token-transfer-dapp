@@ -242,7 +242,7 @@ export default class Content extends HasAlert {
         try {
             await Promise.all(
                 txDetails.addresses.map( (address, index) => {
-                    return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).valueOf(), {
+                    return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).toFixed(), {
                         onTransactionHash: (hash) => {
                             this.notify({ msg: 'Transfer successful, track transaction.', type: 'success', autoClose: 1000 });
                             this.notify({ msg: <div><b>Transaction hash:</b> {hash}</div>, type: 'info' });
