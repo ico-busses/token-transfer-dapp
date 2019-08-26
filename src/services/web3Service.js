@@ -216,7 +216,11 @@ class web3Service {
         } else {
             try {
                 const accounts = await this._web3.eth.getAccounts();
-                accountChanged = (!!this.accounts && this.accounts.length) !== (!!accounts && accounts.length) || !!this.accounts && typeof this.accounts.length === 'undefined' && this.accounts.some((account,id) => account !== accounts[id]);
+                accountChanged =
+                    (!!this.accounts && Object.keys(this.accounts).length) !== (!!accounts && Object.keys(accounts).length) ||
+                    ( !!this.accounts && typeof this.accounts.length !== 'undefined' &&
+                     this.accounts.some((account,id) => account !== accounts[id])
+                    );
                 this.accounts = accounts;
                 this.defaultAccount = this.accounts[0] || '';
             } catch (e) {
