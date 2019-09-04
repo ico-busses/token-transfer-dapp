@@ -29,6 +29,7 @@ class web3Service {
                 this._web3 = new Web3(
                     Web3.givenProvider || window.web3.currentProvider
                 );
+            } else {
                 this.emitter.emit('info', 'Using backup(infura) node');
                 this._web3 = new Web3(
                         backupNode
