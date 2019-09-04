@@ -31,9 +31,21 @@ class web3Service {
                 );
             } else {
                 this.emitter.emit('info', 'Using backup(infura) node');
-                this._web3 = new Web3(
-                        backupNode
-                );
+                if(backupNode.includes('http')) {
+                    this._web3 = new Web3.providers.HttpProvider(
+                        backupNode,
+                        {
+                          headers: [{
+                            name: 'Access-Control-Allow-Origin',
+                            value: backupNode
+                          }]
+                        }
+                      )
+                } else {
+                    this._web3 = new Web3(
+                            backupNode
+                    );
+                }
             }
             this.isMetamask = this._web3.currentProvider.isMetaMask;
             this.netId = await this._web3.eth.net.getId().valueOf();
