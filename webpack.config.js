@@ -20,6 +20,7 @@ const settings = merge(baseConfig, {
     contentBase: path.resolve('src/'),
     publicPath: 'http://localhost:8080/', // full URL is necessary for Hot Module Replacement if additional path will be added.
     quiet: false,
+    https: true,
     hot: true,
     historyApiFallback: true,
     inline: true

@@ -30,17 +30,23 @@ class web3Service {
                     Web3.givenProvider || window.web3.currentProvider
                 );
             } else {
-                this.emitter.emit('info', 'Using backup(infura) node');
+                this.emitter.emit('info', 'Using backup(infura) Mainnet node');
                 if(backupNode.includes('http')) {
-                    this._web3 = new Web3.providers.HttpProvider(
-                        backupNode,
-                        {
-                          headers: [{
-                            name: 'Access-Control-Allow-Origin',
-                            value: backupNode
-                          }]
-                        }
-                      )
+                    const slashIndex = backupNode.indexOf('//')+2;
+                    const queryIndex = backupNode.indexOf('/', slashIndex) || backupNode.indexOf('?', slashIndex);
+                    const domain = queryIndex >= 0 ? backupNode.substring(0, queryIndex) : backupNode;
+                    console.log()
+                    this._web3 = new Web3(
+                        new Web3.providers.HttpProvider(
+                            backupNode,
+                            {
+                            headers: [{
+                                name: 'Access-Control-Allow-Origin',
+                                value: domain
+                            }]
+                            }
+                        )
+                    );
                 } else {
                     this._web3 = new Web3(
                             backupNode
