@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import EventEmitter from 'events';
-import { ethereumNode, explorers, fnSignatures, networks } from '../config';
+import { backupNode, ethereumNode, explorers, fnSignatures, networks } from '../config';
 import ERC20 from '../abi/ForeignToken';
 
 class web3Service {
@@ -28,6 +28,10 @@ class web3Service {
                 // Default to metamask/injected web3
                 this._web3 = new Web3(
                     Web3.givenProvider || window.web3.currentProvider
+                );
+                this.emitter.emit('info', 'Using backup(infura) node');
+                this._web3 = new Web3(
+                        backupNode
                 );
             }
             this.isMetamask = this._web3.currentProvider.isMetaMask;
