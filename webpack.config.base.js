@@ -30,7 +30,7 @@ const settings = {
                         options: {
                             importLoaders: 1,
                             plugins: () => [
-                                require('autoprefixer')({ browsers: ['last 3 versions'] }),
+                                require('autoprefixer')(),
                             ]
                         }
                     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Divider, Grid, Header, Image } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { Divider, Grid, Header, Icon, Image } from 'semantic-ui-react';
 import { footerStyle } from '../styles';
 import { features } from '../config';
 import '../styles/responsive.css';
@@ -11,14 +12,13 @@ export default class Footer extends Component {
     render() {
         return (
             <div>
-                <Divider />
                 <Grid columns={2} divided>
-                    <Grid.Column className="featured"  floated='left' verticalAlign='middle'>
+                    <Grid.Column className="featured"  floated='left' verticalAlign='middle' >
                         <Header as='h3' >
-                            Featured:
+                            Featured
                         </Header>
                     </Grid.Column>
-                    <Grid.Column className="stateOfDaps"  >
+                    <Grid.Column className="stateOfDaps" style={footerStyle.noBoxShadow}  >
                         <Grid.Row verticalAlign='middle' style={footerStyle.features_row}>
                             <InfiniteCarousel
                                 breakpoints={[
@@ -58,7 +58,7 @@ export default class Footer extends Component {
                                     <div key={featured.text} style={footerStyle.features_column}>
                                         <a target='_blank' title={featured.text} href={`${featured.link}?utm_source=token-transfer-dapp`} rel="noopener noreferrer" style={footerStyle.features}>
                                             <Image
-                                                style={footerStyle.features_img} src={featured.image}
+                                                 src={featured.image}
                                                />
                                         </a>
                                     </div>
@@ -73,20 +73,56 @@ export default class Footer extends Component {
                         </Grid.Row>
                     </Grid.Column>
                 </Grid>
-                <Divider />
-                <Grid centered columns={2} style={footerStyle.base} >
-                    <Grid.Column floated='left' >
-                        Contributions ::
-                        <b>
-                            ETH - 0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
-                        </b>
-                    </Grid.Column>
-                    <Grid.Row >
-                        Powered by :
-                        <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer">: ICO BUSSES</a> .
-                    </Grid.Row>
-                </Grid>
+                <Divider className='white-bordered-double'/>
+                { this.props.isMobile ?
+                    <Grid rows={2} style={footerStyle.base} >
+                        <Grid.Row >
+                            <Grid.Column>
+                                <p>
+                                    Contributions :: <br/>
+                                    <b>
+                                        ETH -
+                                        <span className="address">
+                                            0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
+                                        </span>
+                                    </b>
+                                </p>
+                                Powered by :
+                                <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer" style={footerStyle.footerLink}>: ICO BUSSES</a> .
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row >
+                            <Grid.Column>
+                                <a href='https://github.com/ico-busses/token-transfer-dapp' style={footerStyle.source} >
+                                    Source code
+                                    <Icon color='black' size='large' name="github" style={footerStyle.sorceIcon} />
+                                </a>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid> :
+                    <Grid columns={2} style={footerStyle.base} >
+                        <Grid.Column floated='left'>
+                            Contributions :: <br/>
+                            <b className="address">
+                                ETH - 0x965d1c9987bd2c34e151e63d60aff8e9db6b1561
+                            </b>
+                            <br/>
+                            Powered by :
+                            <a target='_blank' href='https://github.com/ico-busses' rel="noopener noreferrer" style={footerStyle.footerLink}>: ICO BUSSES</a> .
+                        </Grid.Column>
+                        <Grid.Column width={4} >
+                            <a href='https://github.com/ico-busses/token-transfer-dapp' style={footerStyle.source} >
+                                Source code
+                                <Icon color='black' size='large' name="github" style={footerStyle.sorceIcon} />
+                            </a>
+                        </Grid.Column>
+                    </Grid>
+                }
             </div>
         );
     }
 }
+
+Footer.propTypes= {
+    isMobile: PropTypes.bool.isRequired
+};
