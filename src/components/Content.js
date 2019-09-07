@@ -33,6 +33,9 @@ export default class Content extends HasAlert {
         web3Service.emitter.on('error', (e) =>
             this.notify({ msg: e.message|| e, type: 'error' })
         );
+        web3Service.emitter.on('info', (e) =>
+            this.notify({ msg: e.message|| e, type: 'info' })
+        );
     }
 
     state = {

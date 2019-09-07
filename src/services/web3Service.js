@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import EventEmitter from 'events';
-import { ethereumNode, explorers, fnSignatures, networks } from '../config';
+import { backupNode, ethereumNode, explorers, fnSignatures, networks } from '../config';
 import ERC20 from '../abi/ForeignToken';
 
 class web3Service {
@@ -29,6 +29,29 @@ class web3Service {
                 this._web3 = new Web3(
                     Web3.givenProvider || window.web3.currentProvider
                 );
+            } else {
+                this.emitter.emit('info', 'Using backup(infura) Mainnet node');
+                if (backupNode.includes('http')) {
+                    const slashIndex = backupNode.indexOf('//')+2;
+                    const queryIndex = backupNode.indexOf('/', slashIndex) || backupNode.indexOf('?', slashIndex);
+                    const domain = queryIndex >= 0 ? backupNode.substring(0, queryIndex) : backupNode;
+
+                    this._web3 = new Web3(
+                        new Web3.providers.HttpProvider(
+                            backupNode,
+                            {
+                            headers: [{
+                                name: 'Access-Control-Allow-Origin',
+                                value: domain
+                            }]
+                            }
+                        )
+                    );
+                } else {
+                    this._web3 = new Web3(
+                            backupNode
+                    );
+                }
             }
             this.isMetamask = this._web3.currentProvider.isMetaMask;
             this.netId = await this._web3.eth.net.getId().valueOf();
