@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
-import { Checkbox, Header, Grid, Form, Icon, Button } from 'semantic-ui-react';
-import { contentStyle } from '../styles';
+import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
 
 export default class Transactions extends Component {
 
@@ -79,6 +78,7 @@ export default class Transactions extends Component {
             });
         } else {
             this.setState({ isBatch: !this.state.isBatch });
+            this.addToArray();
         }
     }
 
@@ -223,126 +223,137 @@ export default class Transactions extends Component {
     }
 
     render () {
+        const balanceButtonProps = {};
+
+        const addAddressButtonProps = {};
+
+        if (this.props.isMobile) {
+            balanceButtonProps.floated = 'left';
+            addAddressButtonProps.floated = 'right';
+        }
         return (
             <div>
-                <Grid.Row>
-                    <Grid.Column style={contentStyle.slider}>
-                        <Checkbox slider checked={this.state.isBatch} onChange={this.toggleBatch} label='Multiple transfers' />
-                    </Grid.Column>
-                </Grid.Row>
-                { this.state.isBatch &&
-                    <div>
-                        <Grid columns={3} >
-                            <Grid.Column width={9}>
-                                    <Header as='h4' >
-                                        To Address
-                                    </Header>
-                            </Grid.Column>
-                            <Grid.Column width={6}>
-                                    <Header as='h4' >
-                                        Amount to send
-                                    </Header>
-                            </Grid.Column>
-                            <Grid.Column width={1}>
-                            </Grid.Column>
+                <div className='mb-0'>
+                    { this.props.isMobile &&
+                        <Grid className='mb-24'>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Divider className='orange single-bordered single-bottom-bordered' />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Checkbox toggle  label='Multiple Transfers' checked={this.state.isBatch} onChange={this.toggleBatch} />
+                                </Grid.Column>
+                            </Grid.Row>
                         </Grid>
+                    }
+                    <div>
                         { this.state.recipientAddresses.map( (address, index) =>
-                            <Grid columns={3} key={address} style={contentStyle.contentRow}>
-                                <Grid.Column width={7}>
-                                    <Form.Field error={Boolean(address) && !this.props.isValidAddress(address)} >
+                            <Card fluid className={`board ${!this.props.isMobile ? 'mb-60' : 'mb-0'}`} key={index}>
+                                <Grid className={`${!this.props.isMobile ? 'mt-24 mb-24' : 'mt-0 mb-0'}`}>
+                                    <Grid.Row columns={this.props.isMobile ? 1 : 3 } >
+                                        { !this.props.isMobile &&
+                                            <Grid.Column width={2}></Grid.Column>
+                                        }
+                                        <Grid.Column  width={this.props.isMobile ? 16 : 12 }>
+                                            <Form.Field error={Boolean(address) && !this.props.isValidAddress(address)} >
+                                                <Form.Input
+                                                    placeholder='Address'
+                                                    value={this.state.recipientAddresses[index]}
+                                                    onChange={this.onChange('recipientAddresses', index)}
+                                                    onKeyUp={this.onChange('recipientAddresses', index)}
+                                                    onBlur={this.onChange('recipientAddresses', index)}
+                                                    className="curved-border mb-12"
+                                                />
+                                            </Form.Field>
+                                            <Form.Field error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
+                                                <Form.Input
+                                                    placeholder={`${this.props.symbol}s to send`}
+                                                    value={this.state.recipientAmounts[index]}
+                                                    onChange={this.onChange('recipientAmounts', index)}
+                                                    onKeyUp={this.onChange('recipientAmounts', index)}
+                                                    onBlur={this.onChange('recipientAmounts', index)}
+                                                    className="curved-border mb-12"
+                                                />
+                                            </Form.Field>
+                                            <Button icon floated='right' color='red' className='delete-button curved-border' onClick={this.removeFromArray(index)} title='Remove address'>
+                                                {/* <Icon name='delete' style={contentStyle.iconButton}  /> */}
+                                                REMOVE
+                                            </Button>
+                                        </Grid.Column>
+                                        { !this.props.isMobile &&
+                                            <Grid.Column width={2}></Grid.Column>
+                                        }
+                                    </Grid.Row>
+                                </Grid>
+                                { this.props.isMobile &&
+                                    <Divider className='mb-0 mt-0' />
+                                }
+                            </Card>
+                        )}
+                        <Card fluid className={`board ${!this.props.isMobile ? 'mb-60' : 'mb-0'}`}>
+                            <Grid columns={this.props.isMobile ? 1 : 3} className={`${!this.props.isMobile ? 'mt-24 mb-24' : 'mt-0 mb-0'}`}>
+                                { !this.props.isMobile &&
+                                    <Grid.Column width={2}></Grid.Column>
+                                }
+                                <Grid.Column  width={this.props.isMobile ? 16 : 12 }>
+                                    <Form.Field error={Boolean(this.state.recipientAddress) && !this.props.isValidAddress(this.state.recipientAddress)} >
                                         <Form.Input
                                             placeholder='Address'
-                                            value={this.state.recipientAddresses[index]}
-                                            onChange={this.onChange('recipientAddresses', index)}
-                                            onKeyUp={this.onChange('recipientAddresses', index)}
-                                            onBlur={this.onChange('recipientAddresses', index)}
+                                            value={this.state.recipientAddress}
+                                            onChange={this.onChange('recipientAddress')}
+                                            onKeyUp={this.onChange('recipientAddress')}
+                                            onBlur={this.onChange('recipientAddress')}
+                                            className="curved-border mb-12"
                                         />
                                     </Form.Field>
-                                </Grid.Column>
-                                <Grid.Column width={7}>
-                                    <Form.Field error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
+                                    <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
                                         <Form.Input
                                             placeholder={`${this.props.symbol}s to send`}
-                                            value={this.state.recipientAmounts[index]}
-                                            onChange={this.onChange('recipientAmounts', index)}
-                                            onKeyUp={this.onChange('recipientAmounts', index)}
-                                            onBlur={this.onChange('recipientAmounts', index)}
-                                            style={{ width : '85%' }}
-                                            action={<Button icon color='blue' onClick={this.setMaxValue(index)} title='Send remaining Balance'>
-                                                    <Icon name='suitcase'/>
-                                                </Button>}
+                                            value={this.state.recipientAmount}
+                                            onChange={this.onChange('recipientAmount')}
+                                            onKeyUp={this.onChange('recipientAmount')}
+                                            onBlur={this.onChange('recipientAmount')}
+                                            className="curved-border mb-12"
                                         />
                                     </Form.Field>
                                 </Grid.Column>
-                                <Grid.Column width={2} >
-                                    <Button icon basic color='red' onClick={this.removeFromArray(index)} title='Remove address'>
-                                        <Icon name='delete' style={contentStyle.iconButton}  />
-                                    </Button>
-                                </Grid.Column>
+                                { !this.props.isMobile &&
+                                    <Grid.Column  width={2}></Grid.Column>
+                                }
                             </Grid>
-                        )}
-                        <Grid columns={3} style={contentStyle.contentRow}>
-                            <Grid.Column width={7}>
-                                <Form.Field error={Boolean(this.state.recipientAddress) && (!this.props.isValidAddress(this.state.recipientAddress) || this.state.recipientAddresses.includes(this.state.recipientAddress))} >
-                                    <Form.Input
-                                        placeholder='Address'
-                                        value={this.state.recipientAddress}
-                                        onChange={this.onChange('recipientAddress')}
-                                        onKeyUp={this.onChange('recipientAddress')}
-                                        onBlur={this.onChange('recipientAddress')}
-                                    />
-                                </Form.Field>
-                            </Grid.Column>
-                            <Grid.Column width={7}>
-                                <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
-                                    <Form.Input
-                                        placeholder={`${this.props.symbol}s to send`}
-                                        value={this.state.recipientAmount}
-                                        onChange={this.onChange('recipientAmount')}
-                                        onKeyUp={this.onChange('recipientAmount')}
-                                        onBlur={this.onChange('recipientAmount')}
-                                        style={{ width : '85%' }}
-                                        action={<Button icon color='blue' onClick={this.setMaxValue()} title='Send remaining Balance'>
-                                                <Icon name='suitcase'/>
-                                            </Button>}
-                                    />
-                                </Form.Field>
-                            </Grid.Column>
-                            <Grid.Column width={2}>
-                                <Button icon basic color='teal' onClick={this.addToArray} title='Add new address'>
-                                    <Icon name='plus' style={contentStyle.iconButton}  />
-                                </Button>
-                            </Grid.Column>
-                        </Grid>
+                        </Card>
                     </div>
-                }
-                { !this.state.isBatch &&
-                    <div>
-                        <Form.Field error={Boolean(this.state.recipientAddress) && !this.props.isValidAddress(this.state.recipientAddress)} >
-                            <label>To Address: </label>
-                            <Form.Input
-                                placeholder='Address'
-                                value={this.state.recipientAddress}
-                                onChange={this.onChange('recipientAddress')}
-                                onKeyUp={this.onChange('recipientAddress')}
-                                onBlur={this.onChange('recipientAddress')}
-                            />
-                        </Form.Field>
-                        <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
-                            <label>Amount to send</label>
-                            <Form.Input
-                                placeholder={`${this.props.symbol}s to send`}
-                                value={this.state.recipientAmount}
-                                onChange={this.onChange('recipientAmount')}
-                                onKeyUp={this.onChange('recipientAmount')}
-                                onBlur={this.onChange('recipientAmount')}
-                            />
-                            <a onClick={this.setMaxValue()} style={contentStyle.entire} >
-                                Send remaining Balance
-                            </a>
-                        </Form.Field>
-                    </div>
-                }
+                </div>
+                <div className="btn-wrapper2" style={this.props.isMobile ? {} : { paddingBottom: '100px' }}>
+                    <Grid>
+                        { !this.props.isMobile &&
+                            <Grid.Column width={4}>
+                                <Checkbox toggle  label='Multiple Transfers'  checked={this.state.isBatch} onChange={this.toggleBatch} />
+                            </Grid.Column>
+                        }
+                        <Grid.Column width={this.props.isMobile ? 16 : 12}  textAlign='right'>
+                            <Grid>
+                                <Grid.Row>
+                                    <Grid.Column width={this.props.isMobile ? 10 : 12}>
+                                        <Button title='Send remaining Balance' className="ash curved-border mr-12" onClick={this.setMaxValue()} {...balanceButtonProps} >
+                                            Send remaining Balance
+                                        </Button>
+                                        <Button title='Add new address' className="ash curved-border" disabled={!this.state.isBatch} onClick={this.addToArray} {...addAddressButtonProps}>
+                                            Add new address
+                                        </Button>
+                                    </Grid.Column>
+                                    <Grid.Column width={this.props.isMobile ? 6 : 4}  textAlign='right'>
+                                        <Button onClick={this.props.transferTokens} disabled={this.props.sendingTokens || !this.props.canSend} loading={this.props.sendingTokens}  className="transfer curved-border" >
+                                            Transfer {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.totalRecipientsAmounts} ${this.props.symbol}(s)`}
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Grid.Column>
+                    </Grid>
+                </div>
             </div>
         );
     }
@@ -350,6 +361,7 @@ export default class Transactions extends Component {
 
 Transactions.propTypes = {
     balance: PropTypes.string.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     isValidAddress: PropTypes.func.isRequired,
     parseTokenAmount: PropTypes.func.isRequired,
     updateTotalAmount: PropTypes.func.isRequired,
@@ -357,5 +369,9 @@ Transactions.propTypes = {
     setTransferDetailsFetcher: PropTypes.func.isRequired,
     setValidRecipientAddressesSet: PropTypes.func.isRequired,
     setValidRecipientAmountsSet: PropTypes.func.isRequired,
-    symbol: PropTypes.string.isRequired
+    symbol: PropTypes.string.isRequired,
+    canSend: PropTypes.bool.isRequired,
+    sendingTokens: PropTypes.bool.isRequired,
+    transferTokens: PropTypes.func.isRequired,
+    totalRecipientsAmounts: PropTypes.number.isRequired
 };

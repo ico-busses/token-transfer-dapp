@@ -1,0 +1,14 @@
+.button.basic.white.icon, button.basic.white.icon :hover {
+    border: transparent;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.button.white.icon i {
+    color: white;
+}
+
+.button.white.icon:hover  i{
+    color: seashell;
+}

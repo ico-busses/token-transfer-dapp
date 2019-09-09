@@ -1,6 +1,15 @@
 export const footerStyle = {
+    source: {
+        float: 'right',
+        fontSize: '1.2em',
+        color: 'black'
+    },
+    sorceIcon: {
+        marginLeft: '0.2em',
+        fontSize: '1.8em'
+    },
     base: {
-       fontSize: '0.8em'
+       fontSize: '1em'
     },
     features: {
         maxWidth: '200px',
@@ -18,9 +27,13 @@ export const footerStyle = {
     features_row: {
         maxHeight: '72px',
     },
-    features_img: {
-        maxWidth: '140px',
-        maxHeight: '30px'
+    noBoxShadow: {
+        boxShadow: 'none'
+    },
+    footerLink:{
+        color: '#000000',
+        textDecoration: 'underline'
     }
+
 
 };
