@@ -434,6 +434,12 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     padding-bottom: 0;
 }
 
+.mobile .formDetails .card{
+    box-shadow: 0 0;
+    -webkit-box-shadow: 0 0;
+    -moz-box-shadow: 0 0;
+}
+
 .card.board {
     background-color: #ffffff;
     padding: 48px 48px;
@@ -446,9 +452,9 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 .mobile .card.board {
     padding: 0;
     border-radius: 0;
-    -webkit-box-shadow: 0px;
-    -moz-box-shadow: 0px;
-    box-shadow: 0px;
+    -webkit-box-shadow: 0 0;
+    -moz-box-shadow: 0 0;
+    box-shadow: 0 0;
 }
 
 .btnHolder{
