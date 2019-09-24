@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link, Route } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
 import ContractMap from 'eth-contract-metadata';
 import { Button, Card, Form, Grid, List, Loader, Search, Container } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
+import Approvals from './Approvals';
 import Transactions from './Transactions';
 import '../styles/new-design.css';
 
@@ -538,30 +540,42 @@ export default class Content extends HasAlert {
                                     </Grid>
                                 </div>
                                 <div>
-                                    <Form >
-                                        <div >
-                                            <Grid style={contentStyle.main} >
-                                                <Grid.Column width={16}>
-                                                        <Transactions
-                                                            balance={this.state.userBalance || '0'}
-                                                            symbol={this.state.contractDetails.symbol}
-                                                            isMobile={this.props.isMobile}
-                                                            isValidAddress={this.isValidAddress}
-                                                            parseTokenAmount={this.parseTokenAmount}
-                                                            updateTotalAmount={this.updateTotalAmount}
-                                                            setResetDetails={this.setResetDetails}
-                                                            setTransferDetailsFetcher={this.setTransferDetailsFetcher}
-                                                            setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
-                                                            setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
-                                                            canSend={this.canSend}
-                                                            sendingTokens={this.state.sendingTokens}
-                                                            transferTokens={this.transferTokens}
-                                                            totalRecipientsAmounts={this.state.totalRecipientsAmounts}
-                                                        />
-                                                </Grid.Column>
-                                            </Grid>
-                                        </div>
-                                    </Form>
+                                    <Route path="/:address/transfer" render={ props =>
+                                        <Transactions
+                                            balance={this.state.userBalance || '0'}
+                                            symbol={this.state.contractDetails.symbol}
+                                            isMobile={this.props.isMobile}
+                                            isValidAddress={this.isValidAddress}
+                                            parseTokenAmount={this.parseTokenAmount}
+                                            updateTotalAmount={this.updateTotalAmount}
+                                            setResetDetails={this.setResetDetails}
+                                            setTransferDetailsFetcher={this.setTransferDetailsFetcher}
+                                            setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
+                                            setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
+                                            canSend={this.canSend}
+                                            sendingTokens={this.state.sendingTokens}
+                                            transferTokens={this.transferTokens}
+                                            totalRecipientsAmounts={this.state.totalRecipientsAmounts}
+                                        />}
+                                    />
+                                    <Route path="/:address/approve" render={ props =>
+                                        <Approvals
+                                            balance={this.state.userBalance || '0'}
+                                            symbol={this.state.contractDetails.symbol}
+                                            isMobile={this.props.isMobile}
+                                            isValidAddress={this.isValidAddress}
+                                            parseTokenAmount={this.parseTokenAmount}
+                                            updateTotalAmount={this.updateTotalAmount}
+                                            setResetDetails={this.setResetDetails}
+                                            setTransferDetailsFetcher={this.setTransferDetailsFetcher}
+                                            setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
+                                            setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
+                                            canSend={this.canSend}
+                                            sendingTokens={this.state.sendingTokens}
+                                            transferTokens={this.transferTokens}
+                                            totalRecipientsAmounts={this.state.totalRecipientsAmounts}
+                                        />}
+                                    />
                                 </div>
                         </Container>
                     </div>
