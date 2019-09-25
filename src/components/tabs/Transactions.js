@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
-import { contentStyle } from '../styles';
+import { contentStyle } from '../../styles';
 
 export default class Transactions extends Component {
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
-import { contentStyle } from '../styles';
+import { contentStyle } from '../../styles';
 
 export default class Approvals extends Component {
 
@@ -244,11 +244,6 @@ export default class Approvals extends Component {
                                         <Grid.Row>
                                             <Grid.Column>
                                                 <Divider className='orange single-bordered single-bottom-bordered' />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                        <Grid.Row>
-                                            <Grid.Column>
-                                                <Checkbox toggle  label='Multiple Transfers' checked={this.state.isBatch} onChange={this.toggleBatch} />
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>

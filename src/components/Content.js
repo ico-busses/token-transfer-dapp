@@ -7,8 +7,9 @@ import ContractMap from 'eth-contract-metadata';
 import { Button, Card, Form, Grid, List, Loader, Search, Container } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
-import Approvals from './Approvals';
-import Transactions from './Transactions';
+import Approvals from './tabs/Approvals';
+import TabSelector from './TabSelector';
+import Transactions from './tabs/Transactions';
 import '../styles/new-design.css';
 
 const ContractMapAddresses = Object.keys(ContractMap);
@@ -540,6 +541,11 @@ export default class Content extends HasAlert {
                                     </Grid>
                                 </div>
                                 <div>
+                                    <Route render={ props =>
+                                        <TabSelector
+                                            {...this.props}
+                                        />}
+                                    />
                                     <Route path="/:address/transfer" render={ props =>
                                         <Transactions
                                             balance={this.state.userBalance || '0'}
