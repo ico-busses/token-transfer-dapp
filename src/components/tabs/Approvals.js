@@ -8,7 +8,7 @@ export default class Approvals extends Component {
 
     constructor (props) {
         super(props);
-        this.props.setTransferDetailsFetcher(this.fetchTransferDetails.bind(this));
+        this.props.setTransferDetailsFetcher(this.fetchApproveDetails.bind(this));
         this.props.setResetDetails(this.resetDetails.bind(this));
 
         this.onChange = this.onChange.bind(this);
@@ -148,7 +148,7 @@ export default class Approvals extends Component {
         });
     }
 
-    fetchTransferDetails () {
+    fetchApproveDetails () {
         if (this.state.recipientAddresses.length !== this.state.recipientAmounts.length) {
             return false;
         }
@@ -167,11 +167,14 @@ export default class Approvals extends Component {
     removeFromArray = (index) => () => {
         const addresses = this.state.recipientAddresses;
         const amounts = this.state.recipientAmounts;
+        const balances = this.state.recipientBalances;
         addresses.splice(index, 1);
         amounts.splice(index, 1);
+        balances.splice(index, 1);
 
         this.setState({
             recipientAddresses: addresses,
+            recipientBalances: balances,
             recipientAmounts: amounts
         });
     }
@@ -308,6 +311,11 @@ export default class Approvals extends Component {
                                                         className="curved-border mb-12"
                                                     />
                                                 </Form.Field>
+                                                <Form.Field error={Boolean(this.state.recipientAddress) && !this.props.isValidAddress(this.state.recipientAddress)} >
+                                                    <h4>
+
+                                                    </h4>
+                                                </Form.Field>
                                                 <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
                                                     <Form.Input
                                                         placeholder={`${this.props.symbol}s to send`}
@@ -328,25 +336,17 @@ export default class Approvals extends Component {
                             </div>
                             <div className="btn-wrapper2" style={this.props.isMobile ? {} : { paddingBottom: '100px' }}>
                                 <Grid>
-                                    { !this.props.isMobile &&
-                                        <Grid.Column width={4}>
-                                            <Checkbox toggle  label='Multiple Transfers'  checked={this.state.isBatch} onChange={this.toggleBatch} />
-                                        </Grid.Column>
-                                    }
-                                    <Grid.Column width={this.props.isMobile ? 16 : 12}  textAlign='right'>
+                                    <Grid.Column width={16}  textAlign='right'>
                                         <Grid>
                                             <Grid.Row>
-                                                <Grid.Column width={this.props.isMobile ? 10 : 12}>
+                                                <Grid.Column width={this.props.isMobile ? 10 : 13}>
                                                     <Button title='Send remaining Balance' className="ash curved-border mr-12" onClick={this.setMaxValue()} {...balanceButtonProps} >
-                                                        Send remaining Balance
-                                                    </Button>
-                                                    <Button title='Add new address' className="ash curved-border" disabled={!this.state.isBatch} onClick={this.addToArray} {...addAddressButtonProps}>
-                                                        Add new address
+                                                        Approve remaining Balance
                                                     </Button>
                                                 </Grid.Column>
-                                                <Grid.Column width={this.props.isMobile ? 6 : 4}  textAlign='right'>
-                                                    <Button onClick={this.props.transferTokens} disabled={this.props.sendingTokens || !this.props.canSend} loading={this.props.sendingTokens}  className="transfer curved-border" >
-                                                        Transfer {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.totalRecipientsAmounts} ${this.props.symbol}(s)`}
+                                                <Grid.Column width={this.props.isMobile ? 6 : 3}  textAlign='right'>
+                                                    <Button onClick={this.props.approveTokens} disabled={this.props.approvingTokens || !this.props.canSend} loading={this.props.approvingTokens}  className="approve curved-border" >
+                                                        Approve {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.totalRecipientsAmounts} ${this.props.symbol}(s)`}
                                                     </Button>
                                                 </Grid.Column>
                                             </Grid.Row>
@@ -374,7 +374,7 @@ Approvals.propTypes = {
     setValidRecipientAmountsSet: PropTypes.func.isRequired,
     symbol: PropTypes.string.isRequired,
     canSend: PropTypes.bool.isRequired,
-    sendingTokens: PropTypes.bool.isRequired,
-    transferTokens: PropTypes.func.isRequired,
+    approvingTokens: PropTypes.bool.isRequired,
+    approveTokens: PropTypes.func.isRequired,
     totalRecipientsAmounts: PropTypes.number.isRequired
 };

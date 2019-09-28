@@ -6,6 +6,11 @@ const activePaths = [
     'approve'
 ];
 
+const pathColors = {
+    'transfer': '#f9a510',
+    'approve': '#1064f9'
+};
+
 export default class TabSelector extends Component {
 
     activePath = (path) => {
@@ -29,22 +34,25 @@ export default class TabSelector extends Component {
                         <Grid columns={columns}>
                             <Grid.Row>
                                 {
-                                    (new Array(columns)).fill("").map( (cont, index) =>
-                                        index % 2 !== 0 ?
-                                            <Grid.Column key={index} width={dividerWidth} verticalAlign="middle">
-                                                <Divider/>
-                                            </Grid.Column> :
-                                            <Grid.Column key={index} width={tabNameWidth} >
-                                                <h4 style={this.activePath(activePaths[Math.ceil(index / 2)]) ? {} : {cursor: "pointer"}} className={this.activePath(activePaths[Math.ceil(index / 2)]) ? "font-orange": ""} onClick={this.changeTab(activePaths[Math.ceil(index / 2)])}>
-                                                    <span>
-                                                        {activePaths[Math.ceil(index / 2)].charAt(0).toUpperCase() + activePaths[Math.ceil(index / 2)].slice(1).toLowerCase()}
-                                                        { this.activePath(activePaths[Math.ceil(index / 2)]) &&
-                                                            <Divider className="orange single-bottom-bordered"/>
-                                                        }
-                                                    </span>
-                                                </h4>
-                                            </Grid.Column>
-                                    )
+                                    (new Array(columns)).fill("").map( (cont, index) => {
+                                        const indPath = activePaths[Math.ceil(index / 2)];
+                                        return (
+                                            index % 2 !== 0 ?
+                                                <Grid.Column key={index} width={dividerWidth} verticalAlign="middle">
+                                                    <Divider/>
+                                                </Grid.Column> :
+                                                <Grid.Column key={index} width={tabNameWidth} >
+                                                    <h4 style={this.activePath(indPath) ? {color: pathColors[indPath]} : {cursor: "pointer"}} className={this.activePath(indPath) ? "font-orange": ""} onClick={this.changeTab(indPath)}>
+                                                        <span>
+                                                            {indPath.charAt(0).toUpperCase() + indPath.slice(1).toLowerCase()}
+                                                            { this.activePath(indPath) &&
+                                                                <Divider className="single-bottom-bordered" style={{borderTopColor: pathColors[indPath],borderBottomColor: pathColors[indPath]}}/>
+                                                            }
+                                                        </span>
+                                                    </h4>
+                                                </Grid.Column>
+                                            )
+                                    })
                                 }
                             </Grid.Row>
                         </Grid>

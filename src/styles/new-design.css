@@ -516,6 +516,16 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     text-align: right;
 }
 
+.approve{
+    background-color: #1064f9!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+}
+
+.approve:hover {
+    background-color: rgb(16, 100, 249)!important;
+}
+
 .transfer{
     background-color: #F9A510!important;
     color: #ffffff!important;

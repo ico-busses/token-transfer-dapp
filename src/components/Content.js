@@ -274,6 +274,47 @@ export default class Content extends HasAlert {
         }
     }
 
+    async approveTokens () {
+        if (this.state.sendingTokens || !this.canSend) {
+            return;
+        }
+        this.setState({ sendingTokens: true });
+        const { tokenAddress } = this.state;
+        const txDetails = this.state.fetchTransferDetails();
+
+        if (txDetails.addresses.length > 1 && txDetails.amounts.length > 1) {
+            this.notify({ msg: 'Making multiple transfers. You need to approve metamask for each transaction', type: 'info', autoClose: true });
+        }
+
+        try {
+            await Promise.all(
+                txDetails.addresses.map( (address, index) => {
+                    return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).toFixed(), {
+                        onTransactionHash: (hash) => {
+                            this.notify({ msg: 'Transfer successful, track transaction.', type: 'success', autoClose: 1000 });
+                            this.notify({ msg: <div><b>Transaction hash:</b> {hash}</div>, type: 'info' });
+                        },
+                        onReceipt: (receipt) => {
+                            this.notify({ msg: <div><b>Transaction confirmed:</b><br/> Hash - {receipt.transactionHash},<br/> Block - {receipt.blockNumber}</div>, type: 'info' });
+                        }
+                    });
+                })
+            );
+            this.state.resetDetails();
+            this.setState({
+                sendingTokens: false,
+                totalRecipientsAmounts: 0,
+                isValidRecipientAmountsSet: false,
+                isValidRecipientAddressesSet: false
+            });
+        } catch (e) {
+            this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
+            this.setState({
+                sendingTokens: false
+            });
+        }
+    }
+
     search () {
         if (this.state.searchToken === this.state.activeSearch) {
             return false;
@@ -577,8 +618,8 @@ export default class Content extends HasAlert {
                                             setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
                                             setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
                                             canSend={this.canSend}
-                                            sendingTokens={this.state.sendingTokens}
-                                            transferTokens={this.transferTokens}
+                                            approvingTokens={this.state.sendingTokens}
+                                            approveTokens={this.approveTokens}
                                             totalRecipientsAmounts={this.state.totalRecipientsAmounts}
                                         />}
                                     />
