@@ -499,8 +499,12 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 
 
-.formDetails .item .description a, .formDetails .item .description{
+.formDetails .item .description a, .formDetails .item .description, .allowances h5{
     color: #ADC5D8!important;
+}
+
+.allowances label {
+    font-weight: 700;
 }
 
 .formDetails input{

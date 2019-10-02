@@ -191,16 +191,16 @@ export default class Transactions extends Component {
         }
         if (typeof index === 'undefined') {
             this.setState({
-                recipientAmount: this.props.parseTokenAmount(value).toNumber()
+                recipientAmount: this.props.parseTokenAmount(value).toFixed()
             }, () => {
-                this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount));
+                this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount).toFixed());
                 this.validateForm();
         });
         } else {
             this.setState({
-                recipientAmounts: this.updateArray(this.state.recipientAmounts, index, this.props.parseTokenAmount(value).toNumber())
+                recipientAmounts: this.updateArray(this.state.recipientAmounts, index, this.props.parseTokenAmount(value).toFixed())
             }, () => {
-                this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount));
+                this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount).toFixed());
                 this.validateForm();
             });
         }
@@ -219,8 +219,12 @@ export default class Transactions extends Component {
         }
         const amountFields = ['recipientAmount', 'recipientAmounts'];
         if (amountFields.includes(property)) {
-            this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount));
+            this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount).toFixed());
         }
+    }
+
+    componentDidMount = () => {
+        this.props.updateTotalAmount(this.props.parseTokenAmount(0).toFixed());
     }
 
     render () {
@@ -351,7 +355,7 @@ export default class Transactions extends Component {
                                                 </Grid.Column>
                                                 <Grid.Column width={this.props.isMobile ? 6 : 4}  textAlign='right'>
                                                     <Button onClick={this.props.transferTokens} disabled={this.props.sendingTokens || !this.props.canSend} loading={this.props.sendingTokens}  className="transfer curved-border" >
-                                                        Transfer {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.totalRecipientsAmounts} ${this.props.symbol}(s)`}
+                                                        Transfer {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.prettyNumber(this.props.totalRecipientsAmounts)} ${this.props.symbol}(s)`}
                                                     </Button>
                                                 </Grid.Column>
                                             </Grid.Row>
@@ -372,6 +376,7 @@ Transactions.propTypes = {
     isMobile: PropTypes.bool.isRequired,
     isValidAddress: PropTypes.func.isRequired,
     parseTokenAmount: PropTypes.func.isRequired,
+    prettyNumber: PropTypes.func.isRequired,
     updateTotalAmount: PropTypes.func.isRequired,
     setResetDetails: PropTypes.func.isRequired,
     setTransferDetailsFetcher: PropTypes.func.isRequired,
@@ -381,5 +386,5 @@ Transactions.propTypes = {
     canSend: PropTypes.bool.isRequired,
     sendingTokens: PropTypes.bool.isRequired,
     transferTokens: PropTypes.func.isRequired,
-    totalRecipientsAmounts: PropTypes.number.isRequired
+    totalRecipientsAmounts: PropTypes.string.isRequired
 };

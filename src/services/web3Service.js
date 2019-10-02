@@ -167,6 +167,28 @@ class web3Service {
         this.defaultAccount = address;
     }
 
+    contractCall(contract, method, ...args) {
+        return contract.methods[method](...args).call({ from: this.defaultAccount });
+    }
+
+    contractTransaction(contract, method, ...args) {
+        const { onTransactionHash, onReceipt } = args[args.length-1];
+        args = args.slice(0, args.length-1);
+        return new Promise((resolve, reject) => {
+            const tx = contract.methods[method](...args).send({ from: this.defaultAccount });
+            let receiptReceieved;
+
+
+            tx.on('error', e => reject(e.message || e));
+            tx.once('receipt', r => receiptReceieved ? null : receiptReceieved = true && onReceipt(r));
+            tx.once('confirmation', (c,r) => receiptReceieved ? null : receiptReceieved = true && onReceipt(r));
+            tx.once('transactionHash', (hash)=> {
+                onTransactionHash(hash);
+                resolve(hash);
+            });
+        });
+    }
+
     get explorer () {
         return explorers[this.netId || 0];
     }
@@ -259,7 +281,7 @@ class web3Service {
         const { _web3 } = this;
         try {
             const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-            const name = await contract.methods.name().call();
+            const name = await this.contractCall(contract, 'name');
             return name.toString();
         } catch (e) {
             const signature = this.getFunctionSignature(fnSignatures.tokenName);
@@ -279,7 +301,7 @@ class web3Service {
         const { _web3 } = this;
         try {
             const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-            const symbol = await contract.methods.symbol().call();
+            const symbol = await this.contractCall(contract, 'symbol');
             return symbol.toString();
         } catch (e) {
             const signature = this.getFunctionSignature(fnSignatures.tokenSymbol);
@@ -299,7 +321,7 @@ class web3Service {
         const { _web3 } = this;
         try {
             const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-            const decimals = await contract.methods.decimals().call();
+            const decimals = await this.contractCall(contract, 'decimals');
             return decimals.toString();
         } catch (e) {
             const signature = this.getFunctionSignature(fnSignatures.tokenDecimals);
@@ -321,8 +343,19 @@ class web3Service {
             return;
         }
         const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
-        const balance = await contract.methods.balanceOf(defaultAccount).call();
+        const balance = await this.contractCall(contract, 'balanceOf', defaultAccount);
         return balance.toString();
+    }
+
+    async getTokenAllowance(tokenAddress, recipient) {
+        await this.awaitInitialized();
+        const { _web3, defaultAccount } = this;
+        if (!this.isWeb3Usable) {
+            return;
+        }
+        const contract = new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
+        const allowance = await this.contractCall(contract, 'allowance', recipient, defaultAccount);
+        return allowance.toString();
     }
 
     async transferTokens(tokenAddress, recipient, amount, { onTransactionHash, onReceipt }) {
@@ -333,19 +366,18 @@ class web3Service {
         }
         const { _web3 } = this;
         const contract = new _web3.eth.Contract(ERC20, tokenAddress);
-        await new Promise((resolve, reject) => {
-            const tx = contract.methods.transfer(recipient,amount).send({ from: this.defaultAccount });
-            let receiptReceieved;
+        return await this.contractTransaction(contract, 'transfer', recipient, amount, { onTransactionHash, onReceipt });
+    }
 
-
-            tx.on('error', e => reject(e.message || e));
-            tx.once('receipt', r => receiptReceieved ? null : receiptReceieved = true && onReceipt(r));
-            tx.once('confirmation', (c,r) => receiptReceieved ? null : receiptReceieved = true && onReceipt(r));
-            tx.once('transactionHash', (hash)=> {
-                onTransactionHash(hash);
-                resolve(hash);
-            });
-        });
+    async approveTokens(tokenAddress, recipient, amount, { onTransactionHash, onReceipt }) {
+        await this.awaitInitialized();
+        await this.initAccounts();
+        if (!this.isWeb3Usable) {
+            return;
+        }
+        const { _web3 } = this;
+        const contract = new _web3.eth.Contract(ERC20, tokenAddress);
+        return await this.contractTransaction(contract, 'approve', recipient, amount, { onTransactionHash, onReceipt });
     }
 }
 

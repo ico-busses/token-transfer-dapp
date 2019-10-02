@@ -23,6 +23,7 @@ export default class Content extends HasAlert {
         this.next = this.next.bind(this);
         this.search = this.search.bind(this);
         this.searchSelected = this.searchSelected.bind(this);
+        this.approveTokens = this.approveTokens.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
         this.parseTokenAmount = this.parseTokenAmount.bind(this);
         this.clearTokenAddress = this.clearTokenAddress.bind(this);
@@ -53,7 +54,7 @@ export default class Content extends HasAlert {
         tokenFilterList: [],
         resetDetails: null,
         fetchTransferDetails: null,
-        totalRecipientsAmounts: 0,
+        totalRecipientsAmounts: '0',
         isValidRecipientAmountsSet: false,
         isValidRecipientAddressesSet: false,
     }
@@ -80,6 +81,12 @@ export default class Content extends HasAlert {
                 image:  this.state.tokenFilterList.length < 6 ? `images/contractLogos/${ContractMap[token].logo}` : ''
             };
         });
+    }
+
+    prettyNumber (number) {
+        const parts = number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
     }
 
     resolveUrlAddress () {
@@ -259,13 +266,7 @@ export default class Content extends HasAlert {
                     });
                 })
             );
-            this.state.resetDetails();
-            this.setState({
-                sendingTokens: false,
-                totalRecipientsAmounts: 0,
-                isValidRecipientAmountsSet: false,
-                isValidRecipientAddressesSet: false
-            });
+            this.resetTransactionState();
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
             this.setState({
@@ -289,9 +290,9 @@ export default class Content extends HasAlert {
         try {
             await Promise.all(
                 txDetails.addresses.map( (address, index) => {
-                    return web3Service.transferTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).toFixed(), {
+                    return web3Service.approveTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).toFixed(), {
                         onTransactionHash: (hash) => {
-                            this.notify({ msg: 'Transfer successful, track transaction.', type: 'success', autoClose: 1000 });
+                            this.notify({ msg: 'Approval successful, track transaction.', type: 'success', autoClose: 1000 });
                             this.notify({ msg: <div><b>Transaction hash:</b> {hash}</div>, type: 'info' });
                         },
                         onReceipt: (receipt) => {
@@ -300,13 +301,7 @@ export default class Content extends HasAlert {
                     });
                 })
             );
-            this.state.resetDetails();
-            this.setState({
-                sendingTokens: false,
-                totalRecipientsAmounts: 0,
-                isValidRecipientAmountsSet: false,
-                isValidRecipientAddressesSet: false
-            });
+            this.resetTransactionState();
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
             this.setState({
@@ -372,6 +367,16 @@ export default class Content extends HasAlert {
             });
         }
         this.setState({ runningNext: false });
+    }
+
+    resetTransactionState () {
+        this.state.resetDetails();
+        this.setState({
+            sendingTokens: false,
+            totalRecipientsAmounts: '0',
+            isValidRecipientAmountsSet: false,
+            isValidRecipientAddressesSet: false
+        });
     }
 
     onChange = (property) => (event) => {
@@ -514,7 +519,7 @@ export default class Content extends HasAlert {
                                                                         <List.Content>
                                                                             <List.Header as='h2'>Balance(approx.)</List.Header>
                                                                             <List.Description as='p'>
-                                                                                {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
+                                                                                {` ${this.prettyNumber(this.printUserBalance)} ${this.state.contractDetails.symbol}` }
                                                                             </List.Description>
                                                                         </List.Content>
                                                                     </List.Item>
@@ -594,6 +599,7 @@ export default class Content extends HasAlert {
                                             isMobile={this.props.isMobile}
                                             isValidAddress={this.isValidAddress}
                                             parseTokenAmount={this.parseTokenAmount}
+                                            prettyNumber={this.prettyNumber}
                                             updateTotalAmount={this.updateTotalAmount}
                                             setResetDetails={this.setResetDetails}
                                             setTransferDetailsFetcher={this.setTransferDetailsFetcher}
@@ -607,11 +613,13 @@ export default class Content extends HasAlert {
                                     />
                                     <Route path="/:address/approve" render={ props =>
                                         <Approvals
+                                            tokenAddress={this.state.tokenAddress}
                                             balance={this.state.userBalance || '0'}
                                             symbol={this.state.contractDetails.symbol}
                                             isMobile={this.props.isMobile}
                                             isValidAddress={this.isValidAddress}
                                             parseTokenAmount={this.parseTokenAmount}
+                                            prettyNumber={this.prettyNumber}
                                             updateTotalAmount={this.updateTotalAmount}
                                             setResetDetails={this.setResetDetails}
                                             setTransferDetailsFetcher={this.setTransferDetailsFetcher}
