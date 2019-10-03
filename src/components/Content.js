@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Route } from 'react-router-dom';
-import BigNumber from 'bignumber.js';
 import { web3Service } from '../services';
+import { parseTokenAmount, prettyNumber, validateAddress } from '../services/utils';
 import ContractMap from 'eth-contract-metadata';
 import { Button, Card, Form, Grid, List, Loader, Search, Container } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
@@ -60,7 +60,7 @@ export default class Content extends HasAlert {
     }
 
     get isValidTokenAddressSet (){
-        return web3Service._web3.utils.isAddress(this.state.tokenAddress);
+        return this.isValidAddress(this.state.tokenAddress);
     }
 
     get canSend() {
@@ -84,9 +84,7 @@ export default class Content extends HasAlert {
     }
 
     prettyNumber (number) {
-        const parts = number.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return parts.join(".");
+        return prettyNumber(number);
     }
 
     resolveUrlAddress () {
@@ -118,12 +116,7 @@ export default class Content extends HasAlert {
     }
 
     parseTokenAmount (amount, incoming=true) {
-        const factor = new BigNumber(10 ** Number(this.state.contractDetails.decimals));
-        if (incoming ) {
-            return new BigNumber(amount.toString()).div(factor);
-        } else {
-            return new BigNumber(amount.toString()).times(factor);
-        }
+        return parseTokenAmount(amount, this.state.contractDetails.decimals, incoming);
     }
 
     clearTokenAddress () {
@@ -131,7 +124,7 @@ export default class Content extends HasAlert {
     }
 
     isValidAddress (address) {
-        return web3Service._web3.utils.isAddress(address);
+        return validateAddress(address);
     }
 
     setLayoutTokenLoaded () {

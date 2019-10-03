@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
 import Web3Service from '../../services/web3Service';
+import { validateAmount } from '../../services/utils';
 import { contentStyle } from '../../styles';
+
+const MINIMUM_APPROVAL = -1;
 
 export default class Approvals extends Component {
 
@@ -47,10 +50,10 @@ export default class Approvals extends Component {
     async updateAllowances (index) {
         const { isValidAddress, tokenAddress } = this.props;
         const address = typeof index === 'undefined' ? this.state.recipientAddress : this.state.recipientAddresses[index];
-        if(!(isValidAddress(tokenAddress) && isValidAddress(address))) {
-            return;
+        let allowance = 0;
+        if(isValidAddress(tokenAddress) && isValidAddress(address)) {
+            allowance = await Web3Service.getTokenAllowance(tokenAddress, address);
         }
-        const allowance = await Web3Service.getTokenAllowance(tokenAddress, address);
         if (typeof index === 'undefined') {
             this.setState({
                 recipientAllowance: allowance
@@ -68,14 +71,14 @@ export default class Approvals extends Component {
         let isValid = true;
         const value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
 
-        if (new RegExp('^\\d+\\.?\\d*$').test(value) && Number(value) > 0) {
+        if (validateAmount(value, MINIMUM_APPROVAL)) {
             let total = new BigNumber(0);
             if (typeof index === 'undefined') {
                 index = this.state.recipientAmounts.length;
             }
             this.state.recipientAmounts.map((amount, ind) => ind < index ? total = total.plus(this.props.parseTokenAmount(amount ||0, false)) : null );
             total = total.plus(this.props.parseTokenAmount(value || 0, false));
-            isValid = total.gt(new BigNumber(0));
+            isValid = total.gt(new BigNumber(MINIMUM_APPROVAL));
         } else {
             isValid = false;
         }
@@ -143,7 +146,7 @@ export default class Approvals extends Component {
         }
         if (
             (this.state.recipientAddress || this.state.recipientAmount || (this.state.recipientAddresses.length === 0 && !this.state.recipientAddress)) &&
-            (!this.props.isValidAddress(this.state.recipientAddress) || this.state.recipientAddresses.includes(this.state.recipientAddress))
+            (!this.props.isValidAddress(this.state.recipientAddress))
         ) {
             isValid = false;
         }
@@ -154,12 +157,12 @@ export default class Approvals extends Component {
         let isValid = true;
         if (this.state.recipientAmounts.length > 0) {
             this.state.recipientAmounts.map( value => {
-                if (!new RegExp('^\\d+\\.?\\d*$').test(value) || Number(value) <= 0) {
+                if (!validateAmount(value, MINIMUM_APPROVAL)) {
                     isValid = false;
                 }
             });
         }
-        if ((this.state.recipientAmount || this.state.recipientAddress) && (!new RegExp('^\\d+\\.?\\d*$').test(this.state.recipientAmount) || Number(this.state.recipientAmount) <= 0)) {
+        if ((this.state.recipientAmount || this.state.recipientAddress) && (!validateAmount(this.state.recipientAmount, MINIMUM_APPROVAL))) {
             isValid = false;
         }
         this.props.setValidRecipientAmountsSet(isValid);
@@ -214,17 +217,7 @@ export default class Approvals extends Component {
 
     setMaxValue = (index) => () => {
         let value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
-        value = this.props.parseTokenAmount(value || 0, false);
-        if (new BigNumber(this.totalAmount).lte(this.props.balance)) {
-            value = this.remainingAllowance().plus(value);
-        } else {
-            const others = new BigNumber(this.totalAmount).minus(value);
-            if (others.lte(this.props.balance)) {
-                value = new BigNumber(this.props.balance).minus(others);
-            } else {
-                value = new BigNumber(0);
-            }
-        }
+        value = new BigNumber(this.props.balance);
         if (typeof index === 'undefined') {
             this.setState({
                 recipientAmount: this.props.parseTokenAmount(value).toFixed()
@@ -290,6 +283,11 @@ export default class Approvals extends Component {
                                                 <Divider className='orange single-bordered single-bottom-bordered' />
                                             </Grid.Column>
                                         </Grid.Row>
+                                        <Grid.Row>
+                                            <Grid.Column>
+                                                <Checkbox toggle  label='Multiple Approvals' checked={this.state.isBatch} onChange={this.toggleBatch} />
+                                            </Grid.Column>
+                                        </Grid.Row>
                                     </Grid>
                                 }
                                 <div>
@@ -310,6 +308,18 @@ export default class Approvals extends Component {
                                                                 onBlur={this.onChange('recipientAddresses', index)}
                                                                 className="curved-border mb-12"
                                                             />
+                                                        </Form.Field>
+                                                        <Form.Field >
+                                                            <Grid columns={this.props.isMobile ? 1 : 2} className={'mt-12 mb-12 allowances'}>
+                                                                <Grid.Row>
+                                                                    <Grid.Column width={this.props.isMobile? 16 : 2}>
+                                                                        <label className="address" title="Allocation">Allocation: </label>
+                                                                    </Grid.Column>
+                                                                    <Grid.Column className={this.props.isMobile ? 'mt-12' : 'mb-12'}>
+                                                                        <h5>{Boolean(this.state.recipientAllowances[index]) ? this.props.prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowances[index]).toFixed()) : 0}</h5>
+                                                                    </Grid.Column>
+                                                                </Grid.Row>
+                                                            </Grid>
                                                         </Form.Field>
                                                         <Form.Field error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
                                                             <Form.Input
@@ -384,15 +394,23 @@ export default class Approvals extends Component {
                             </div>
                             <div className="btn-wrapper2" style={this.props.isMobile ? {} : { paddingBottom: '100px' }}>
                                 <Grid>
-                                    <Grid.Column width={16}  textAlign='right'>
+                                    { !this.props.isMobile &&
+                                        <Grid.Column width={4}>
+                                            <Checkbox toggle  label='Multiple Approvals'  checked={this.state.isBatch} onChange={this.toggleBatch} />
+                                        </Grid.Column>
+                                    }
+                                    <Grid.Column width={this.props.isMobile ? 16 : 12}  textAlign='right'>
                                         <Grid>
                                             <Grid.Row>
-                                                <Grid.Column width={this.props.isMobile ? 10 : 13}>
+                                                <Grid.Column width={this.props.isMobile ? 10 : 12}>
                                                     <Button title='Send remaining Allowance' className="ash curved-border mr-12" onClick={this.setMaxValue()} {...balanceButtonProps} >
-                                                        Approve remaining Balance
+                                                        Approve Balance
+                                                    </Button>
+                                                    <Button title='Add new address' className="ash curved-border" disabled={!this.state.isBatch} onClick={this.addToArray} {...addAddressButtonProps}>
+                                                        Add new address
                                                     </Button>
                                                 </Grid.Column>
-                                                <Grid.Column width={this.props.isMobile ? 6 : 3}  textAlign='right'>
+                                                <Grid.Column width={this.props.isMobile ? 6 : 4}  textAlign='right'>
                                                     <Button onClick={this.props.approveTokens} disabled={this.props.approvingTokens || !this.props.canSend} loading={this.props.approvingTokens}  className="approve curved-border" >
                                                         Approve {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.prettyNumber(this.props.totalRecipientsAmounts)} ${this.props.symbol}(s)`}
                                                     </Button>
