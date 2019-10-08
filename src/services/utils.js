@@ -8,23 +8,23 @@ const parseTokenAmount = function (amount, decimals=0, incoming=true) {
     } else {
         return new BigNumber(amount.toString()).times(factor);
     }
-}
+};
 
 const prettyNumber = function (number) {
-    const parts = number.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
+    const parts = number.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+};
 
 const totalAmount = function (decimals, recipientAmounts) {
     let total = new BigNumber(0);
     total = recipientAmounts.reduce((a,b) => a.plus(parseTokenAmount(b || 0, decimals, false)), total);
     return total.toFixed();
-}
+};
 
 const validateAmount = function (recipientAmount, minimum) {
-    return (new RegExp('^\\d+\\.?\\d*$').test(recipientAmount) && Number(recipientAmount) > minimum)
-}
+    return (new RegExp('^\\d+\\.?\\d*$').test(recipientAmount) && Number(recipientAmount) > minimum);
+};
 
 const validateAmounts = function (recipientAmounts, minimum) {
     let isValid = true;
@@ -36,11 +36,11 @@ const validateAmounts = function (recipientAmounts, minimum) {
         });
     }
     return isValid;
-}
+};
 
 const validateAddress = function (recipientAddress) {
     return web3Service._web3.utils.isAddress(recipientAddress);
-}
+};
 
 const validateAddresses = function (recipientAddresses) {
     let isValid = true;
@@ -52,7 +52,7 @@ const validateAddresses = function (recipientAddresses) {
         });
     }
     return isValid;
-}
+};
 
 export {
     parseTokenAmount,
@@ -62,4 +62,4 @@ export {
     validateAmounts,
     validateAddress,
     validateAddresses
-}
+};

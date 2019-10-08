@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Divider, Grid } from 'semantic-ui-react';
 
 const activePaths = [
@@ -34,7 +35,7 @@ export default class TabSelector extends Component {
                         <Grid columns={columns}>
                             <Grid.Row>
                                 {
-                                    (new Array(columns)).fill("").map( (cont, index) => {
+                                    (new Array(columns)).fill('').map( (cont, index) => {
                                         const indPath = activePaths[Math.ceil(index / 2)];
                                         return (
                                             index % 2 !== 0 ?
@@ -42,16 +43,16 @@ export default class TabSelector extends Component {
                                                     <Divider/>
                                                 </Grid.Column> :
                                                 <Grid.Column key={index} width={tabNameWidth} >
-                                                    <h4 style={this.activePath(indPath) ? {color: pathColors[indPath]} : {cursor: "pointer"}} className={this.activePath(indPath) ? "font-orange": ""} onClick={this.changeTab(indPath)}>
+                                                    <h4 style={this.activePath(indPath) ? { color: pathColors[indPath] } : { cursor: 'pointer' }} className={this.activePath(indPath) ? 'font-orange': ''} onClick={this.changeTab(indPath)}>
                                                         <span>
                                                             {indPath.charAt(0).toUpperCase() + indPath.slice(1).toLowerCase()}
                                                             { this.activePath(indPath) &&
-                                                                <Divider className="single-bottom-bordered" style={{borderTopColor: pathColors[indPath],borderBottomColor: pathColors[indPath]}}/>
+                                                                <Divider className="single-bottom-bordered" style={{ borderTopColor: pathColors[indPath],borderBottomColor: pathColors[indPath] }}/>
                                                             }
                                                         </span>
                                                     </h4>
                                                 </Grid.Column>
-                                            )
+                                            );
                                     })
                                 }
                             </Grid.Row>
@@ -59,6 +60,13 @@ export default class TabSelector extends Component {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </div>
+        </div>;
     }
 }
+
+TabSelector.propTypes = {
+    history: PropTypes.object.isRequired,
+    isMobile: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+};

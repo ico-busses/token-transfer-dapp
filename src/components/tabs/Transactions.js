@@ -237,7 +237,7 @@ export default class Transactions extends Component {
             addAddressButtonProps.floated = 'right';
         }
         return (
-            
+
             <Form >
                 <div >
                     <Grid style={contentStyle.main} >

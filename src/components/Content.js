@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { web3Service } from '../services';
 import { parseTokenAmount, prettyNumber, validateAddress } from '../services/utils';
 import ContractMap from 'eth-contract-metadata';
@@ -583,6 +583,7 @@ export default class Content extends HasAlert {
                                     <Route render={ props =>
                                         <TabSelector
                                             {...this.props}
+                                            {...props}
                                         />}
                                     />
                                     <Route path="/:address/transfer" render={ props =>
@@ -602,6 +603,7 @@ export default class Content extends HasAlert {
                                             sendingTokens={this.state.sendingTokens}
                                             transferTokens={this.transferTokens}
                                             totalRecipientsAmounts={this.state.totalRecipientsAmounts}
+                                            {...props}
                                         />}
                                     />
                                     <Route path="/:address/approve" render={ props =>
@@ -622,6 +624,7 @@ export default class Content extends HasAlert {
                                             approvingTokens={this.state.sendingTokens}
                                             approveTokens={this.approveTokens}
                                             totalRecipientsAmounts={this.state.totalRecipientsAmounts}
+                                            {...props}
                                         />}
                                     />
                                 </div>

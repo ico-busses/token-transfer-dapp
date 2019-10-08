@@ -51,13 +51,13 @@ export default class Approvals extends Component {
         const { isValidAddress, tokenAddress } = this.props;
         const address = typeof index === 'undefined' ? this.state.recipientAddress : this.state.recipientAddresses[index];
         let allowance = 0;
-        if(isValidAddress(tokenAddress) && isValidAddress(address)) {
+        if (isValidAddress(tokenAddress) && isValidAddress(address)) {
             allowance = await Web3Service.getTokenAllowance(tokenAddress, address);
         }
         if (typeof index === 'undefined') {
             this.setState({
                 recipientAllowance: allowance
-            })
+            });
         } else {
             const allowances = this.state.recipientAllowances;
             allowances[index] = allowance;
@@ -270,7 +270,7 @@ export default class Approvals extends Component {
             addAddressButtonProps.floated = 'right';
         }
         return (
-            
+
             <Form >
                 <div >
                     <Grid style={contentStyle.main} >
@@ -316,7 +316,7 @@ export default class Approvals extends Component {
                                                                         <label className="address" title="Allocation">Allocation: </label>
                                                                     </Grid.Column>
                                                                     <Grid.Column className={this.props.isMobile ? 'mt-12' : 'mb-12'}>
-                                                                        <h5>{Boolean(this.state.recipientAllowances[index]) ? this.props.prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowances[index]).toFixed()) : 0}</h5>
+                                                                        <h5>{this.state.recipientAllowances[index] ? this.props.prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowances[index]).toFixed()) : 0}</h5>
                                                                     </Grid.Column>
                                                                 </Grid.Row>
                                                             </Grid>
@@ -369,7 +369,7 @@ export default class Approvals extends Component {
                                                                 <label className="address" title="Allocation">Allocation: </label>
                                                             </Grid.Column>
                                                             <Grid.Column className={this.props.isMobile ? 'mt-12' : 'mb-12'}>
-                                                                <h5>{Boolean(this.state.recipientAllowance) ? this.props.prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowance).toFixed()) : 0}</h5>
+                                                                <h5>{this.state.recipientAllowance ? this.props.prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowance).toFixed()) : 0}</h5>
                                                             </Grid.Column>
                                                         </Grid.Row>
                                                     </Grid>

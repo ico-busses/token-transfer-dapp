@@ -168,8 +168,7 @@ class web3Service {
     }
 
     instantiateERC20Token (tokenAddress) {
-        const { _web3 } = this;
-        return new _web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
+        return new this._web3.eth.Contract(ERC20, tokenAddress, { from: this.defaultAccount });
     }
 
     contractCall(contract, method, ...args) {
@@ -296,7 +295,7 @@ class web3Service {
                     data: signature
                 }
             );
-            return this.cleanConvertedHex(_web3.utils.toAscii(rpcCall)).toString();
+            return this.cleanConvertedHex(this._web3_web3.utils.toAscii(rpcCall)).toString();
         }
     }
 
@@ -315,7 +314,7 @@ class web3Service {
                     data: signature
                 }
             );
-            return this.cleanConvertedHex(_web3.utils.toAscii(rpcCall)).toString();
+            return this.cleanConvertedHex(this._web3.utils.toAscii(rpcCall)).toString();
         }
     }
 
@@ -334,13 +333,13 @@ class web3Service {
                     data: signature
                 }
             );
-            return Number(_web3.utils.toDecimal(rpcCall));
+            return Number(this._web3.utils.toDecimal(rpcCall));
         }
     }
 
     async getTokenBalance(tokenAddress) {
         await this.awaitInitialized();
-        const { _web3, defaultAccount } = this;
+        const { defaultAccount } = this;
         if (!this.isWeb3Usable) {
             return;
         }
@@ -351,7 +350,7 @@ class web3Service {
 
     async getTokenAllowance(tokenAddress, recipient) {
         await this.awaitInitialized();
-        const { _web3, defaultAccount } = this;
+        const { defaultAccount } = this;
         if (!this.isWeb3Usable) {
             return;
         }
