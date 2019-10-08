@@ -3,6 +3,8 @@ import EventEmitter from 'events';
 import { backupNode, ethereumNode, explorers, fnSignatures, networks } from '../config';
 import ERC20 from '../abi/ForeignToken';
 
+const NULL_ADDRESS='0x0000000000000000000000000000000000000000';
+
 class web3Service {
 
     constructor() {
@@ -36,14 +38,36 @@ class web3Service {
                     const queryIndex = backupNode.indexOf('/', slashIndex) || backupNode.indexOf('?', slashIndex);
                     const domain = queryIndex >= 0 ? backupNode.substring(0, queryIndex) : backupNode;
 
+                    console.log(window.location.host)
+
                     this._web3 = new Web3(
                         new Web3.providers.HttpProvider(
                             backupNode,
                             {
-                            headers: [{
-                                name: 'Access-Control-Allow-Origin',
-                                value: domain
-                            }]
+                                headers: [
+                                    {
+                                        name: 'Access-Control-Allow-Origin',
+                                        value: window.location.host
+                                    },
+                                    // {
+                                    //     name: 'Access-Control-Allow-Headers',
+                                    //     value: 'Cache-Control, Pragma, Authorization, Content-Type, X-Requested-With'
+                                    // },
+                                    // {
+                                    //     name: 'Access-Control-Allow-Methods',
+                                    //     value: 'POST'
+                                    // }
+                                    // {
+                                    //     name: 'Access-Control-Allow-Credentials',
+                                    //     value: false
+                                    // // }
+                                    // {
+                                    //     name: 'Vary',
+                                    //     value: 'User-Agent'
+                                    // }
+
+//   res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+                                ]
                             }
                         )
                     );
@@ -74,7 +98,7 @@ class web3Service {
                     await window.ethereum.enable();
                 }
                 this.accounts = await this._web3.eth.getAccounts();
-                this.defaultAccount = this.accounts[0];
+                this.defaultAccount = this.accounts[0] || NULL_ADDRESS;
                 this.accountsRejected = false;
             } catch (e) {
                 if (REJECTWORDS.some( word => (e.message || e).includes(word))) {
@@ -138,7 +162,7 @@ class web3Service {
 
     getProviderSend () {
         const provider =this._web3.givenProvider || this._web3.currentProvider;
-        return provider.sendAsync || provider.send;
+        return (provider.sendAsync || provider.send).bind(provider);
     }
 
     getFunctionSignature (fn) {
@@ -236,6 +260,7 @@ class web3Service {
             args = [];
         }
         args.unshift(rpcRequest);
+        args.push('latest');
 
         const rpcCall = await new Promise ((resolve, reject) => {
             send(this.craftRpcCall('eth_call', args), function (err, res) {
@@ -292,6 +317,7 @@ class web3Service {
                 'eth_call',
                 {
                     to: tokenAddress,
+                    from: this.defaultAccount,
                     data: signature
                 }
             );
@@ -311,6 +337,7 @@ class web3Service {
                 'eth_call',
                 {
                     to: tokenAddress,
+                    from: this.defaultAccount,
                     data: signature
                 }
             );
@@ -330,6 +357,7 @@ class web3Service {
                 'eth_call',
                 {
                     to: tokenAddress,
+                    from: this.defaultAccount,
                     data: signature
                 }
             );
@@ -381,3 +409,4 @@ class web3Service {
 }
 
 export default new web3Service();
+export { NULL_ADDRESS };

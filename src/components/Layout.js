@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Switch } from 'react-router';
 import { Link, Redirect, Route } from 'react-router-dom';
 import { Button, Grid, Header, Container, Image } from 'semantic-ui-react';
-import { web3Service } from '../services';
+import { web3Service, NULL_ADDRESS } from '../services';
 import { call2Action } from '../config';
 import Content from './Content';
 import Information from './Information';
@@ -85,15 +85,15 @@ export default class Layout extends Component {
                                             <div style={{ verticalAlign: 'middle' }}>
                                                 {web3Service.isWeb3Viewable &&
                                                     <small className="meta-address-holder address">
-                                                        { this.state.address &&
+                                                        { this.state.address && this.state.address !== NULL_ADDRESS ?
                                                             <a
                                                                 href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
                                                                 rel="noopener noreferrer" >
                                                                 {this.state.address || '...'}
+                                                            </a>:
+                                                            <a onClick={()=>{}}>
+                                                                ...
                                                             </a>
-                                                        }
-                                                        { !this.state.address &&
-                                                            '...'
                                                         }
                                                     </small>
                                                 }
@@ -113,15 +113,15 @@ export default class Layout extends Component {
                                         <Grid.Column textAlign="right" width={6}>
                                             {web3Service.isWeb3Viewable &&
                                             <small className="meta-address-holder address">
-                                                { this.state.address &&
+                                                { this.state.address && this.state.address !== NULL_ADDRESS ?
                                                     <a
                                                         href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
                                                         rel="noopener noreferrer" >
                                                         {this.state.address}
+                                                    </a>:
+                                                    <a onClick={()=>{}}>
+                                                        ...
                                                     </a>
-                                                }
-                                                { !this.state.address &&
-                                                    '...'
                                                 }
                                             </small>
                                             }

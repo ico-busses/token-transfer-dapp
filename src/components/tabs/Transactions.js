@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
+import { prettyNumber } from '../../services/utils';
 import { contentStyle } from '../../styles';
 
 export default class Transactions extends Component {
@@ -355,7 +356,7 @@ export default class Transactions extends Component {
                                                 </Grid.Column>
                                                 <Grid.Column width={this.props.isMobile ? 6 : 4}  textAlign='right'>
                                                     <Button onClick={this.props.transferTokens} disabled={this.props.sendingTokens || !this.props.canSend} loading={this.props.sendingTokens}  className="transfer curved-border" >
-                                                        Transfer {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.prettyNumber(this.props.totalRecipientsAmounts)} ${this.props.symbol}(s)`}
+                                                        Transfer {Boolean(Number(this.props.totalRecipientsAmounts)) && `${prettyNumber(this.props.totalRecipientsAmounts)} ${this.props.symbol}(s)`}
                                                     </Button>
                                                 </Grid.Column>
                                             </Grid.Row>
@@ -376,7 +377,6 @@ Transactions.propTypes = {
     isMobile: PropTypes.bool.isRequired,
     isValidAddress: PropTypes.func.isRequired,
     parseTokenAmount: PropTypes.func.isRequired,
-    prettyNumber: PropTypes.func.isRequired,
     updateTotalAmount: PropTypes.func.isRequired,
     setResetDetails: PropTypes.func.isRequired,
     setTransferDetailsFetcher: PropTypes.func.isRequired,

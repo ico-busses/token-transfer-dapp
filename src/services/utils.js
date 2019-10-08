@@ -11,6 +11,8 @@ const parseTokenAmount = function (amount, decimals=0, incoming=true) {
 };
 
 const prettyNumber = function (number) {
+    number = typeof number === 'number' ? number : Number(number);
+    number = new RegExp('^\\d+\\.?\\d{8,}$').test(number) ? number.toFixed(8) : number;
     const parts = number.toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return parts.join('.');
@@ -54,6 +56,15 @@ const validateAddresses = function (recipientAddresses) {
     return isValid;
 };
 
+export default {
+    parseTokenAmount,
+    prettyNumber,
+    totalAmount,
+    validateAmount,
+    validateAmounts,
+    validateAddress,
+    validateAddresses
+};
 export {
     parseTokenAmount,
     prettyNumber,
