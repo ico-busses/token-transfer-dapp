@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BigNumber from 'bignumber.js';
+import { Route } from 'react-router-dom';
 import { web3Service } from '../services';
+import { parseTokenAmount, prettyNumber, validateAddress } from '../services/utils';
 import ContractMap from 'eth-contract-metadata';
 import { Button, Card, Form, Grid, List, Loader, Search, Container } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
-import Transactions from './Transactions';
+import Approvals from './tabs/Approvals';
+import TabSelector from './TabSelector';
+import Transactions from './tabs/Transactions';
 import '../styles/new-design.css';
 
 const ContractMapAddresses = Object.keys(ContractMap);
@@ -20,6 +23,7 @@ export default class Content extends HasAlert {
         this.next = this.next.bind(this);
         this.search = this.search.bind(this);
         this.searchSelected = this.searchSelected.bind(this);
+        this.approveTokens = this.approveTokens.bind(this);
         this.transferTokens = this.transferTokens.bind(this);
         this.parseTokenAmount = this.parseTokenAmount.bind(this);
         this.clearTokenAddress = this.clearTokenAddress.bind(this);
@@ -50,13 +54,13 @@ export default class Content extends HasAlert {
         tokenFilterList: [],
         resetDetails: null,
         fetchTransferDetails: null,
-        totalRecipientsAmounts: 0,
+        totalRecipientsAmounts: '0',
         isValidRecipientAmountsSet: false,
         isValidRecipientAddressesSet: false,
     }
 
     get isValidTokenAddressSet (){
-        return web3Service._web3.utils.isAddress(this.state.tokenAddress);
+        return this.isValidAddress(this.state.tokenAddress);
     }
 
     get canSend() {
@@ -77,6 +81,10 @@ export default class Content extends HasAlert {
                 image:  this.state.tokenFilterList.length < 6 ? `images/contractLogos/${ContractMap[token].logo}` : ''
             };
         });
+    }
+
+    prettyNumber (number) {
+        return prettyNumber(number);
     }
 
     resolveUrlAddress () {
@@ -108,12 +116,7 @@ export default class Content extends HasAlert {
     }
 
     parseTokenAmount (amount, incoming=true) {
-        const factor = new BigNumber(10 ** Number(this.state.contractDetails.decimals));
-        if (incoming ) {
-            return new BigNumber(amount.toString()).div(factor);
-        } else {
-            return new BigNumber(amount.toString()).times(factor);
-        }
+        return parseTokenAmount(amount, this.state.contractDetails.decimals, incoming);
     }
 
     clearTokenAddress () {
@@ -121,7 +124,7 @@ export default class Content extends HasAlert {
     }
 
     isValidAddress (address) {
-        return web3Service._web3.utils.isAddress(address);
+        return validateAddress(address);
     }
 
     setLayoutTokenLoaded () {
@@ -256,13 +259,42 @@ export default class Content extends HasAlert {
                     });
                 })
             );
-            this.state.resetDetails();
+            this.resetTransactionState();
+        } catch (e) {
+            this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
             this.setState({
-                sendingTokens: false,
-                totalRecipientsAmounts: 0,
-                isValidRecipientAmountsSet: false,
-                isValidRecipientAddressesSet: false
+                sendingTokens: false
             });
+        }
+    }
+
+    async approveTokens () {
+        if (this.state.sendingTokens || !this.canSend) {
+            return;
+        }
+        this.setState({ sendingTokens: true });
+        const { tokenAddress } = this.state;
+        const txDetails = this.state.fetchTransferDetails();
+
+        if (txDetails.addresses.length > 1 && txDetails.amounts.length > 1) {
+            this.notify({ msg: 'Making multiple transfers. You need to approve metamask for each transaction', type: 'info', autoClose: true });
+        }
+
+        try {
+            await Promise.all(
+                txDetails.addresses.map( (address, index) => {
+                    return web3Service.approveTokens(tokenAddress, address, this.parseTokenAmount(txDetails.amounts[index], false).toFixed(), {
+                        onTransactionHash: (hash) => {
+                            this.notify({ msg: 'Approval successful, track transaction.', type: 'success', autoClose: 1000 });
+                            this.notify({ msg: <div><b>Transaction hash:</b> {hash}</div>, type: 'info' });
+                        },
+                        onReceipt: (receipt) => {
+                            this.notify({ msg: <div><b>Transaction confirmed:</b><br/> Hash - {receipt.transactionHash},<br/> Block - {receipt.blockNumber}</div>, type: 'info' });
+                        }
+                    });
+                })
+            );
+            this.resetTransactionState();
         } catch (e) {
             this.notify({ msg: `Transfer failed !!!: ${e.message || e}` });
             this.setState({
@@ -328,6 +360,16 @@ export default class Content extends HasAlert {
             });
         }
         this.setState({ runningNext: false });
+    }
+
+    resetTransactionState () {
+        this.state.resetDetails();
+        this.setState({
+            sendingTokens: false,
+            totalRecipientsAmounts: '0',
+            isValidRecipientAmountsSet: false,
+            isValidRecipientAddressesSet: false
+        });
     }
 
     onChange = (property) => (event) => {
@@ -470,7 +512,7 @@ export default class Content extends HasAlert {
                                                                         <List.Content>
                                                                             <List.Header as='h2'>Balance(approx.)</List.Header>
                                                                             <List.Description as='p'>
-                                                                                {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
+                                                                                {` ${this.prettyNumber(this.printUserBalance)} ${this.state.contractDetails.symbol}` }
                                                                             </List.Description>
                                                                         </List.Content>
                                                                     </List.Item>
@@ -538,30 +580,53 @@ export default class Content extends HasAlert {
                                     </Grid>
                                 </div>
                                 <div>
-                                    <Form >
-                                        <div >
-                                            <Grid style={contentStyle.main} >
-                                                <Grid.Column width={16}>
-                                                        <Transactions
-                                                            balance={this.state.userBalance || '0'}
-                                                            symbol={this.state.contractDetails.symbol}
-                                                            isMobile={this.props.isMobile}
-                                                            isValidAddress={this.isValidAddress}
-                                                            parseTokenAmount={this.parseTokenAmount}
-                                                            updateTotalAmount={this.updateTotalAmount}
-                                                            setResetDetails={this.setResetDetails}
-                                                            setTransferDetailsFetcher={this.setTransferDetailsFetcher}
-                                                            setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
-                                                            setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
-                                                            canSend={this.canSend}
-                                                            sendingTokens={this.state.sendingTokens}
-                                                            transferTokens={this.transferTokens}
-                                                            totalRecipientsAmounts={this.state.totalRecipientsAmounts}
-                                                        />
-                                                </Grid.Column>
-                                            </Grid>
-                                        </div>
-                                    </Form>
+                                    <Route render={ props =>
+                                        <TabSelector
+                                            {...this.props}
+                                            {...props}
+                                        />}
+                                    />
+                                    <Route path="/:address/transfer" render={ props =>
+                                        <Transactions
+                                            balance={this.state.userBalance || '0'}
+                                            symbol={this.state.contractDetails.symbol}
+                                            isMobile={this.props.isMobile}
+                                            isValidAddress={this.isValidAddress}
+                                            parseTokenAmount={this.parseTokenAmount}
+                                            prettyNumber={this.prettyNumber}
+                                            updateTotalAmount={this.updateTotalAmount}
+                                            setResetDetails={this.setResetDetails}
+                                            setTransferDetailsFetcher={this.setTransferDetailsFetcher}
+                                            setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
+                                            setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
+                                            canSend={this.canSend}
+                                            sendingTokens={this.state.sendingTokens}
+                                            transferTokens={this.transferTokens}
+                                            totalRecipientsAmounts={this.state.totalRecipientsAmounts}
+                                            {...props}
+                                        />}
+                                    />
+                                    <Route path="/:address/approve" render={ props =>
+                                        <Approvals
+                                            tokenAddress={this.state.tokenAddress}
+                                            balance={this.state.userBalance || '0'}
+                                            symbol={this.state.contractDetails.symbol}
+                                            isMobile={this.props.isMobile}
+                                            isValidAddress={this.isValidAddress}
+                                            parseTokenAmount={this.parseTokenAmount}
+                                            prettyNumber={this.prettyNumber}
+                                            updateTotalAmount={this.updateTotalAmount}
+                                            setResetDetails={this.setResetDetails}
+                                            setTransferDetailsFetcher={this.setTransferDetailsFetcher}
+                                            setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
+                                            setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
+                                            canSend={this.canSend}
+                                            approvingTokens={this.state.sendingTokens}
+                                            approveTokens={this.approveTokens}
+                                            totalRecipientsAmounts={this.state.totalRecipientsAmounts}
+                                            {...props}
+                                        />}
+                                    />
                                 </div>
                         </Container>
                     </div>

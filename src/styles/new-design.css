@@ -14,6 +14,10 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     width: auto;
 }
 
+.font-orange {
+    color: #f9a510;
+}
+
 /*LOGO SECTION*/
 .logo{
     display: inline-block!important;
@@ -434,6 +438,12 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     padding-bottom: 0;
 }
 
+.mobile .formDetails .card{
+    box-shadow: 0 0;
+    -webkit-box-shadow: 0 0;
+    -moz-box-shadow: 0 0;
+}
+
 .card.board {
     background-color: #ffffff;
     padding: 48px 48px;
@@ -446,9 +456,9 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 .mobile .card.board {
     padding: 0;
     border-radius: 0;
-    -webkit-box-shadow: 0px;
-    -moz-box-shadow: 0px;
-    box-shadow: 0px;
+    -webkit-box-shadow: 0 0;
+    -moz-box-shadow: 0 0;
+    box-shadow: 0 0;
 }
 
 .btnHolder{
@@ -489,8 +499,12 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 
 
-.formDetails .item .description a, .formDetails .item .description{
+.formDetails .item .description a, .formDetails .item .description, .allowances h5{
     color: #ADC5D8!important;
+}
+
+.allowances label {
+    font-weight: 700;
 }
 
 .formDetails input{
@@ -504,6 +518,16 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 .btnHolder{
     padding: 30px;
     text-align: right;
+}
+
+.approve{
+    background-color: #1064f9!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+}
+
+.approve:hover {
+    background-color: rgb(16, 100, 249)!important;
 }
 
 .transfer{

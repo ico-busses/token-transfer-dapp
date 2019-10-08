@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Route } from 'react-router-dom';
+import { Switch } from 'react-router';
+import { Link, Redirect, Route } from 'react-router-dom';
 import { Button, Grid, Header, Container, Image } from 'semantic-ui-react';
 import { web3Service } from '../services';
 import { call2Action } from '../config';
@@ -133,7 +134,10 @@ export default class Layout extends Component {
                             </Container>
                         }
                     <div style={this.props.isMobile ? mobilePadding : {}}>
-                        < Route path="/:address?" render ={ props =>
+                        <Switch>
+                            <Redirect exact to="/:address/transfer" from="/:address" />
+                        </Switch>
+                        < Route path="/:address?" strict render ={ props =>
                             <Content isMobile={this.props.isMobile} {...{ displayAddress: this.showUserAddress, tokenLoadedFunc: this.setTokenLoaded }} {...props}/>
                         }/>
                     </div>
