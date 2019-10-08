@@ -14,6 +14,10 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
     width: auto;
 }
 
+.font-orange {
+    color: #f9a510;
+}
+
 /*LOGO SECTION*/
 .logo{
     display: inline-block!important;
@@ -495,8 +499,12 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 }
 
 
-.formDetails .item .description a, .formDetails .item .description{
+.formDetails .item .description a, .formDetails .item .description, .allowances h5{
     color: #ADC5D8!important;
+}
+
+.allowances label {
+    font-weight: 700;
 }
 
 .formDetails input{
@@ -510,6 +518,16 @@ body, div, input, p, a, span, h1, h2, h3, h4, h5, h6 {
 .btnHolder{
     padding: 30px;
     text-align: right;
+}
+
+.approve{
+    background-color: #1064f9!important;
+    color: #ffffff!important;
+    padding: 14px 25px!important;
+}
+
+.approve:hover {
+    background-color: rgb(16, 100, 249)!important;
 }
 
 .transfer{
