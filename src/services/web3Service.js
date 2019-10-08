@@ -295,7 +295,7 @@ class web3Service {
                     data: signature
                 }
             );
-            return this.cleanConvertedHex(this._web3_web3.utils.toAscii(rpcCall)).toString();
+            return this.cleanConvertedHex(this._web3.utils.toAscii(rpcCall)).toString();
         }
     }
 
