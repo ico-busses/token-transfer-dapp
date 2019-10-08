@@ -1,6 +1,6 @@
 {
   "name": "token-transfer-dapp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A decentralized dapp, to make quick ERC20, enabled tokens transfer",
   "main": "src/main.js",
   "directories": {
