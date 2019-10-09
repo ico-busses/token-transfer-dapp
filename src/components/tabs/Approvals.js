@@ -309,7 +309,7 @@ export default class Approvals extends Component {
                                                                 className="curved-border mb-12"
                                                             />
                                                         </Form.Field>
-                                                        <Form.Field error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
+                                                        <Form.Field className="allowances" error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
                                                             <Form.Input
                                                                 placeholder={`${this.props.symbol}<label className="address" title="Allocation">Allocat<label className="address" title="Allocation">Allocation: </label>ion: </label>s to send`}
                                                                 value={this.state.recipientAmounts[index]}
