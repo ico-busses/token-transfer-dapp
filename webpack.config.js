@@ -9,10 +9,8 @@ const settings = merge(baseConfig, {
   module: {
     rules: [
       {
-          test: /\.js?$/,
-          use: [
-            'react-hot-loader/webpack'
-          ]
+        test: /\.js?$/,
+        use: ['react-hot-loader/webpack']
       }
     ]
   },
@@ -20,7 +18,7 @@ const settings = merge(baseConfig, {
     contentBase: path.resolve('src/'),
     publicPath: 'http://localhost:8080/', // full URL is necessary for Hot Module Replacement if additional path will be added.
     quiet: false,
-    https: true,
+    https: false,
     hot: true,
     historyApiFallback: true,
     inline: true
@@ -31,7 +29,7 @@ const settings = merge(baseConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true
     })
-  ],
+  ]
 });
 
 module.exports = settings;
