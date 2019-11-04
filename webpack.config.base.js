@@ -1,6 +1,7 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const settings = {
     entry: [
@@ -57,6 +58,7 @@ const settings = {
         ]
     },
     plugins: [
+        new Dotenv(),
         new HtmlWebpackPlugin({
             title: 'Token Transfer Dapp',
             filename: 'index.html',

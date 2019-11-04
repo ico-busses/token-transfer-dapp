@@ -69,8 +69,7 @@ export default class Content extends HasAlert {
 
     get printUserBalance() {
         let bal = this.state.userBalance || 0;
-        bal = bal ? this.parseTokenAmount(bal).toNumber() : bal;
-        return new RegExp('^\\d+\\.?\\d{8,}$').test(bal) ? bal.toFixed(8) : bal;
+        return bal ? this.parseTokenAmount(bal).toNumber() : bal;
     }
 
     get tokenFilterList () {
@@ -512,7 +511,7 @@ export default class Content extends HasAlert {
                                                                         <List.Content>
                                                                             <List.Header as='h2'>Balance(approx.)</List.Header>
                                                                             <List.Description as='p'>
-                                                                                {` ${this.prettyNumber(this.printUserBalance)} ${this.state.contractDetails.symbol}` }
+                                                                                {` ${prettyNumber(this.printUserBalance)} ${this.state.contractDetails.symbol}` }
                                                                             </List.Description>
                                                                         </List.Content>
                                                                     </List.Item>
@@ -560,7 +559,7 @@ export default class Content extends HasAlert {
                                                                                 <Grid.Column width={8}>
                                                                                     <List.Header as='h2'>Balance(approx.)</List.Header>
                                                                                     <List.Description as='p'>
-                                                                                        {` ${this.printUserBalance} ${this.state.contractDetails.symbol}` }
+                                                                                        {` ${prettyNumber(this.printUserBalance)} ${this.state.contractDetails.symbol}` }
                                                                                     </List.Description>
                                                                                 </Grid.Column>
                                                                             </Grid>
@@ -593,7 +592,6 @@ export default class Content extends HasAlert {
                                             isMobile={this.props.isMobile}
                                             isValidAddress={this.isValidAddress}
                                             parseTokenAmount={this.parseTokenAmount}
-                                            prettyNumber={this.prettyNumber}
                                             updateTotalAmount={this.updateTotalAmount}
                                             setResetDetails={this.setResetDetails}
                                             setTransferDetailsFetcher={this.setTransferDetailsFetcher}
@@ -614,7 +612,6 @@ export default class Content extends HasAlert {
                                             isMobile={this.props.isMobile}
                                             isValidAddress={this.isValidAddress}
                                             parseTokenAmount={this.parseTokenAmount}
-                                            prettyNumber={this.prettyNumber}
                                             updateTotalAmount={this.updateTotalAmount}
                                             setResetDetails={this.setResetDetails}
                                             setTransferDetailsFetcher={this.setTransferDetailsFetcher}

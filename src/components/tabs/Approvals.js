@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
 import Web3Service from '../../services/web3Service';
-import { validateAmount } from '../../services/utils';
+import { validateAmount, prettyNumber, totalAmount } from '../../services/utils';
 import { contentStyle } from '../../styles';
 
 const MINIMUM_APPROVAL = -1;
@@ -22,7 +22,6 @@ export default class Approvals extends Component {
         this.validateForm = this.validateForm.bind(this);
         this.removeFromArray = this.removeFromArray.bind(this);
         this.updateAllowances = this.updateAllowances.bind(this);
-        this.remainingAllowance = this.remainingAllowance.bind(this);
         this.isValidRecipientAmountSet = this.isValidRecipientAmountSet.bind(this);
     }
 
@@ -37,13 +36,8 @@ export default class Approvals extends Component {
     }
 
     get totalAmount () {
-        let total = new BigNumber(0);
-        if (this.state.recipientAddresses.length > 0) {
-            this.state.recipientAmounts.map((a) => {
-                total = total.plus(this.props.parseTokenAmount(a || 0, false));
-            });
-        }
-        total = total.plus(this.props.parseTokenAmount(this.state.recipientAmount || 0, false));
+        const amounts = [].concat(this.state.recipientAmounts).concat([this.state.recipientAmount]);
+        const total = totalAmount(0, amounts.map(amount => this.props.parseTokenAmount(amount || 0, false).toFixed()));
         return  total.valueOf();
     }
 
@@ -83,10 +77,6 @@ export default class Approvals extends Component {
             isValid = false;
         }
         return isValid;
-    }
-
-    remainingAllowance () {
-        return new BigNumber(this.totalAmount).lte(this.props.balance) ? new BigNumber(this.props.balance).minus(this.totalAmount) : new BigNumber(0);
     }
 
     updateArray(array, index, value) {
@@ -215,24 +205,14 @@ export default class Approvals extends Component {
         });
     }
 
-    setMaxValue = (index) => () => {
-        let value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
-        value = new BigNumber(this.props.balance);
-        if (typeof index === 'undefined') {
+    setMaxValue = () => {
+        const value = new BigNumber(this.props.balance);
             this.setState({
                 recipientAmount: this.props.parseTokenAmount(value).toFixed()
             }, () => {
                 this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount).toFixed());
                 this.validateForm();
         });
-        } else {
-            this.setState({
-                recipientAmounts: this.updateArray(this.state.recipientAmounts, index, this.props.parseTokenAmount(value).toFixed())
-            }, () => {
-                this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount).toFixed());
-                this.validateForm();
-            });
-        }
     }
 
     onChange = (property, index) => (event) => {
@@ -270,7 +250,6 @@ export default class Approvals extends Component {
             addAddressButtonProps.floated = 'right';
         }
         return (
-
             <Form >
                 <div >
                     <Grid style={contentStyle.main} >
@@ -309,27 +288,21 @@ export default class Approvals extends Component {
                                                                 className="curved-border mb-12"
                                                             />
                                                         </Form.Field>
-                                                        <Form.Field >
-                                                            <Grid columns={this.props.isMobile ? 1 : 2} className={'mt-12 mb-12 allowances'}>
-                                                                <Grid.Row>
-                                                                    <Grid.Column width={this.props.isMobile? 16 : 2}>
-                                                                        <label className="address" title="Allocation">Allocation: </label>
-                                                                    </Grid.Column>
-                                                                    <Grid.Column className={this.props.isMobile ? 'mt-12' : 'mb-12'}>
-                                                                        <h5>{this.state.recipientAllowances[index] ? this.props.prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowances[index]).toFixed()) : 0}</h5>
-                                                                    </Grid.Column>
-                                                                </Grid.Row>
-                                                            </Grid>
-                                                        </Form.Field>
-                                                        <Form.Field error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
+                                                        <Form.Field className="allowances" error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
                                                             <Form.Input
-                                                                placeholder={`${this.props.symbol}s to send`}
+                                                                placeholder={`${this.props.symbol}<label className="address" title="Allocation">Allocat<label className="address" title="Allocation">Allocation: </label>ion: </label>s to send`}
                                                                 value={this.state.recipientAmounts[index]}
                                                                 onChange={this.onChange('recipientAmounts', index)}
                                                                 onKeyUp={this.onChange('recipientAmounts', index)}
                                                                 onBlur={this.onChange('recipientAmounts', index)}
                                                                 className="curved-border mb-12"
                                                             />
+                                                            <h5 className="address mt-0" >
+                                                                <span className="mr-12" title="Allocation">Allocation: </span>
+                                                                <span>
+                                                                    {this.state.recipientAllowances[index] ? prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowances[index]).toFixed()) : 0}
+                                                                </span>
+                                                            </h5>
                                                         </Form.Field>
                                                         <Button icon floated='right' color='red' className='delete-button curved-border' onClick={this.removeFromArray(index)} title='Remove address'>
                                                             {/* <Icon name='delete' style={contentStyle.iconButton}  /> */}
@@ -362,27 +335,21 @@ export default class Approvals extends Component {
                                                         className="curved-border"
                                                     />
                                                 </Form.Field>
-                                                <Form.Field >
-                                                    <Grid columns={this.props.isMobile ? 1 : 2} className={'mt-12 mb-12 allowances'}>
-                                                        <Grid.Row>
-                                                            <Grid.Column width={this.props.isMobile? 16 : 2}>
-                                                                <label className="address" title="Allocation">Allocation: </label>
-                                                            </Grid.Column>
-                                                            <Grid.Column className={this.props.isMobile ? 'mt-12' : 'mb-12'}>
-                                                                <h5>{this.state.recipientAllowance ? this.props.prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowance).toFixed()) : 0}</h5>
-                                                            </Grid.Column>
-                                                        </Grid.Row>
-                                                    </Grid>
-                                                </Form.Field>
-                                                <Form.Field error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
+                                                <Form.Field className=" mb-12 allowances" error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
                                                     <Form.Input
                                                         placeholder={`${this.props.symbol}s to send`}
                                                         value={this.state.recipientAmount}
                                                         onChange={this.onChange('recipientAmount')}
                                                         onKeyUp={this.onChange('recipientAmount')}
                                                         onBlur={this.onChange('recipientAmount')}
-                                                        className="curved-border mb-12"
+                                                        className="curved-border"
                                                     />
+                                                    <h5 className="address mt-0" >
+                                                        <span className="mr-12" title="Allocation">Allocation: </span>
+                                                        <span>
+                                                            {this.state.recipientAllowance ? prettyNumber(this.props.parseTokenAmount(this.state.recipientAllowance).toFixed()) : 0}
+                                                        </span>
+                                                    </h5>
                                                 </Form.Field>
                                             </Grid.Column>
                                             { !this.props.isMobile &&
@@ -403,7 +370,7 @@ export default class Approvals extends Component {
                                         <Grid>
                                             <Grid.Row>
                                                 <Grid.Column width={this.props.isMobile ? 10 : 12}>
-                                                    <Button title='Send remaining Allowance' className="ash curved-border mr-12" onClick={this.setMaxValue()} {...balanceButtonProps} >
+                                                    <Button title='Send remaining Allowance' className="ash curved-border mr-12" onClick={this.setMaxValue} {...balanceButtonProps} >
                                                         Approve Balance
                                                     </Button>
                                                     <Button title='Add new address' className="ash curved-border" disabled={!this.state.isBatch} onClick={this.addToArray} {...addAddressButtonProps}>
@@ -412,7 +379,7 @@ export default class Approvals extends Component {
                                                 </Grid.Column>
                                                 <Grid.Column width={this.props.isMobile ? 6 : 4}  textAlign='right'>
                                                     <Button onClick={this.props.approveTokens} disabled={this.props.approvingTokens || !this.props.canSend} loading={this.props.approvingTokens}  className="approve curved-border" >
-                                                        Approve {Boolean(Number(this.props.totalRecipientsAmounts)) && `${this.props.prettyNumber(this.props.totalRecipientsAmounts)} ${this.props.symbol}(s)`}
+                                                        Approve {Boolean(Number(this.props.totalRecipientsAmounts)) && `${prettyNumber(this.props.totalRecipientsAmounts)} ${this.props.symbol}(s)`}
                                                     </Button>
                                                 </Grid.Column>
                                             </Grid.Row>
@@ -434,7 +401,6 @@ Approvals.propTypes = {
     isMobile: PropTypes.bool.isRequired,
     isValidAddress: PropTypes.func.isRequired,
     parseTokenAmount: PropTypes.func.isRequired,
-    prettyNumber: PropTypes.func.isRequired,
     updateTotalAmount: PropTypes.func.isRequired,
     setResetDetails: PropTypes.func.isRequired,
     setTransferDetailsFetcher: PropTypes.func.isRequired,
