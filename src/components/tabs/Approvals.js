@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
 import Web3Service from '../../services/web3Service';
-import { validateAmount, prettyNumber } from '../../services/utils';
+import { validateAmount, prettyNumber, totalAmount } from '../../services/utils';
 import { contentStyle } from '../../styles';
 
 const MINIMUM_APPROVAL = -1;
@@ -22,7 +22,6 @@ export default class Approvals extends Component {
         this.validateForm = this.validateForm.bind(this);
         this.removeFromArray = this.removeFromArray.bind(this);
         this.updateAllowances = this.updateAllowances.bind(this);
-        this.remainingAllowance = this.remainingAllowance.bind(this);
         this.isValidRecipientAmountSet = this.isValidRecipientAmountSet.bind(this);
     }
 
@@ -37,13 +36,8 @@ export default class Approvals extends Component {
     }
 
     get totalAmount () {
-        let total = new BigNumber(0);
-        if (this.state.recipientAddresses.length > 0) {
-            this.state.recipientAmounts.map((a) => {
-                total = total.plus(this.props.parseTokenAmount(a || 0, false));
-            });
-        }
-        total = total.plus(this.props.parseTokenAmount(this.state.recipientAmount || 0, false));
+        const amounts = [].concat(this.state.recipientAmounts).concat([this.state.recipientAmount]);
+        const total = totalAmount(0, amounts.map(amount => this.props.parseTokenAmount(amount || 0, false).toFixed()))
         return  total.valueOf();
     }
 
@@ -83,10 +77,6 @@ export default class Approvals extends Component {
             isValid = false;
         }
         return isValid;
-    }
-
-    remainingAllowance () {
-        return new BigNumber(this.totalAmount).lte(this.props.balance) ? new BigNumber(this.props.balance).minus(this.totalAmount) : new BigNumber(0);
     }
 
     updateArray(array, index, value) {
@@ -215,24 +205,14 @@ export default class Approvals extends Component {
         });
     }
 
-    setMaxValue = (index) => () => {
-        let value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
-        value = new BigNumber(this.props.balance);
-        if (typeof index === 'undefined') {
+    setMaxValue = () => {
+        const value = new BigNumber(this.props.balance);
             this.setState({
                 recipientAmount: this.props.parseTokenAmount(value).toFixed()
             }, () => {
                 this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount).toFixed());
                 this.validateForm();
         });
-        } else {
-            this.setState({
-                recipientAmounts: this.updateArray(this.state.recipientAmounts, index, this.props.parseTokenAmount(value).toFixed())
-            }, () => {
-                this.props.updateTotalAmount(this.props.parseTokenAmount(this.totalAmount).toFixed());
-                this.validateForm();
-            });
-        }
     }
 
     onChange = (property, index) => (event) => {
@@ -270,7 +250,6 @@ export default class Approvals extends Component {
             addAddressButtonProps.floated = 'right';
         }
         return (
-
             <Form >
                 <div >
                     <Grid style={contentStyle.main} >
@@ -391,7 +370,7 @@ export default class Approvals extends Component {
                                         <Grid>
                                             <Grid.Row>
                                                 <Grid.Column width={this.props.isMobile ? 10 : 12}>
-                                                    <Button title='Send remaining Allowance' className="ash curved-border mr-12" onClick={this.setMaxValue()} {...balanceButtonProps} >
+                                                    <Button title='Send remaining Allowance' className="ash curved-border mr-12" onClick={this.setMaxValue} {...balanceButtonProps} >
                                                         Approve Balance
                                                     </Button>
                                                     <Button title='Add new address' className="ash curved-border" disabled={!this.state.isBatch} onClick={this.addToArray} {...addAddressButtonProps}>

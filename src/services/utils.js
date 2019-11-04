@@ -23,7 +23,7 @@ const prettyNumber = function(number) {
 const totalAmount = function(decimals, recipientAmounts) {
   let total = new BigNumber(0);
   total = recipientAmounts.reduce(
-    (a, b) => a.plus(parseTokenAmount(b || 0, decimals, false)),
+    (a, b) => a.plus(parseTokenAmount(b.toString() || 0, decimals, false)),
     total
   );
   return total.toFixed();

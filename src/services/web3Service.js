@@ -37,13 +37,6 @@ class web3Service {
       } else {
         this.emitter.emit("info", "Using backup(infura) Mainnet node");
         if (backupNode.includes("http")) {
-          const slashIndex = backupNode.indexOf("//") + 2;
-          const queryIndex =
-            backupNode.indexOf("/", slashIndex) ||
-            backupNode.indexOf("?", slashIndex);
-          const domain =
-            queryIndex >= 0 ? backupNode.substring(0, queryIndex) : backupNode;
-
           this._web3 = new Web3(
             new Web3.providers.HttpProvider(backupNode, {
               headers: [

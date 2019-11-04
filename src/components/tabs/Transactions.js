@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
-import { prettyNumber } from '../../services/utils';
+import { prettyNumber, totalAmount } from '../../services/utils';
 import { contentStyle } from '../../styles';
 
 export default class Transactions extends Component {
@@ -31,13 +31,8 @@ export default class Transactions extends Component {
     }
 
     get totalAmount () {
-        let total = new BigNumber(0);
-        if (this.state.recipientAddresses.length > 0) {
-            this.state.recipientAmounts.map((a) => {
-                total = total.plus(this.props.parseTokenAmount(a || 0, false));
-            });
-        }
-        total = total.plus(this.props.parseTokenAmount(this.state.recipientAmount || 0, false));
+        const amounts = [].concat(this.state.recipientAmounts).concat([this.state.recipientAmount]);
+        const total = totalAmount(0, amounts.map(amount => this.props.parseTokenAmount(amount || 0, false).toFixed()))
         return  total.valueOf();
     }
 
@@ -180,6 +175,7 @@ export default class Transactions extends Component {
     setMaxValue = (index) => () => {
         let value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
         value = this.props.parseTokenAmount(value || 0, false);
+
         if (new BigNumber(this.totalAmount).lte(this.props.balance)) {
             value = this.remainingBalance().plus(value);
         } else {
