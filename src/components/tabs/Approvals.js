@@ -37,7 +37,7 @@ export default class Approvals extends Component {
 
     get totalAmount () {
         const amounts = [].concat(this.state.recipientAmounts).concat([this.state.recipientAmount]);
-        const total = totalAmount(0, amounts.map(amount => this.props.parseTokenAmount(amount || 0, false).toFixed()))
+        const total = totalAmount(0, amounts.map(amount => this.props.parseTokenAmount(amount || 0, false).toFixed()));
         return  total.valueOf();
     }
 

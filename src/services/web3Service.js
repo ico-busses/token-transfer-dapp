@@ -1,15 +1,15 @@
-import Web3 from "web3";
-import EventEmitter from "events";
+import Web3 from 'web3';
+import EventEmitter from 'events';
 import {
   backupNode,
   ethereumNode,
   explorers,
   fnSignatures,
   networks
-} from "../config";
-import ERC20 from "../abi/ForeignToken";
+} from '../config';
+import ERC20 from '../abi/ForeignToken';
 
-const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
+const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 class web3Service {
   constructor() {
@@ -25,7 +25,7 @@ class web3Service {
 
   async init() {
     try {
-      if (ethereumNode && typeof ethereumNode == "string") {
+      if (ethereumNode && typeof ethereumNode == 'string') {
         this._web3 = new Web3(new Web3.providers.HttpProvider(ethereumNode));
       } else if (window.ethereum) {
         this._web3 = new Web3(window.ethereum);
@@ -35,8 +35,8 @@ class web3Service {
           Web3.givenProvider || window.web3.currentProvider
         );
       } else {
-        this.emitter.emit("info", "Using backup(infura) Mainnet node");
-        if (backupNode.includes("http")) {
+        this.emitter.emit('info', 'Using backup(infura) Mainnet node');
+        if (backupNode.includes('http')) {
           this._web3 = new Web3(
             new Web3.providers.HttpProvider(backupNode, {
               headers: [
@@ -88,12 +88,12 @@ class web3Service {
       this.netId = await this._web3.eth.net.getId().valueOf();
       this.initialized = true;
     } catch (e) {
-      this.emitter.emit("error", e);
+      this.emitter.emit('error', e);
     }
   }
 
   async initAccounts() {
-    const REJECTWORDS = ["rejected", "denied"];
+    const REJECTWORDS = ['rejected', 'denied'];
     if (this.checkingAccounts) {
       return;
     }
@@ -111,7 +111,7 @@ class web3Service {
         if (REJECTWORDS.some(word => (e.message || e).includes(word))) {
           this.accountsRejected = true;
         }
-        this.emitter.emit("error", e);
+        this.emitter.emit('error', e);
       }
     }
     this.checkingAccounts = false;
@@ -133,15 +133,15 @@ class web3Service {
     const { address, symbol, decimals, image } = options;
     try {
       if (!address || !symbol || (!decimals && decimals !== 0)) {
-        throw "Incorrect Token details";
+        throw 'Incorrect Token details';
       }
-      const rpcRequest = this.craftRpcCall("wallet_watchAsset");
+      const rpcRequest = this.craftRpcCall('wallet_watchAsset');
 
       const rpcOptions = { address, symbol, decimals };
       image ? (rpcOptions.image = image) : null;
 
       rpcRequest.params = {
-        type: "ERC20",
+        type: 'ERC20',
         options: rpcOptions
       };
 
@@ -159,7 +159,7 @@ class web3Service {
       }
       return rpcCall.result;
     } catch (e) {
-      this.emitter.emit("error", e);
+      this.emitter.emit('error', e);
     }
   }
 
@@ -175,12 +175,12 @@ class web3Service {
   cleanConvertedHex(val) {
     /*eslint no-control-regex: "off"*/
     const regPtrn = new RegExp(/\u0000/g);
-    return val.replace(regPtrn, "");
+    return val.replace(regPtrn, '');
   }
 
   craftRpcCall(method, args = []) {
     const rpcObject = {
-      jsonrpc: "2.0",
+      jsonrpc: '2.0',
       method: method,
       id: new Date().getTime()
     };
@@ -215,14 +215,14 @@ class web3Service {
       });
       let receiptReceieved;
 
-      tx.on("error", e => reject(e.message || e));
-      tx.once("receipt", r =>
+      tx.on('error', e => reject(e.message || e));
+      tx.once('receipt', r =>
         receiptReceieved ? null : (receiptReceieved = true && onReceipt(r))
       );
-      tx.once("confirmation", (c, r) =>
+      tx.once('confirmation', (c, r) =>
         receiptReceieved ? null : (receiptReceieved = true && onReceipt(r))
       );
-      tx.once("transactionHash", hash => {
+      tx.once('transactionHash', hash => {
         onTransactionHash(hash);
         resolve(hash);
       });
@@ -248,7 +248,7 @@ class web3Service {
   get isWeb3Usable() {
     return (
       this.isWeb3Viewable &&
-      typeof this.accounts !== "undefined" &&
+      typeof this.accounts !== 'undefined' &&
       this.accounts !== null &&
       this.accounts.length > 0
     );
@@ -258,7 +258,7 @@ class web3Service {
     const send = this.getProviderSend();
     const rpcRequest = {
       to,
-      data: data || "0x"
+      data: data || '0x'
     };
 
     if (from) {
@@ -277,14 +277,14 @@ class web3Service {
       rpcRequest.gasPrice = gasPrice;
     }
 
-    if (!args || typeof args !== "object") {
+    if (!args || typeof args !== 'object') {
       args = [];
     }
     args.unshift(rpcRequest);
-    args.push("latest");
+    args.push('latest');
 
     const rpcCall = await new Promise((resolve, reject) => {
-      send(this.craftRpcCall("eth_call", args), function(err, res) {
+      send(this.craftRpcCall('eth_call', args), function(err, res) {
         if (err) {
           reject(err);
         }
@@ -316,12 +316,12 @@ class web3Service {
           (!!this.accounts && Object.keys(this.accounts).length) !==
             (!!accounts && Object.keys(accounts).length) ||
           (!!this.accounts &&
-            typeof this.accounts.length !== "undefined" &&
+            typeof this.accounts.length !== 'undefined' &&
             this.accounts.some((account, id) => account !== accounts[id]));
         this.accounts = accounts;
-        this.defaultAccount = this.accounts[0] || "";
+        this.defaultAccount = this.accounts[0] || '';
       } catch (e) {
-        this.emitter.emit("error", e);
+        this.emitter.emit('error', e);
       }
     }
     return accountChanged;
@@ -331,11 +331,11 @@ class web3Service {
     await this.awaitInitialized();
     try {
       const contract = this.instantiateERC20Token(tokenAddress);
-      const name = await this.contractCall(contract, "name");
+      const name = await this.contractCall(contract, 'name');
       return name.toString();
     } catch (e) {
       const signature = this.getFunctionSignature(fnSignatures.tokenName);
-      const rpcCall = await this.fetchRpcCall("eth_call", {
+      const rpcCall = await this.fetchRpcCall('eth_call', {
         to: tokenAddress,
         from: this.defaultAccount,
         data: signature
@@ -350,11 +350,11 @@ class web3Service {
     await this.awaitInitialized();
     try {
       const contract = this.instantiateERC20Token(tokenAddress);
-      const symbol = await this.contractCall(contract, "symbol");
+      const symbol = await this.contractCall(contract, 'symbol');
       return symbol.toString();
     } catch (e) {
       const signature = this.getFunctionSignature(fnSignatures.tokenSymbol);
-      const rpcCall = await this.fetchRpcCall("eth_call", {
+      const rpcCall = await this.fetchRpcCall('eth_call', {
         to: tokenAddress,
         from: this.defaultAccount,
         data: signature
@@ -369,11 +369,11 @@ class web3Service {
     await this.awaitInitialized();
     try {
       const contract = this.instantiateERC20Token(tokenAddress);
-      const decimals = await this.contractCall(contract, "decimals");
+      const decimals = await this.contractCall(contract, 'decimals');
       return decimals.toString();
     } catch (e) {
       const signature = this.getFunctionSignature(fnSignatures.tokenDecimals);
-      const rpcCall = await this.fetchRpcCall("eth_call", {
+      const rpcCall = await this.fetchRpcCall('eth_call', {
         to: tokenAddress,
         from: this.defaultAccount,
         data: signature
@@ -391,7 +391,7 @@ class web3Service {
     const contract = this.instantiateERC20Token(tokenAddress);
     const balance = await this.contractCall(
       contract,
-      "balanceOf",
+      'balanceOf',
       defaultAccount
     );
     return balance.toString();
@@ -406,7 +406,7 @@ class web3Service {
     const contract = this.instantiateERC20Token(tokenAddress);
     const allowance = await this.contractCall(
       contract,
-      "allowance",
+      'allowance',
       recipient,
       defaultAccount
     );
@@ -427,7 +427,7 @@ class web3Service {
     const contract = this.instantiateERC20Token(tokenAddress);
     return await this.contractTransaction(
       contract,
-      "transfer",
+      'transfer',
       recipient,
       amount,
       { onTransactionHash, onReceipt }
@@ -448,7 +448,7 @@ class web3Service {
     const contract = this.instantiateERC20Token(tokenAddress);
     return await this.contractTransaction(
       contract,
-      "approve",
+      'approve',
       recipient,
       amount,
       { onTransactionHash, onReceipt }
