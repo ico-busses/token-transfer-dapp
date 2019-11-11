@@ -290,7 +290,7 @@ export default class Approvals extends Component {
                                                         </Form.Field>
                                                         <Form.Field className="allowances" error={Boolean(this.state.recipientAmounts[index]) && !this.isValidRecipientAmountSet(index)} >
                                                             <Form.Input
-                                                                placeholder={`${this.props.symbol}<label className="address" title="Allocation">Allocat<label className="address" title="Allocation">Allocation: </label>ion: </label>s to send`}
+                                                                placeholder={`${this.props.symbol}s to approve`}
                                                                 value={this.state.recipientAmounts[index]}
                                                                 onChange={this.onChange('recipientAmounts', index)}
                                                                 onKeyUp={this.onChange('recipientAmounts', index)}
@@ -337,7 +337,7 @@ export default class Approvals extends Component {
                                                 </Form.Field>
                                                 <Form.Field className=" mb-12 allowances" error={Boolean(this.state.recipientAmount) && !this.isValidRecipientAmountSet()} >
                                                     <Form.Input
-                                                        placeholder={`${this.props.symbol}s to send`}
+                                                        placeholder={`${this.props.symbol}s to approve`}
                                                         value={this.state.recipientAmount}
                                                         onChange={this.onChange('recipientAmount')}
                                                         onKeyUp={this.onChange('recipientAmount')}
