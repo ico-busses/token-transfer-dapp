@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BigNumber from 'bignumber.js';
 import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
-import { prettyNumber, totalAmount } from '../../services/utils';
+import { prettyNumber, totalAmount, validateAmount } from '../../services/utils';
 import { contentStyle } from '../../styles';
 
 export default class Transactions extends Component {
@@ -40,7 +40,7 @@ export default class Transactions extends Component {
         let isValid = true;
         const value = typeof index === 'undefined' ? this.state.recipientAmount : this.state.recipientAmounts[index];
 
-        if (new RegExp('^\\d+\\.?\\d*$').test(value) && Number(value) > 0) {
+        if (validateAmount(this.props.parseTokenAmount(value, false).toFixed(),1)) {
             let total = new BigNumber(0);
             if (typeof index === 'undefined') {
                 index = this.state.recipientAmounts.length;
@@ -80,14 +80,13 @@ export default class Transactions extends Component {
     }
 
     addToArray () {
-        if (this.state.recipientAddresses.length > 0 && this.state.recipientAddresses.includes(this.state.recipientAddress)) {
-            return false;
+        if (!this.state.recipientAddress ||(this.state.recipientAddresses.length > 0 && this.state.recipientAddresses.includes(this.state.recipientAddress))) {
+            return ;
         }
-        const length = this.state.recipientAddresses.length;
-        const addresses = this.state.recipientAddresses;
-        const amounts = this.state.recipientAmounts;
-        addresses[length] = this.state.recipientAddress;
-        amounts[length] = this.state.recipientAmount;
+        const addresses = [].concat(this.state.recipientAddresses);
+        const amounts = [].concat(this.state.recipientAmounts);
+        addresses.push(this.state.recipientAddress)
+        amounts.push(this.state.recipientAmount)
 
         this.setState({
             recipientAddresses: addresses,
@@ -119,12 +118,12 @@ export default class Transactions extends Component {
         let isValid = true;
         if (this.state.recipientAmounts.length > 0) {
             this.state.recipientAmounts.map( value => {
-                if (!new RegExp('^\\d+\\.?\\d*$').test(value) || Number(value) <= 0) {
+                if (!validateAmount(this.props.parseTokenAmount(value, false).toFixed(), 1)) {
                     isValid = false;
                 }
             });
         }
-        if ((this.state.recipientAmount || this.state.recipientAddress) && (!new RegExp('^\\d+\\.?\\d*$').test(this.state.recipientAmount) || Number(this.state.recipientAmount) <= 0)) {
+        if ((this.state.recipientAmount || this.state.recipientAddress) && !validateAmount(this.props.parseTokenAmount(this.state.recipientAmount, false).toFixed(), 1)){
             isValid = false;
         }
         this.props.setValidRecipientAmountsSet(isValid);
@@ -169,7 +168,9 @@ export default class Transactions extends Component {
         this.setState({
             recipientAddresses: addresses,
             recipientAmounts: amounts
-        });
+        }, () =>
+        this.validateForm()
+        );
     }
 
     setMaxValue = (index) => () => {
@@ -376,6 +377,7 @@ Transactions.propTypes = {
     updateTotalAmount: PropTypes.func.isRequired,
     setResetDetails: PropTypes.func.isRequired,
     setTransferDetailsFetcher: PropTypes.func.isRequired,
+    setUpdatedAccountActions: PropTypes.func.isRequired,
     setValidRecipientAddressesSet: PropTypes.func.isRequired,
     setValidRecipientAmountsSet: PropTypes.func.isRequired,
     symbol: PropTypes.string.isRequired,

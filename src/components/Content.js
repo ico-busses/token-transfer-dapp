@@ -31,6 +31,7 @@ export default class Content extends HasAlert {
         this.setLayoutTokenLoaded = this.setLayoutTokenLoaded.bind(this);
         this.setResetDetails = this.setResetDetails.bind(this);
         this.setTransferDetailsFetcher= this.setTransferDetailsFetcher.bind(this);
+        this.setUpdatedAccountActions = this.setUpdatedAccountActions.bind(this);
         this.setValidRecipientAddressesSet = this.setValidRecipientAddressesSet.bind(this);
         this.setValidRecipientAmountsSet = this.setValidRecipientAmountsSet.bind(this);
 
@@ -52,6 +53,7 @@ export default class Content extends HasAlert {
         userBalance: 0,
         contractDetails: {},
         tokenFilterList: [],
+        updatedAccountActions: [],
         resetDetails: null,
         fetchTransferDetails: null,
         totalRecipientsAmounts: '0',
@@ -94,6 +96,12 @@ export default class Content extends HasAlert {
         }
     }
 
+    setUpdatedAccountActions (actions) {
+        this.setState({
+            updatedAccountActions: Array.isArray(actions) ? actions: [actions]
+        })
+    }
+
     setResetDetails (value) {
         this.setState({ resetDetails: value });
     }
@@ -109,6 +117,11 @@ export default class Content extends HasAlert {
     setValidRecipientAmountsSet(value) {
         this.setState({ isValidRecipientAmountsSet: !!value });
     }
+
+    runUpdatedAccountActions () {
+        this.state.updatedAccountActions.map( action => action(web3Service.defaultAccount))
+    }
+
 
     updateTotalAmount(value) {
         this.setState({ totalRecipientsAmounts: value });
@@ -193,6 +206,7 @@ export default class Content extends HasAlert {
                 this.notify({ msg: `Accounts changed`, type: 'info', autoClose: true });
             }
             await this.getTokenBalance();
+            this.runUpdatedAccountActions();
             this.setState({ scouting: false });
         } catch (e) {
             this.setState({ scouting: false });
@@ -581,8 +595,8 @@ export default class Content extends HasAlert {
                                 <div>
                                     <Route render={ props =>
                                         <TabSelector
-                                            {...this.props}
-                                            {...props}
+                                        {...props}
+                                        isMobile = {this.props.isMobile}
                                         />}
                                     />
                                     <Route path="/:address/transfer" render={ props =>
@@ -595,6 +609,7 @@ export default class Content extends HasAlert {
                                             updateTotalAmount={this.updateTotalAmount}
                                             setResetDetails={this.setResetDetails}
                                             setTransferDetailsFetcher={this.setTransferDetailsFetcher}
+                                            setUpdatedAccountActions={this.setUpdatedAccountActions}
                                             setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
                                             setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
                                             canSend={this.canSend}
@@ -615,6 +630,7 @@ export default class Content extends HasAlert {
                                             updateTotalAmount={this.updateTotalAmount}
                                             setResetDetails={this.setResetDetails}
                                             setTransferDetailsFetcher={this.setTransferDetailsFetcher}
+                                            setUpdatedAccountActions={this.setUpdatedAccountActions}
                                             setValidRecipientAddressesSet={this.setValidRecipientAddressesSet}
                                             setValidRecipientAmountsSet={this.setValidRecipientAmountsSet}
                                             canSend={this.canSend}
