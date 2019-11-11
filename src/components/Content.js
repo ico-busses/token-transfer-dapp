@@ -255,7 +255,7 @@ export default class Content extends HasAlert {
         const txDetails = this.state.fetchTransferDetails();
 
         if (txDetails.addresses.length > 1 && txDetails.amounts.length > 1) {
-            this.notify({ msg: 'Making multiple transfers. You need to approve metamask for each transaction', type: 'info', autoClose: true });
+            this.notify({ msg: 'Making multiple transfers. You need to approve each transaction', type: 'info', autoClose: true });
         }
 
         try {
@@ -290,7 +290,7 @@ export default class Content extends HasAlert {
         const txDetails = this.state.fetchTransferDetails();
 
         if (txDetails.addresses.length > 1 && txDetails.amounts.length > 1) {
-            this.notify({ msg: 'Making multiple transfers. You need to approve metamask for each transaction', type: 'info', autoClose: true });
+            this.notify({ msg: 'Making multiple transfers. You need to approve each transaction', type: 'info', autoClose: true });
         }
 
         try {
