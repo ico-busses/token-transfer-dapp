@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class HasAlert extends Component {
-  notify = ({ msg, type = "error", autoClose = false }) => {
+  notify = ({ msg, type = 'error', autoClose = false }) => {
     const options = {
       type,
-      autoClose
+      autoClose,
     };
-    type === "success" && !autoClose ? (options.autoClose = 5000) : null;
-    toast(<div style={{ wordBreak: "break-all" }}>{msg}</div>, options);
+    type === 'success' && !autoClose ? (options.autoClose = 5000) : null;
+    toast(<div style={{ wordBreak: 'break-all' }}>{msg}</div>, options);
   };
 }
 

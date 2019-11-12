@@ -1,5 +1,5 @@
-import BigNumber from "bignumber.js";
-import web3Service from "./web3Service";
+import BigNumber from 'bignumber.js';
+import web3Service from './web3Service';
 
 const parseTokenAmount = function(amount, decimals = 0, incoming = true) {
   const factor = new BigNumber(10 ** Number(decimals));
@@ -11,13 +11,13 @@ const parseTokenAmount = function(amount, decimals = 0, incoming = true) {
 };
 
 const prettyNumber = function(number) {
-  number = typeof number === "number" ? number : Number(number);
-  number = new RegExp("^\\d+\\.?\\d{8,}$").test(number)
+  number = typeof number === 'number' ? number : Number(number);
+  number = new RegExp('^\\d+\\.?\\d{8,}$').test(number)
     ? number.toFixed(8)
     : number;
-  const parts = number.toString().split(".");
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return parts.join(".");
+  const parts = number.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
 };
 
 const totalAmount = function(decimals, recipientAmounts) {
@@ -35,7 +35,7 @@ const updateArray = function(array, index, value) {
 
 const validateAmount = function(recipientAmount, minimum) {
   return (
-    new RegExp("^\\d+\\.?\\d*$").test(recipientAmount) &&
+    new RegExp('^\\d+\\.?\\d*$').test(recipientAmount) &&
     new BigNumber(recipientAmount).gte(minimum)
   );
 };
@@ -76,7 +76,7 @@ export default {
   validateAmount,
   validateAmounts,
   validateAddress,
-  validateAddresses
+  validateAddresses,
 };
 export {
   parseTokenAmount,
@@ -86,5 +86,5 @@ export {
   validateAmount,
   validateAmounts,
   validateAddress,
-  validateAddresses
+  validateAddresses,
 };

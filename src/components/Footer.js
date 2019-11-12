@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Divider, Grid, Header, Icon, Image } from "semantic-ui-react";
-import { Address } from "./lib/";
-import { footerStyle } from "../styles";
-import { features } from "../config";
-import "../styles/responsive.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Divider, Grid, Header, Icon, Image } from 'semantic-ui-react';
+import { Address } from './lib/';
+import { footerStyle } from '../styles';
+import { features } from '../config';
+import '../styles/responsive.css';
 
-import InfiniteCarousel from "react-leaf-carousel";
+import InfiniteCarousel from 'react-leaf-carousel';
 
 export default class Footer extends Component {
   render() {
@@ -28,23 +28,23 @@ export default class Footer extends Component {
                     breakpoint: 350,
                     settings: {
                       slidesToShow: 1,
-                      slidesToScroll: 1
-                    }
+                      slidesToScroll: 1,
+                    },
                   },
                   {
                     breakpoint: 500,
                     settings: {
                       slidesToShow: 2,
-                      slidesToScroll: 2
-                    }
+                      slidesToScroll: 2,
+                    },
                   },
                   {
                     breakpoint: 768,
                     settings: {
                       slidesToShow: 3,
-                      slidesToScroll: 3
-                    }
-                  }
+                      slidesToScroll: 3,
+                    },
+                  },
                 ]}
                 dots={false}
                 showSides={true}
@@ -82,7 +82,7 @@ export default class Footer extends Component {
                     ETH -
                     <Address
                       address="0x965d1c9987bd2c34e151e63d60aff8e9db6b1561"
-                      style={{ color: "inherit", height: "14px" }}
+                      style={{ color: 'inherit', height: '14px' }}
                     />
                   </b>
                 </div>
@@ -94,7 +94,7 @@ export default class Footer extends Component {
                   style={footerStyle.footerLink}
                 >
                   : ICO BUSSES
-                </a>{" "}
+                </a>{' '}
                 .
               </Grid.Column>
             </Grid.Row>
@@ -124,7 +124,7 @@ export default class Footer extends Component {
                   ETH -
                   <Address
                     address="0x965d1c9987bd2c34e151e63d60aff8e9db6b1561"
-                    style={{ color: "inherit", height: "14px" }}
+                    style={{ color: 'inherit', height: '14px' }}
                   />
                 </b>
               </div>
@@ -137,7 +137,7 @@ export default class Footer extends Component {
                 style={footerStyle.footerLink}
               >
                 : ICO BUSSES
-              </a>{" "}
+              </a>{' '}
               .
             </Grid.Column>
             <Grid.Column width={4}>
@@ -162,5 +162,5 @@ export default class Footer extends Component {
 }
 
 Footer.propTypes = {
-  isMobile: PropTypes.bool.isRequired
+  isMobile: PropTypes.bool.isRequired,
 };

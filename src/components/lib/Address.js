@@ -1,43 +1,43 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Icon } from "semantic-ui-react";
-import copy from "clipboard-copy";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Icon } from 'semantic-ui-react';
+import copy from 'clipboard-copy';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const wrapperStyle = {
-  width: "auto",
-  minWidth: "150px",
-  flex: "1"
+  width: 'auto',
+  minWidth: '150px',
+  flex: '1',
 };
 
 const textStyle = {
-  flex: "0",
-  display: "inline-block",
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  maxWidth: "75%"
+  flex: '0',
+  display: 'inline-block',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: '75%',
 };
 
 const iconStyle = {
-  cursor: "pointer",
-  verticalAlign: "top",
-  margin: "auto 4px"
+  cursor: 'pointer',
+  verticalAlign: 'top',
+  margin: 'auto 4px',
 };
 
 const notify = msg => {
   const options = {
-    type: "info",
-    autoClose: 300
+    type: 'info',
+    autoClose: 300,
   };
-  toast(<div style={{ wordBreak: "break-all" }}>{msg}</div>, options);
+  toast(<div style={{ wordBreak: 'break-all' }}>{msg}</div>, options);
 };
 
 export default function Address({ address, url, hideCopy, onCopy, style }) {
   const anchorProps = {
     title: url || address,
-    style: Object.assign({}, textStyle, style || {})
+    style: Object.assign({}, textStyle, style || {}),
   };
   if (url) {
     anchorProps.href = url;
@@ -55,7 +55,7 @@ export default function Address({ address, url, hideCopy, onCopy, style }) {
           style={iconStyle}
           onClick={async () => {
             await copy(address);
-            notify("Copied!");
+            notify('Copied!');
             onCopy && (await onCopy(address));
           }}
         />
@@ -64,10 +64,10 @@ export default function Address({ address, url, hideCopy, onCopy, style }) {
   );
 }
 
-Address.proptypes = {
+Address.propTypes = {
   address: PropTypes.string.isRequired,
   url: PropTypes.string,
   hideCopy: PropTypes.bool,
   onCopy: PropTypes.func,
-  style: PropTypes.object
+  style: PropTypes.object,
 };

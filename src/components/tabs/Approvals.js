@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import BigNumber from "bignumber.js";
-import { Card, Checkbox, Divider, Grid, Form, Button } from "semantic-ui-react";
-import Web3Service from "../../services/web3Service";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import BigNumber from 'bignumber.js';
+import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
+import Web3Service from '../../services/web3Service';
 import {
   prettyNumber,
   totalAmount,
   updateArray,
   validateAmount,
-  validateAmounts
-} from "../../services/utils";
-import { contentStyle } from "../../styles";
+  validateAmounts,
+} from '../../services/utils';
+import { contentStyle } from '../../styles';
 
 const MINIMUM_APPROVAL = 0;
 
@@ -33,12 +33,12 @@ export default class Approvals extends Component {
 
   state = {
     isBatch: false,
-    recipientAddress: "",
-    recipientAmount: "",
-    recipientAllowance: "",
+    recipientAddress: '',
+    recipientAmount: '',
+    recipientAllowance: '',
     recipientAddresses: [],
     recipientAmounts: [],
-    recipientAllowances: []
+    recipientAllowances: [],
   };
 
   get totalAmount() {
@@ -57,29 +57,29 @@ export default class Approvals extends Component {
   async updateAllowance(index) {
     const { isValidAddress, tokenAddress } = this.props;
     const address =
-      typeof index === "undefined"
+      typeof index === 'undefined'
         ? this.state.recipientAddress
         : this.state.recipientAddresses[index];
     let allowance = 0;
     if (isValidAddress(tokenAddress) && isValidAddress(address)) {
       allowance = await Web3Service.getTokenAllowance(tokenAddress, address);
     }
-    if (typeof index === "undefined") {
+    if (typeof index === 'undefined') {
       this.setState({
-        recipientAllowance: allowance
+        recipientAllowance: allowance,
       });
     } else {
       const allowances = this.state.recipientAllowances;
       allowances[index] = allowance;
       this.setState({
-        recipientAllowances: allowances
+        recipientAllowances: allowances,
       });
     }
   }
 
   async updateAllAllowances() {
     const indexes = new Array(this.state.recipientAmounts.length)
-      .fill("")
+      .fill('')
       .map((v, index) => index);
     indexes.unshift(undefined);
     await Promise.all(indexes.map(index => this.updateAllowance(index)));
@@ -88,13 +88,13 @@ export default class Approvals extends Component {
   isValidRecipientAmountSet(index) {
     let isValid = true;
     const value =
-      typeof index === "undefined"
+      typeof index === 'undefined'
         ? this.state.recipientAmount
         : this.state.recipientAmounts[index];
 
     if (validateAmount(value, MINIMUM_APPROVAL)) {
       let total = new BigNumber(0);
-      if (typeof index === "undefined") {
+      if (typeof index === 'undefined') {
         index = this.state.recipientAmounts.length;
       }
       this.state.recipientAmounts.map((amount, ind) =>
@@ -127,7 +127,7 @@ export default class Approvals extends Component {
         recipientAllowance: balance,
         recipientAddresses: [],
         recipientAmounts: [],
-        recipientAllowances: []
+        recipientAllowances: [],
       });
     } else {
       this.setState({ isBatch: !this.state.isBatch });
@@ -154,9 +154,9 @@ export default class Approvals extends Component {
       recipientAddresses: addresses,
       recipientAllowances: allowances,
       recipientAmounts: amounts,
-      recipientAddress: "",
-      recipientAllowance: "",
-      recipientAmount: ""
+      recipientAddress: '',
+      recipientAllowance: '',
+      recipientAmount: '',
     });
   }
 
@@ -202,12 +202,12 @@ export default class Approvals extends Component {
 
   resetDetails() {
     this.setState({
-      recipientAddress: "",
-      recipientAmount: "",
-      recipientAllowance: "",
+      recipientAddress: '',
+      recipientAmount: '',
+      recipientAllowance: '',
       recipientAddresses: [],
       recipientAmounts: [],
-      recipientAllowances: []
+      recipientAllowances: [],
     });
   }
 
@@ -226,7 +226,7 @@ export default class Approvals extends Component {
     }
     return {
       addresses,
-      amounts
+      amounts,
     };
   }
 
@@ -241,7 +241,7 @@ export default class Approvals extends Component {
     this.setState({
       recipientAddresses: addresses,
       recipientAllowances: allowances,
-      recipientAmounts: amounts
+      recipientAmounts: amounts,
     });
   };
 
@@ -249,7 +249,7 @@ export default class Approvals extends Component {
     const value = new BigNumber(this.props.balance);
     this.setState(
       {
-        recipientAmount: this.props.parseTokenAmount(value).toFixed()
+        recipientAmount: this.props.parseTokenAmount(value).toFixed(),
       },
       () => {
         this.props.updateTotalAmount(
@@ -262,37 +262,37 @@ export default class Approvals extends Component {
 
   onChange = (property, index) => event => {
     const { target } = event;
-    if (typeof index === "undefined") {
+    if (typeof index === 'undefined') {
       this.setState({ [property]: target.value }, () => {
         this.validateForm();
       });
     } else {
       this.setState(
         {
-          [property]: updateArray(this.state[property], index, target.value)
+          [property]: updateArray(this.state[property], index, target.value),
         },
         () => {
           this.validateForm();
         }
       );
     }
-    const amountFields = ["recipientAmount", "recipientAmounts"];
+    const amountFields = ['recipientAmount', 'recipientAmounts'];
     if (amountFields.includes(property)) {
       this.props.updateTotalAmount(
         this.props.parseTokenAmount(this.totalAmount).toFixed()
       );
     }
-    const addressFields = ["recipientAddress", "recipientAddresses"];
+    const addressFields = ['recipientAddress', 'recipientAddresses'];
     if (addressFields.includes(property)) {
       this.updateAllowance(index);
     }
   };
 
   componentDidMount = () => {
-    this.props.updateTotalAmount("0");
+    this.props.updateTotalAmount('0');
     this.props.setUpdatedAccountActions([
       this.updateAllAllowances,
-      this.validateForm
+      this.validateForm,
     ]);
   };
 
@@ -302,8 +302,8 @@ export default class Approvals extends Component {
     const addAddressButtonProps = {};
 
     if (this.props.isMobile) {
-      balanceButtonProps.floated = "left";
-      addAddressButtonProps.floated = "right";
+      balanceButtonProps.floated = 'left';
+      addAddressButtonProps.floated = 'right';
     }
     return (
       <Form>
@@ -335,13 +335,13 @@ export default class Approvals extends Component {
                     <Card
                       fluid
                       className={`board ${
-                        !this.props.isMobile ? "mb-60" : "mb-0"
+                        !this.props.isMobile ? 'mb-60' : 'mb-0'
                       }`}
                       key={index}
                     >
                       <Grid
                         className={`${
-                          !this.props.isMobile ? "mt-24 mb-24" : "mt-0 mb-0"
+                          !this.props.isMobile ? 'mt-24 mb-24' : 'mt-0 mb-0'
                         }`}
                       >
                         <Grid.Row columns={this.props.isMobile ? 1 : 3}>
@@ -359,15 +359,15 @@ export default class Approvals extends Component {
                                 placeholder="Address"
                                 value={this.state.recipientAddresses[index]}
                                 onChange={this.onChange(
-                                  "recipientAddresses",
+                                  'recipientAddresses',
                                   index
                                 )}
                                 onKeyUp={this.onChange(
-                                  "recipientAddresses",
+                                  'recipientAddresses',
                                   index
                                 )}
                                 onBlur={this.onChange(
-                                  "recipientAddresses",
+                                  'recipientAddresses',
                                   index
                                 )}
                                 className="curved-border mb-12"
@@ -384,22 +384,22 @@ export default class Approvals extends Component {
                                 placeholder={`${this.props.symbol}s to approve`}
                                 value={this.state.recipientAmounts[index]}
                                 onChange={this.onChange(
-                                  "recipientAmounts",
+                                  'recipientAmounts',
                                   index
                                 )}
                                 onKeyUp={this.onChange(
-                                  "recipientAmounts",
+                                  'recipientAmounts',
                                   index
                                 )}
                                 onBlur={this.onChange(
-                                  "recipientAmounts",
+                                  'recipientAmounts',
                                   index
                                 )}
                                 className="curved-border mb-12"
                               />
                               <h5 className="address mt-0">
                                 <span className="mr-12" title="Allocation">
-                                  Allocation:{" "}
+                                  Allocation:{' '}
                                 </span>
                                 <span>
                                   {this.state.recipientAllowances[index]
@@ -439,13 +439,13 @@ export default class Approvals extends Component {
                   <Card
                     fluid
                     className={`board ${
-                      !this.props.isMobile ? "mb-60" : "mb-0"
+                      !this.props.isMobile ? 'mb-60' : 'mb-0'
                     }`}
                   >
                     <Grid
                       columns={this.props.isMobile ? 1 : 3}
                       className={`${
-                        !this.props.isMobile ? "mt-24 mb-24" : "mt-0 mb-0"
+                        !this.props.isMobile ? 'mt-24 mb-24' : 'mt-0 mb-0'
                       }`}
                     >
                       {!this.props.isMobile && (
@@ -463,9 +463,9 @@ export default class Approvals extends Component {
                           <Form.Input
                             placeholder="Address"
                             value={this.state.recipientAddress}
-                            onChange={this.onChange("recipientAddress")}
-                            onKeyUp={this.onChange("recipientAddress")}
-                            onBlur={this.onChange("recipientAddress")}
+                            onChange={this.onChange('recipientAddress')}
+                            onKeyUp={this.onChange('recipientAddress')}
+                            onBlur={this.onChange('recipientAddress')}
                             className="curved-border"
                           />
                         </Form.Field>
@@ -479,14 +479,14 @@ export default class Approvals extends Component {
                           <Form.Input
                             placeholder={`${this.props.symbol}s to approve`}
                             value={this.state.recipientAmount}
-                            onChange={this.onChange("recipientAmount")}
-                            onKeyUp={this.onChange("recipientAmount")}
-                            onBlur={this.onChange("recipientAmount")}
+                            onChange={this.onChange('recipientAmount')}
+                            onKeyUp={this.onChange('recipientAmount')}
+                            onBlur={this.onChange('recipientAmount')}
                             className="curved-border"
                           />
                           <h5 className="address mt-0">
                             <span className="mr-12" title="Allocation">
-                              Allocation:{" "}
+                              Allocation:{' '}
                             </span>
                             <span>
                               {this.state.recipientAllowance
@@ -511,7 +511,7 @@ export default class Approvals extends Component {
               </div>
               <div
                 className="btn-wrapper2"
-                style={this.props.isMobile ? {} : { paddingBottom: "100px" }}
+                style={this.props.isMobile ? {} : { paddingBottom: '100px' }}
               >
                 <Grid>
                   {!this.props.isMobile && (
@@ -561,7 +561,7 @@ export default class Approvals extends Component {
                             loading={this.props.approvingTokens}
                             className="approve curved-border"
                           >
-                            Approve{" "}
+                            Approve{' '}
                             {Boolean(
                               Number(this.props.totalRecipientsAmounts)
                             ) &&
@@ -599,5 +599,5 @@ Approvals.propTypes = {
   canSend: PropTypes.bool.isRequired,
   approvingTokens: PropTypes.bool.isRequired,
   approveTokens: PropTypes.func.isRequired,
-  totalRecipientsAmounts: PropTypes.string.isRequired
+  totalRecipientsAmounts: PropTypes.string.isRequired,
 };

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import BigNumber from "bignumber.js";
-import { Card, Checkbox, Divider, Grid, Form, Button } from "semantic-ui-react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import BigNumber from 'bignumber.js';
+import { Card, Checkbox, Divider, Grid, Form, Button } from 'semantic-ui-react';
 import {
   prettyNumber,
   totalAmount,
   updateArray,
-  validateAmount
-} from "../../services/utils";
-import { contentStyle } from "../../styles";
+  validateAmount,
+} from '../../services/utils';
+import { contentStyle } from '../../styles';
 
 const MINIMUM_TRANSFER = 1;
 
@@ -30,10 +30,10 @@ export default class Transactions extends Component {
 
   state = {
     isBatch: false,
-    recipientAddress: "",
-    recipientAmount: "",
+    recipientAddress: '',
+    recipientAmount: '',
     recipientAddresses: [],
-    recipientAmounts: []
+    recipientAmounts: [],
   };
 
   get totalAmount() {
@@ -52,7 +52,7 @@ export default class Transactions extends Component {
   isValidRecipientAmountSet(index) {
     let isValid = true;
     const value =
-      typeof index === "undefined"
+      typeof index === 'undefined'
         ? this.state.recipientAmount
         : this.state.recipientAmounts[index];
 
@@ -63,7 +63,7 @@ export default class Transactions extends Component {
       )
     ) {
       let total = new BigNumber(0);
-      if (typeof index === "undefined") {
+      if (typeof index === 'undefined') {
         index = this.state.recipientAmounts.length;
       }
       this.state.recipientAmounts.map((amount, ind) =>
@@ -104,7 +104,7 @@ export default class Transactions extends Component {
         recipientAddress: address,
         recipientAmount: amount,
         recipientAddresses: [],
-        recipientAmounts: []
+        recipientAmounts: [],
       });
     } else {
       this.setState({ isBatch: !this.state.isBatch });
@@ -128,8 +128,8 @@ export default class Transactions extends Component {
     this.setState({
       recipientAddresses: addresses,
       recipientAmounts: amounts,
-      recipientAddress: "",
-      recipientAmount: ""
+      recipientAddress: '',
+      recipientAmount: '',
     });
   }
 
@@ -190,10 +190,10 @@ export default class Transactions extends Component {
 
   resetDetails() {
     this.setState({
-      recipientAddress: "",
-      recipientAmount: "",
+      recipientAddress: '',
+      recipientAmount: '',
       recipientAddresses: [],
-      recipientAmounts: []
+      recipientAmounts: [],
     });
   }
 
@@ -212,7 +212,7 @@ export default class Transactions extends Component {
     }
     return {
       addresses,
-      amounts
+      amounts,
     };
   }
 
@@ -225,7 +225,7 @@ export default class Transactions extends Component {
     this.setState(
       {
         recipientAddresses: addresses,
-        recipientAmounts: amounts
+        recipientAmounts: amounts,
       },
       () => {
         this.updateTotalAmount();
@@ -236,7 +236,7 @@ export default class Transactions extends Component {
 
   setMaxValue = index => () => {
     let value =
-      typeof index === "undefined"
+      typeof index === 'undefined'
         ? this.state.recipientAmount
         : this.state.recipientAmounts[index];
     value = this.props.parseTokenAmount(value || 0, false);
@@ -251,10 +251,10 @@ export default class Transactions extends Component {
         value = new BigNumber(0);
       }
     }
-    if (typeof index === "undefined") {
+    if (typeof index === 'undefined') {
       this.setState(
         {
-          recipientAmount: this.props.parseTokenAmount(value).toFixed()
+          recipientAmount: this.props.parseTokenAmount(value).toFixed(),
         },
         () => {
           this.updateTotalAmount();
@@ -268,7 +268,7 @@ export default class Transactions extends Component {
             this.state.recipientAmounts,
             index,
             this.props.parseTokenAmount(value).toFixed()
-          )
+          ),
         },
         () => {
           this.updateTotalAmount();
@@ -280,28 +280,28 @@ export default class Transactions extends Component {
 
   onChange = (property, index) => event => {
     const { target } = event;
-    if (typeof index === "undefined") {
+    if (typeof index === 'undefined') {
       this.setState({ [property]: target.value }, () => {
         this.validateForm();
       });
     } else {
       this.setState(
         {
-          [property]: updateArray(this.state[property], index, target.value)
+          [property]: updateArray(this.state[property], index, target.value),
         },
         () => {
           this.validateForm();
         }
       );
     }
-    const amountFields = ["recipientAmount", "recipientAmounts"];
+    const amountFields = ['recipientAmount', 'recipientAmounts'];
     if (amountFields.includes(property)) {
       this.updateTotalAmount();
     }
   };
 
   componentDidMount = () => {
-    this.props.updateTotalAmount("0");
+    this.props.updateTotalAmount('0');
     this.props.setUpdatedAccountActions([this.validateForm]);
   };
 
@@ -311,8 +311,8 @@ export default class Transactions extends Component {
     const addAddressButtonProps = {};
 
     if (this.props.isMobile) {
-      balanceButtonProps.floated = "left";
-      addAddressButtonProps.floated = "right";
+      balanceButtonProps.floated = 'left';
+      addAddressButtonProps.floated = 'right';
     }
     return (
       <Form>
@@ -344,13 +344,13 @@ export default class Transactions extends Component {
                     <Card
                       fluid
                       className={`board ${
-                        !this.props.isMobile ? "mb-60" : "mb-0"
+                        !this.props.isMobile ? 'mb-60' : 'mb-0'
                       }`}
                       key={index}
                     >
                       <Grid
                         className={`${
-                          !this.props.isMobile ? "mt-24 mb-24" : "mt-0 mb-0"
+                          !this.props.isMobile ? 'mt-24 mb-24' : 'mt-0 mb-0'
                         }`}
                       >
                         <Grid.Row columns={this.props.isMobile ? 1 : 3}>
@@ -368,15 +368,15 @@ export default class Transactions extends Component {
                                 placeholder="Address"
                                 value={this.state.recipientAddresses[index]}
                                 onChange={this.onChange(
-                                  "recipientAddresses",
+                                  'recipientAddresses',
                                   index
                                 )}
                                 onKeyUp={this.onChange(
-                                  "recipientAddresses",
+                                  'recipientAddresses',
                                   index
                                 )}
                                 onBlur={this.onChange(
-                                  "recipientAddresses",
+                                  'recipientAddresses',
                                   index
                                 )}
                                 className="curved-border mb-12"
@@ -392,15 +392,15 @@ export default class Transactions extends Component {
                                 placeholder={`${this.props.symbol}s to send`}
                                 value={this.state.recipientAmounts[index]}
                                 onChange={this.onChange(
-                                  "recipientAmounts",
+                                  'recipientAmounts',
                                   index
                                 )}
                                 onKeyUp={this.onChange(
-                                  "recipientAmounts",
+                                  'recipientAmounts',
                                   index
                                 )}
                                 onBlur={this.onChange(
-                                  "recipientAmounts",
+                                  'recipientAmounts',
                                   index
                                 )}
                                 className="curved-border mb-12"
@@ -429,13 +429,13 @@ export default class Transactions extends Component {
                   <Card
                     fluid
                     className={`board ${
-                      !this.props.isMobile ? "mb-60" : "mb-0"
+                      !this.props.isMobile ? 'mb-60' : 'mb-0'
                     }`}
                   >
                     <Grid
                       columns={this.props.isMobile ? 1 : 3}
                       className={`${
-                        !this.props.isMobile ? "mt-24 mb-24" : "mt-0 mb-0"
+                        !this.props.isMobile ? 'mt-24 mb-24' : 'mt-0 mb-0'
                       }`}
                     >
                       {!this.props.isMobile && (
@@ -453,9 +453,9 @@ export default class Transactions extends Component {
                           <Form.Input
                             placeholder="Address"
                             value={this.state.recipientAddress}
-                            onChange={this.onChange("recipientAddress")}
-                            onKeyUp={this.onChange("recipientAddress")}
-                            onBlur={this.onChange("recipientAddress")}
+                            onChange={this.onChange('recipientAddress')}
+                            onKeyUp={this.onChange('recipientAddress')}
+                            onBlur={this.onChange('recipientAddress')}
                             className="curved-border mb-12"
                           />
                         </Form.Field>
@@ -468,9 +468,9 @@ export default class Transactions extends Component {
                           <Form.Input
                             placeholder={`${this.props.symbol}s to send`}
                             value={this.state.recipientAmount}
-                            onChange={this.onChange("recipientAmount")}
-                            onKeyUp={this.onChange("recipientAmount")}
-                            onBlur={this.onChange("recipientAmount")}
+                            onChange={this.onChange('recipientAmount')}
+                            onKeyUp={this.onChange('recipientAmount')}
+                            onBlur={this.onChange('recipientAmount')}
                             className="curved-border mb-12"
                           />
                         </Form.Field>
@@ -484,7 +484,7 @@ export default class Transactions extends Component {
               </div>
               <div
                 className="btn-wrapper2"
-                style={this.props.isMobile ? {} : { paddingBottom: "100px" }}
+                style={this.props.isMobile ? {} : { paddingBottom: '100px' }}
               >
                 <Grid>
                   {!this.props.isMobile && (
@@ -534,7 +534,7 @@ export default class Transactions extends Component {
                             loading={this.props.sendingTokens}
                             className="transfer curved-border"
                           >
-                            Transfer{" "}
+                            Transfer{' '}
                             {Boolean(
                               Number(this.props.totalRecipientsAmounts)
                             ) &&
@@ -571,5 +571,5 @@ Transactions.propTypes = {
   canSend: PropTypes.bool.isRequired,
   sendingTokens: PropTypes.bool.isRequired,
   transferTokens: PropTypes.func.isRequired,
-  totalRecipientsAmounts: PropTypes.string.isRequired
+  totalRecipientsAmounts: PropTypes.string.isRequired,
 };
