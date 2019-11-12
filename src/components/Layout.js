@@ -5,6 +5,7 @@ import { Link, Redirect, Route } from 'react-router-dom';
 import { Button, Grid, Header, Container, Image } from 'semantic-ui-react';
 import { web3Service, NULL_ADDRESS } from '../services';
 import { call2Action } from '../config';
+import { Address } from "./lib/";
 import Content from './Content';
 import Information from './Information';
 import Footer from './Footer';
@@ -86,11 +87,11 @@ export default class Layout extends Component {
                                                 {web3Service.isWeb3Viewable &&
                                                     <small className="meta-address-holder address">
                                                         { this.state.address && this.state.address !== NULL_ADDRESS ?
-                                                            <a
-                                                                href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
-                                                                rel="noopener noreferrer" >
-                                                                {this.state.address || '...'}
-                                                            </a>:
+                                                            <Address
+                                                                url={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''}
+                                                                address={this.state.address || '...'}
+                                                                hideCopy={this.state.address === '...'}
+                                                            />:
                                                             <a onClick={()=>{}}>
                                                                 ...
                                                             </a>
@@ -114,11 +115,11 @@ export default class Layout extends Component {
                                             {web3Service.isWeb3Viewable &&
                                             <small className="meta-address-holder address">
                                                 { this.state.address && this.state.address !== NULL_ADDRESS ?
-                                                    <a
-                                                        href={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''} target='_blank'
-                                                        rel="noopener noreferrer" >
-                                                        {this.state.address}
-                                                    </a>:
+                                                    <Address
+                                                    url={ this.state.address ? `${web3Service.explorer}address/${this.state.address}` : ''}
+                                                    address={this.state.address}
+                                                    hideCopy={this.state.address === '...'}
+                                                />:
                                                     <a onClick={()=>{}}>
                                                         ...
                                                     </a>

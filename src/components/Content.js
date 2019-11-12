@@ -7,6 +7,7 @@ import ContractMap from 'eth-contract-metadata';
 import { Button, Card, Form, Grid, List, Loader, Search, Container } from 'semantic-ui-react';
 import { contentStyle } from '../styles';
 import HasAlert from './HasAlert';
+import { Address } from './lib/'
 import Approvals from './tabs/Approvals';
 import TabSelector from './TabSelector';
 import Transactions from './tabs/Transactions';
@@ -491,9 +492,10 @@ export default class Content extends HasAlert {
                                                                         <List.Content>
                                                                             <List.Header as='h2'>Token Address</List.Header>
                                                                             <List.Description as='p' className='address'>
-                                                                                <a href={`${web3Service.explorer}token/${this.state.tokenAddress}`} target='_blank' rel='noopener noreferrer'>
+                                                                                <Address url={`${web3Service.explorer}token/${this.state.tokenAddress}`} 
+                                                                                address=
                                                                                     {this.state.tokenAddress}
-                                                                                </a>
+                                                                                />
                                                                             </List.Description>
                                                                         </List.Content>
                                                                     </List.Item>
@@ -537,9 +539,10 @@ export default class Content extends HasAlert {
                                                                         <List.Content>
                                                                             <List.Header as='h2'>Token Address</List.Header>
                                                                             <List.Description as='p' className='address'>
-                                                                                <a href={`${web3Service.explorer}address/${this.state.tokenAddress}`} target='_blank' rel='noopener noreferrer'>
+                                                                            <Address url={`${web3Service.explorer}token/${this.state.tokenAddress}`} 
+                                                                                address=
                                                                                     {this.state.tokenAddress}
-                                                                                </a>
+                                                                                />
                                                                             </List.Description>
                                                                         </List.Content>
                                                                     </List.Item>
@@ -644,7 +647,6 @@ export default class Content extends HasAlert {
                         </Container>
                     </div>
                 }
-                {super.render()}
             </Card>
         );
     }
