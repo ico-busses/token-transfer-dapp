@@ -20,7 +20,7 @@ const textStyle = {
   maxWidth: '75%',
 };
 
-const iconStyle = {
+const defaultIconStyle = {
   cursor: 'pointer',
   verticalAlign: 'top',
   margin: 'auto 4px',
@@ -34,7 +34,14 @@ const notify = msg => {
   toast(<div style={{ wordBreak: 'break-all' }}>{msg}</div>, options);
 };
 
-export default function Address({ address, url, hideCopy, onCopy, style }) {
+export default function Address({
+  address,
+  url,
+  hideCopy,
+  onCopy,
+  iconStyle,
+  style,
+}) {
   const anchorProps = {
     title: url || address,
     style: Object.assign({}, textStyle, style || {}),
@@ -50,9 +57,9 @@ export default function Address({ address, url, hideCopy, onCopy, style }) {
       </a>
       {!hideCopy && (
         <Icon
-          name="clipboard outline"
+          name="copy outline"
           title="copy"
-          style={iconStyle}
+          style={Object.assign({}, defaultIconStyle, iconStyle || {})}
           onClick={async () => {
             await copy(address);
             notify('Copied!');
@@ -70,4 +77,5 @@ Address.propTypes = {
   hideCopy: PropTypes.bool,
   onCopy: PropTypes.func,
   style: PropTypes.object,
+  iconStyle: PropTypes.object,
 };
