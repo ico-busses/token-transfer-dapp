@@ -29,10 +29,14 @@ const totalAmount = function(decimals, recipientAmounts) {
   return total.toFixed();
 };
 
+const updateArray = function(array, index, value) {
+  return array.map((val, ind) => (ind !== index ? val : value));
+};
+
 const validateAmount = function(recipientAmount, minimum) {
   return (
     new RegExp('^\\d+\\.?\\d*$').test(recipientAmount) &&
-    Number(recipientAmount) > minimum
+    new BigNumber(recipientAmount).gte(minimum)
   );
 };
 
@@ -68,17 +72,19 @@ export default {
   parseTokenAmount,
   prettyNumber,
   totalAmount,
+  updateArray,
   validateAmount,
   validateAmounts,
   validateAddress,
-  validateAddresses
+  validateAddresses,
 };
 export {
   parseTokenAmount,
   prettyNumber,
   totalAmount,
+  updateArray,
   validateAmount,
   validateAmounts,
   validateAddress,
-  validateAddresses
+  validateAddresses,
 };

@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "bignumber.js": "^9.0.0",
+    "clipboard-copy": "^3.1.0",
     "eth-contract-metadata": "git+https://github.com/MetaMask/eth-contract-metadata.git",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
