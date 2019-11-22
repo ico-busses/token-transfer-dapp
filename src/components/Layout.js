@@ -33,6 +33,10 @@ export default class Layout extends Component {
     tokenLoaded: false,
   };
 
+  canCopy(address) {
+    return !['...', ''].find(c => address === c);
+  }
+
   showUserAddress(address) {
     this.setState({ address });
   }
@@ -136,7 +140,10 @@ export default class Layout extends Component {
                                   : ''
                               }
                               address={this.state.address || '...'}
-                              hideCopy={this.state.address === '...'}
+                              iconStyle={{
+                                color: '#ffffff',
+                              }}
+                              hideCopy={!this.canCopy(this.state.address)}
                             />
                           ) : (
                             <a onClick={() => {}}>...</a>
@@ -184,7 +191,10 @@ export default class Layout extends Component {
                                 : ''
                             }
                             address={this.state.address}
-                            hideCopy={this.state.address === '...'}
+                            hideCopy={!this.canCopy(this.state.address)}
+                            iconStyle={{
+                              color: '#266baf',
+                            }}
                           />
                         ) : (
                           <a onClick={() => {}}>...</a>
